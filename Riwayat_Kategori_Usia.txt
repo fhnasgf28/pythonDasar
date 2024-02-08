@@ -1,0 +1,12 @@
+kategori: Remaja
+deskripsi: Remaja adalah masa transisi antara masa kanak-kanak dan dewasa, di mana individu mulai menemukan identitas mereka.
+kategori: Dewasa
+deskripsi: Dewasa adalah masa ketika individu biasanya telah mencapai kemandirian dan bertanggung jawab atas keputusan mereka.
+kategori: Anak-anak
+deskripsi: Anak-anak biasanya aktif dan penuh dengan energi, sering kali mengeksplorasi dunia di sekitar mereka.
+kategori: Dewasa
+deskripsi: Dewasa adalah masa ketika individu biasanya telah mencapai kemandirian dan bertanggung jawab atas keputusan mereka.
+kategori: Dewasa
+deskripsi: Dewasa adalah masa ketika individu biasanya telah mencapai kemandirian dan bertanggung jawab atas keputusan mereka.
+kategori: Anak-anak
+deskripsi: Anak-anak biasanya aktif dan penuh dengan energi, sering kali mengeksplorasi dunia di sekitar mereka.
