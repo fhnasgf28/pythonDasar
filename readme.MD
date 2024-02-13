@@ -13,3 +13,9 @@ operasi antara
 
 ### Pengenalan String
 
+### List
+- list dapat dibuat seperti membuat variabel biasa, namun nilai variabelnya diisi dengan tanda kurung siku[]
+- list dapat diisi dengan tipe data apa saja, string, integer,float,doubel,boolean,object dsb.
+
+
+
