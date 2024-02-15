@@ -26,7 +26,7 @@ def to_upper(string, case):
     else:
         raise ValueError("Nilai `case` tidak valid. Harap masukkan 'upper' atau 'lower' ")
 
-string = "FARHAN ASSEGAF"
+string = "fHn ASSegAf"
 case = input("Masukan 'upper' atau 'lower' : ")
 changed_string = to_upper(string, case)
 print(f"String dengan semua huruf besar yang diubah menjadi huruf besar: {changed_string}")
