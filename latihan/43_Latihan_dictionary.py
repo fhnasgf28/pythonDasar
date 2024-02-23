@@ -5,6 +5,7 @@ import os
 import string
 import random
 
+
 # template dict mahasiswa
 mahasiswa_template = {
     'nama': 'nama',
