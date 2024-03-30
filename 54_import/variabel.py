@@ -1,0 +1,1 @@
+data = "Bulan penuh ampuban"
