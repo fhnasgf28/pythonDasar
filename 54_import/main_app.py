@@ -1,4 +1,3 @@
-
 # untuk menyambung program dari external
 import program_ucup
 import program_print
