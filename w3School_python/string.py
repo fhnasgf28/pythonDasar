@@ -28,3 +28,27 @@ print(len(a))
 txt = "The Best things in life are free"
 if "free" in txt:
     print("free" in txt)
+
+    # slicing
+    b = "Hello, World"
+    print(b[2:5])
+
+    # Slice From the Start
+    print(b[2:])
+
+    # upper case
+    a = 'Hello, World'
+    print(a.upper())
+
+    # lower case
+    a = 'Hello, World '
+    print(a.lower())
+
+    # remove whitespace
+    print(a.strip())
+
+    # replace string
+    print(a.replace("H", "W"))
+
+    # split string
+    print(a.split(","))
