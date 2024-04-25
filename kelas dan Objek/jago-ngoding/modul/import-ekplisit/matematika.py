@@ -8,6 +8,5 @@ def luas_persegi(sisi):
 def luas_lingkaran(radius):
     return pi * radius * radius
 
-
 def _luas_segitiga(alas, tinggi):
     return 0.5 * alas * tinggi
