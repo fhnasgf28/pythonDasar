@@ -61,3 +61,19 @@ thislist2.extend(tropical)
 print(thislist2)
 
 # Add Any Iterable
+
+# Python - Remove List Items
+thislist3 = ["apple", "banana", "cherry", "mango"]
+thislist3.remove("banana")
+print(thislist3)
+
+# Remove Specified Index
+thislist3.pop()
+print(thislist3)
+
+del thislist3
+
+# Python - Loop Lists
+thislist4 = ["apple", "banana", "cherry", "mango"]
+for x in thislist4:
+    print(x)
