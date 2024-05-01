@@ -74,6 +74,60 @@ print(thislist3)
 del thislist3
 
 # Python - Loop Lists
-thislist4 = ["apple", "banana", "cherry", "mango"]
+thislist4 = ["apple", "banana", "Cherry", "Mango"]
 for x in thislist4:
     print(x)
+
+# Python - Sort Lists
+
+# Sort List Alphanumerically
+thislist4.sort(reverse=True)
+print(thislist4)
+
+# numerically:
+thislist5 = [100, 200, 300, 400, 500]
+thislist5.sort(reverse=True)
+print(thislist5)
+
+
+# Customize sort function
+def myFunc(n):
+    return abs(n - 200)
+
+
+thislist5.sort(key=myFunc)
+print(thislist5)
+
+# Case Insensitive Sort
+thislist6 = ["banana", "Orange", "Kiwi", "cherry"]
+thislist6.sort(key=str.lower)
+print(thislist6)
+
+# reverse Order
+thislist6.reverse()
+print(thislist6)
+
+# Python - Copy Lists
+mylist1 = thislist6.copy()
+print(mylist1)
+
+mylist1 = list(thislist6)
+print(mylist1)
+
+# Python - Join Lists
+# Join Two Lists
+list5 = ["a", "b", "c", "d"]
+list6 = [1, 2, 3]
+
+list7 = list5 + list6
+print(list7)
+
+for x in list5:
+    list6.append(x)
+
+print(list6)
+
+# method extend
+
+list5.extend(list6)
+print(list5)
