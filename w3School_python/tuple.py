@@ -19,3 +19,17 @@ print(type(thistuple2))
 
 # tuple items - data types
 
+# The tuple() Constructor
+
+thistuple5 = tuple(("apple", "banana", "cherry", "orange", "kiwi", "melon", "mango"))
+print(thistuple5)
+
+# Python - Access Tuple Items
+print(thistuple5[2])
+
+# Range of Indexes
+print(thistuple5[2:5])
+# check if item exists
+
+if "apple" in thistuple5:
+    print("Yes 'apple' is in the fruits tuple")
