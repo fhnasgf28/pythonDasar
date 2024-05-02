@@ -33,3 +33,42 @@ print(thistuple5[2:5])
 
 if "apple" in thistuple5:
     print("Yes 'apple' is in the fruits tuple")
+
+# Change Tuple Values
+change_value_tuple = list(thistuple5)
+change_value_tuple[2] = "Jeruk"
+thistuple5 = tuple(change_value_tuple)
+
+print(thistuple5)
+
+# Add Items
+convert_tuple = list(thistuple5)
+
+convert_tuple.append("Belimbing")
+thistuple5 = tuple(convert_tuple)
+
+print(thistuple5)
+
+# add tuple to a tuple
+add_tuple = ("Jeruk Nipis",)
+thistuple5 += add_tuple
+
+print(thistuple5)
+
+# Remove Items Tuple
+
+remove_tuple = list(thistuple5)
+remove_tuple.remove("Belimbing")
+thistuple5 = tuple(remove_tuple)
+
+print(thistuple5)
+
+# python - unpack tuples
+
+# Unpacking a Tuple
+fruits = ("apple", "mango", "papaya", "pineapple", "cherry")
+
+(tropic, *red) = fruits
+
+print(tropic)
+print(red)
