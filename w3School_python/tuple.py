@@ -72,3 +72,13 @@ fruits = ("apple", "mango", "papaya", "pineapple", "cherry")
 
 print(tropic)
 print(red)
+
+# Python - Loop Tuples
+for i in range(len(fruits)):
+    print(fruits[i])
+
+    # using a while Loop
+i = 0
+while i < len(fruits):
+    print(fruits[1])
+    i = i + 1
