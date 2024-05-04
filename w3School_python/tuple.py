@@ -34,6 +34,16 @@ print(thistuple5[2:5])
 if "apple" in thistuple5:
     print("Yes 'apple' is in the fruits tuple")
 
+# loop Through a tuple
+for x in thistuple5:
+    print(x)
+
+# loop through the index numbers
+for i in range(len(thistuple5)):
+    print(thistuple5[i])
+
+# using a while loop
+
 # Change Tuple Values
 change_value_tuple = list(thistuple5)
 change_value_tuple[2] = "Jeruk"
