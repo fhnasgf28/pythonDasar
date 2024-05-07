@@ -73,3 +73,23 @@ y = (1, 2, 3)
 z = x.union(y)
 
 # =============== UPDATE ==========
+set1.update(set2)
+print(set1)
+
+# Intersection
+set5 = {"apple", "banana", "cherry"}
+set6 = {"google", "microsoft", "apple"}
+
+set7 = set5 & set6
+print(set7)
+
+# Difference
+set7 = set5.difference(set6)
+print(set7)
+
+set7 = set5 - set6
+print(set7)
+
+# difference_update()
+set5.difference_update(set6)
+print(set5)
