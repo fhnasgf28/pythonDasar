@@ -51,3 +51,25 @@ myList = ["kiwi", "orange"]
 
 thisset1.update(myList)
 print(thisset1)
+
+# Python - Join Sets
+set4 = set1.union(set2)
+print(set4)
+
+set4_a = set1 | set2
+print(set4_a)
+
+# Join Multiple Sets
+set3_b = {"John", "Elena"}
+set4_b = {"Apple", "Bananas", "Cherry"}
+
+mySet = set1.union(set2, set3_b, set4_b)
+print(mySet)
+
+# Join a Set and a Tuple
+x = {"a", "b", "c"}
+y = (1, 2, 3)
+
+z = x.union(y)
+
+# =============== UPDATE ==========
