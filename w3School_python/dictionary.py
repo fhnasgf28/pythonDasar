@@ -44,3 +44,37 @@ car["color"] = "White"
 print(x)
 
 # get Values
+y = thisdict.values()
+
+print(y)
+
+thisdict['brand'] = "Toyota"
+print(y)
+
+# get items
+y = thisdict.items()
+print(y)
+
+if "model" in thisdict:
+    print("Yes, 'model' is one of the keys in the thisdict")
+
+# python - change dictionary items
+# change Values
+thisdict["year"] = 2020
+print(thisdict)
+
+# update dictionary
+thisdict.update({"year": 2024})
+print(thisdict)
+
+# python - Remove Dictionary items
+
+# Removing Items
+thisdict.pop("model")
+print(thisdict)
+
+# menghapus semua dict clear()
+
+thisdict.clear()
+print(thisdict)
+
