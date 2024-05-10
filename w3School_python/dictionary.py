@@ -17,10 +17,10 @@ print(len(thisdict))
 
 # Dictionary Items - Data Types
 thisdict1 = {
-  "brand": "Ford",
-  "electric": False,
-  "year": 1964,
-  "colors": ["red", "white", "blue"]
+    "brand": "Ford",
+    "electric": False,
+    "year": 1964,
+    "colors": ["red", "white", "blue"]
 }
 
 # Accessing Items
@@ -38,7 +38,7 @@ car = {
 }
 
 x = car.keys()
-print(x) #before the change
+print(x)  #before the change
 
 car["color"] = "White"
 print(x)
@@ -75,6 +75,27 @@ print(thisdict)
 
 # menghapus semua dict clear()
 
-thisdict.clear()
-print(thisdict)
+# thisdict.clear()
+# print(thisdict)
 
+# Loop Through a Dictionary
+for x in thisdict:
+    print(thisdict[x])
+
+    # Nested Dictionaries
+    myfamily = {
+        "child1": {
+            "name": "Emil",
+            "year": 2024
+        },
+        "child2": {
+            "name": "Tobias",
+            "year": 2007
+        },
+        "child3": {
+            "name": "Linus",
+            "year": 2011
+        }
+    }
+
+    print(myfamily)
