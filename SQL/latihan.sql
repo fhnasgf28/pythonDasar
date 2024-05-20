@@ -42,5 +42,30 @@ SELECT * FROM produk WHERE harga < 10000 OR stok > 100;
 SELECT * FROM produk WHERE nama_produk LIKE O'%buku%';
 SELECT * FROM produk WHERE harga BETWEEN 5000 AND 50000;
 
+SELECT * FROM produk WHERE NOT harga = 60000 AND NOT kategori = 'Elektronik';
 
+--ORDER BY
+
+SELECT * FROM produk ORDER BY nama_produk desc;
+SELECT * FROM produk ORDER BY nama_produk, kategori desc;
+SELECT * FROM produk ORDER BY nama_produk ASC, kategori DESC;
+
+--Insert
+--Insert Data Only in Specified Columns
+INSERT INTO Customers (CustomerName, City, Country)
+VALUES ('Cardinal', 'Stavanger', 'Norway');
+
+--UPDATE QUERY
+UPDATE produk SET harga = 65500 WHERE id = 11;
+SELECT * FROM produk WHERE id = 11;
+
+UPDATE produk SET stok = stok + 10 WHERE kategori = 'Elektronik';
+SELECT * FROM produk WHERE stok;
+
+UPDATE produk
+SET harga = 1200, stok = 210
+WHERE id = 3;
+
+UPDATE produk SET kategori = 'premium' WHERE harga > 100000;
+SELECT * FROM produk WHERE stok;
 

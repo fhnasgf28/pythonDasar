@@ -31,4 +31,38 @@ def my_function3(*kids):
 
 my_function3('emil', 'Tobias', 'Linus')
 
+
 # keyword argument
+
+def my_function(child, child2, child1):
+    print('The Youngest child is' + child2)
+
+
+my_function(child='faran', child1='assegaf', child2='farhan')
+
+
+def my_function(**kid):
+    print('His Last Name is' + kid['lname'])
+
+
+my_function(fname='Tobias', lname='Refsnes')
+
+# Default Parameter Value
+
+def my_function(country = 'Norway'):
+    print('I am from' + country)
+
+my_function('sweden')
+my_function('india')
+my_function()
+my_function('Brazil')
+
+# Passing a List as an Argument
+
+def my_function(food):
+    for x in food:
+        print(x)
+
+fruits = ['apple', 'banana', 'cherry']
+
+my_function(fruits)
