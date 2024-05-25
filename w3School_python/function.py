@@ -47,15 +47,18 @@ def my_function(**kid):
 
 my_function(fname='Tobias', lname='Refsnes')
 
+
 # Default Parameter Value
 
-def my_function(country = 'Norway'):
+def my_function(country='Norway'):
     print('I am from' + country)
+
 
 my_function('sweden')
 my_function('india')
 my_function()
 my_function('Brazil')
+
 
 # Passing a List as an Argument
 
@@ -63,9 +66,60 @@ def my_function(food):
     for x in food:
         print(x)
 
+
 fruits = ['apple', 'banana', 'cherry']
 
 my_function(fruits)
 
-# Return Value
 
+# Return Value
+def my_function(x):
+    return 5 * x
+
+
+print(my_function(5))
+print(my_function(51))
+print(my_function(15))
+print(my_function(15))
+
+
+# the pass statement
+def farahan():
+    pass
+
+
+# positional-only-arguments
+def my_function5(x):
+    print(x)
+
+
+my_function5(x=3)
+
+# def my_function4(x, /):
+#     print(x)
+#
+# my_function4(x = 3)
+
+# keyword only argument
+def my_function4(*, x):
+    print(x)
+my_function4(x = 5)
+
+# Combine Positional-Only and Keyword-Only
+
+def my_function(a, b, /, *, c, d):
+  print(a + b + c + d)
+
+my_function(5, 6, c = 7, d = 8)
+
+# Recursion
+def tri_recursion(k):
+    if(k > 0):
+        result = k + tri_recursion(k - 1)
+        print(result)
+    else:
+        result = 0
+    return result
+
+print('==========Recursion=============')
+tri_recursion(9)
