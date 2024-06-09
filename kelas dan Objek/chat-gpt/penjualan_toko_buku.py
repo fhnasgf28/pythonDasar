@@ -42,3 +42,29 @@ class BookStore:
         if book_id not in self.books:
             print(f"Book ID {book_id} not found")
             return
+
+        book = self.books[book_id]
+        sale = Sale(self.next_sale_id, book, quantity, sale_price)
+        self.sales.append(sale)
+        self.next_sale_id += 1
+        print(f"Added sale: Sale ID: {sale.sale_id}, Book: {book.titla}, Quantity: {quantity}, Sale Price: {sale_price}")
+
+    def total_revenue(self):
+        return sum(sale.quantity * sale.sale_price for sale in self.sales)
+
+    def list_sales(self):
+        for sale in self.sales:
+            print(f"Sale ID: {sale.sale_id}, Book: {sale.book.titla}, quantity: {sale.quantity}, price: {sale.sale_price}")
+
+# contoh penggunaan
+bookstore = BookStore()
+bookstore.add_book('Python Programming', 30)
+bookstore.add_book('Data Science with Python', 45)
+bookstore.add_sale(1,2,343)
+bookstore.add_sale(2,3,6000)
+
+print('\nTotal Revenue')
+print(bookstore.total_revenue())
+
+print('\nALL Sales:')
+bookstore.list_sales()
