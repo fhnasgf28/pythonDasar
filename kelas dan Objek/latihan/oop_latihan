@@ -1,0 +1,11 @@
+class Manusia:
+    def __init__(self, nama, usia):
+        self.nama = nama
+        self.usia = usia
+
+    def sapa(self):
+        return f"Halo, nama saya {self.nama} dan saya berusia {self.usia} tahun."
+
+# Contoh penggunaan
+orang = Manusia(nama="John", usia=30)
+print(orang.sapa())
