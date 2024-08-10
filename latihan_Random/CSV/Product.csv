@@ -1,0 +1,11 @@
+product_name,store_name,sale_date,sale_amount
+Apple,Store A,2022-01-01,100
+Banana,Store B,2022-01-02,50
+Apple,Store C,2022-01-03,120
+Orange,Store A,2022-01-04,80
+Banana,Store A,2022-01-05,60
+Apple,Store B,2022-01-06,110
+Grapes,Store C,2022-01-07,90
+Orange,Store B,2022-01-08,70
+Banana,Store C,2022-01-09,40
+Apple,Store A,2022-01-10,130
