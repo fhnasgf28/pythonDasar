@@ -1,0 +1,6 @@
+Bus ID,Route,Departure Time,Arrival Time
+101,Airport Express,06:00,07:00
+102,City Loop,07:30,08:30
+103,Suburban Route,09:00,10:00
+104,Airport Express,12:00,13:00
+105,City Loop,14:30,15:30
