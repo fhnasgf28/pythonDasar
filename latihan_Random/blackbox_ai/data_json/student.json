@@ -1,0 +1,32 @@
+[
+    {
+        "id": 1,
+        "name": "John Doe",
+        "grade": 10,
+        "subjects": [
+            "Math",
+            "Science",
+            "English"
+        ]
+    },
+    {
+        "id": 2,
+        "name": "Jane Doe",
+        "grade": 12,
+        "subjects": [
+            "Math",
+            "History",
+            "English"
+        ]
+    },
+    {
+        "id": 4,
+        "name": "Alice Johnson",
+        "grade": 10,
+        "subjects": [
+            "Math",
+            "Science",
+            "English"
+        ]
+    }
+]
