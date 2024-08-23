@@ -8,6 +8,7 @@ class Masjid:
     def tambah_pengurus(self, pengurus):
         self.pengurus.append(pengurus)
 
+
 class Pengurus:
     def __init__(self, nama, nomor_telepon, jabatan):
         self.nama = nama
@@ -16,9 +17,10 @@ class Pengurus:
 
         # membuat objeck msjid
 
+
 masjid_alhikmh = Masjid("Al-Hikmah", "Jl. sudirman", 5)
 
-        # membuat objek pengurus
+# membuat objek pengurus
 pengurus1 = Pengurus("Ahmad", "087988454", "Ketua DKM")
 masjid_alhikmh.tambah_pengurus(pengurus1)
 
