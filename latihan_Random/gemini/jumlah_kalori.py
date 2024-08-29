@@ -33,3 +33,13 @@ uang_muka = 5000000
 bunga = 10
 angsuran = 36
 hitung_waktu_kredit(harga_motor, uang_muka, bunga, angsuran)
+
+def hitung_masa_subur(panjang_siklus):
+    hari_pertama_menstruasi = 1
+    hari_ovulasi = hari_pertama_menstruasi + 14
+    awal_masa_subur = hari_ovulasi - 5
+    akhir_masa_subur = hari_ovulasi + 5
+    print(f"Masa subur diperkirakan antara hari ke-{awal_masa_subur} hingga {akhir_masa_subur}")
+
+panjang_siklus = 28
+hitung_masa_subur(panjang_siklus)
