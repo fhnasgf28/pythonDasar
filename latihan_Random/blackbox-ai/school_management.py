@@ -1,7 +1,7 @@
 import json
 
 # load the JSON data from the file
-json_path = r'/mnt/7C7452557452126E/pythonDasar/latihan_Random/blackbox_ai/data_json/student.json'
+json_path = r'/latihan_Random/tingkat_stres_refactor/data_json/student.json'
 
 
 def load_students():

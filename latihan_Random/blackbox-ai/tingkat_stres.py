@@ -11,10 +11,12 @@ def get_stress_ratings():
         # (TO DO: handle the error and prompt the user to try again)
         pass
 
+
 # Define a function to calculate the overall stress level score
 def calculate_stress_score(ratings):
     score = (ratings["work"] + ratings["relationships"] + ratings["health"]) / 3
     return score
+
 
 # Define a function to determine the stress level category
 def get_stress_category(score):
@@ -24,6 +26,7 @@ def get_stress_category(score):
         return "moderate"
     else:
         return "high"
+
 
 # Main program
 ratings = get_stress_ratings()
