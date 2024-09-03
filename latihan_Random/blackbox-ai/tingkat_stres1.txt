@@ -1,0 +1,5 @@
+Enter your stress level rating for work (1-5): 3
+Enter your stress level rating for relationships (1-5): 2
+Enter your stress level rating for health (1-5): 4
+Your overall stress level score is 3.0
+You are experiencing moderate stress.
