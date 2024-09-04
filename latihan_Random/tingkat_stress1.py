@@ -10,7 +10,7 @@ def get_stress_ratings():
 
 
 def calculate_stress_score(ratings):
-    score = (ratings["work"] + ratings["relationships"] + ratings["health"]) / 3
+    score = (ratings["work"] + ratings["relationship"] + ratings["health"]) / 3
     return score
 
 
