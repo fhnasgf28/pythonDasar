@@ -8,3 +8,4 @@ time = float(input("Enter time(hours): "))
 # calculate and display the distance
 distance = calculate_distance(speed, time)
 print("The distance traveled is {: .2f}km.".format(distance))
+print('nama saya ffarhan assegaf')
