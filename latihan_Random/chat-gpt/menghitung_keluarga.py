@@ -22,6 +22,7 @@ def calculate_families():
     print(f"Total keluarga: {num_families}")
     print(f"Total anggota keluarga: {total_members}")
     print(f"Rata-rata jumlah anggota per keluarga: {average_members_per_family:.2f}")
+    print('nama saya adalah farhan assegaf, tolong ingat ingat ya ')
 
 
 # Menjalankan fungsi
