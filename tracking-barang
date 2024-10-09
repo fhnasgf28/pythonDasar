@@ -1,0 +1,37 @@
+import pandas as pd
+from datetime import datetime
+
+# Membuat DataFrame untuk menyimpan data barang
+data = {
+    'ID Barang': [1, 2, 3],
+    'Nama Barang': ['Laptop', 'Mouse', 'Keyboard'],
+    'Jumlah': [10, 50, 30],
+    'Tanggal Masuk': [datetime(2024, 1, 10), datetime(2024, 2, 15), datetime(2024, 3, 20)]
+}
+
+df = pd.DataFrame(data)
+
+# Fungsi untuk menambah barang
+def tambah_barang(id_barang, nama_barang, jumlah, tanggal_masuk):
+    global df
+    df = df.append({
+        'ID Barang': id_barang,
+        'Nama Barang': nama_barang,
+        'Jumlah': jumlah,
+        'Tanggal Masuk': tanggal_masuk
+    }, ignore_index=True)
+
+# Fungsi untuk mengupdate jumlah barang
+def update_jumlah(id_barang, jumlah_baru):
+    global df
+    df.loc[df['ID Barang'] == id_barang, 'Jumlah'] = jumlah_baru
+
+# Fungsi untuk menampilkan data barang
+def tampilkan_barang():
+    global df
+    print(df)
+
+# Contoh penggunaan
+tambah_barang(4, 'Monitor', 20, datetime(2024, 4, 25))
+update_jumlah(2, 45)
+tampilkan_barang()
