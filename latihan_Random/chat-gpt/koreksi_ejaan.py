@@ -14,3 +14,14 @@ def koreksi_ejaan(kalimat):
 kalimat_input = "Saya sangat menyenangi belaja."
 kalimat_output = koreksi_ejaan(kalimat_input)
 print(kalimat_output)  # Output: "Saya sangat menyenangi belajar."
+
+def perbaiki_tanda_baca(kalimat):
+    kalimat = kalimat.replace('Halo Dunia', "Halo, DUnia")
+    kalimat = kalimat.replace("Ini adalah", "Ini adalah")
+    kalimat += "."
+    return kalimat
+
+# contoh penggunaan
+kalimat_input = "Halo Dunia ini adalah python program"
+kalimat_output = perbaiki_tanda_baca(kalimat_input)
+print(kalimat_output)
