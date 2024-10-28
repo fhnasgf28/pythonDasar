@@ -1,0 +1,52 @@
+[
+    {
+        "name": "Alice",
+        "age": 10,
+        "personality": {
+            "confidence": 8,
+            "empathy": 7,
+            "independence": 6,
+            "sociability": 9
+        }
+    },
+    {
+        "name": "Bob",
+        "age": 12,
+        "personality": {
+            "confidence": 6,
+            "empathy": 8,
+            "independence": 7,
+            "sociability": 6
+        }
+    },
+    {
+        "name": "farhan",
+        "age": 12,
+        "personality": {
+            "confidence": 6,
+            "empathy": 8,
+            "independence": 6,
+            "sociability": 9
+        }
+    },
+    {
+        "name": "mega",
+        "age": 7,
+        "personality": {
+            "confidence": 7,
+            "empathy": 6,
+            "independence": 8,
+            "sociability": 6
+        }
+    },
+    {
+        "name": "bagus",
+        "age": 14,
+        "personality": {
+            "confidence": 8,
+            "empathy": 8,
+            "independence": 8,
+            "sociability": 8
+        }
+    }
+]
