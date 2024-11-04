@@ -1,3 +1,5 @@
+import json
+import os
 def tampilkan_menu():
     print("\n=== Aplikasi Penghitung Kalori ===")
     print("1. Tambah Makanan")
@@ -30,6 +32,18 @@ def tampilkan_total_kalori(kalori_dict):
         print(f"Total kalori yang telah Anda konsumsi: {total_kalori} kalori")
 
 
+def simpan_data(kalori_dict):
+    data = {}
+    if os.path.exists('total_kalori.json'):
+        with open('total_kalori.json', 'r') as f:
+            data = json.load(f)
+
+    data['total_kalori'] = kalori_dict
+    with open('total_kalori.json', 'w') as f:
+        json.dump(data, f, indent=4)
+
+    print(f"Total kalori {kalori_dict} telah disimpan dalam total_kalori.json.")
+
 def main():
     kalori_dict = {}
 
@@ -43,6 +57,7 @@ def main():
             hapus_makanan(kalori_dict)
         elif pilihan == '3':
             tampilkan_total_kalori(kalori_dict)
+            simpan_data(kalori_dict)
         elif pilihan == '4':
             print("Terima kasih telah menggunakan aplikasi penghitung kalori!")
             break
