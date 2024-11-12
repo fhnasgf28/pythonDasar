@@ -1,0 +1,20 @@
+{
+    "buku_list": [
+        {
+            "judul": "atomic habit",
+            "penulis": "james clear"
+        },
+        {
+            "judul": "hari potter",
+            "penulis": "jk rowling"
+        },
+        {
+            "judul": "sebuah seni",
+            "penulis": "farhan"
+        },
+        {
+            "judul": "atomic habit",
+            "penulis": "farhan"
+        }
+    ]
+}
