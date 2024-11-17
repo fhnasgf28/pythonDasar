@@ -1,0 +1,30 @@
+{
+    "store_name": "Toko Serba Ada",
+    "monthly_income": 19000,
+    "monthly_expense": 25000,
+    "operational_cost": 2000,
+    "net_profit": -8000,
+    "transactions": [
+        {
+            "date": "2024-11-16 21:35:54",
+            "item": "Laptop",
+            "quantity": 5,
+            "type": "Pembelian",
+            "total_price": 25000
+        },
+        {
+            "date": "2024-11-16 21:35:54",
+            "item": "Smartphone",
+            "quantity": 3,
+            "type": "Penjualan",
+            "total_price": 9000
+        },
+        {
+            "date": "2024-11-16 21:35:54",
+            "item": "Laptop",
+            "quantity": 2,
+            "type": "Penjualan",
+            "total_price": 10000
+        }
+    ]
+}
