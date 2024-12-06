@@ -8,7 +8,7 @@ def send_email_alert():
     print("kirim email alert")
     sender_email = "assegaffarhan4@gmail.com"
     receiver_email = "assegaffarhan5@gmail.com"
-    password = "ALKHAMDULILLAH234"
+    password = "123456"
 
     message = """
     Subject: Face Recognition Alert
