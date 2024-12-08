@@ -1,6 +1,9 @@
+from os.path import exists
+
 import cv2
 import face_recognition
 import smtplib
+import os
 from face_recognition import face_locations
 
 def send_email_alert():
@@ -34,6 +37,10 @@ known_face_encodings = face_recognition.face_encodings(known_image)[0]
 known_face_encodings = [known_face_encodings]
 known_face_name= ["farhan"]
 
+# folder untuk menyimpan wajah
+output_folder = "/mnt/7C7452557452126E/pythonDasar/latihan_Random/chat-gpt/face-recognition"
+os.makedirs(output_folder, exist_ok=True)
+face_id = 0
 while True:
     # membaca frame
     ret, frame = video_capture.read()
@@ -58,7 +65,10 @@ while True:
             send_email_alert()
         # tampilkan wajah terdeteksi
         num_face = len(face_locations)
-
+        face_image = frame[top:bottom, left:right]
+        face_path = os.path.join(output_folder, f"face_{face_id}.jpg")
+        face_id += 1
+        cv2.imwrite(face_path, face_image)
         # tampilkan wajah terdeteksi
         cv2.rectangle(frame, (left, top), (right, bottom), (0, 0, 255), 2)
         cv2.putText(frame, name, (left, top - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 2)
