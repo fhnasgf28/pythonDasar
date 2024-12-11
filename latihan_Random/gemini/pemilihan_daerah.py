@@ -1,3 +1,6 @@
+import json
+
+
 def hitung_suara(data_suara):
     """
     Fungsi untuk menghitung jumlah suara dari setiap daerah
@@ -11,6 +14,12 @@ def hitung_suara(data_suara):
             pemenang = kandidat
             jumlah_suara_terbanyak = suara
     return pemenang
+
+def simpan_json(pemenang):
+    data = {"pemenang": pemenang}
+    with open("pemenang.json", "w") as file:
+        json.dump(data, file)
+
 
 # contoh penggunaan 
 tata_suara = {
@@ -32,3 +41,5 @@ tata_suara = {
 
 pemenang = hitung_suara(tata_suara)
 print(f"Pemenang adalah {pemenang}")
+simpan_json(pemenang)
+print("Data pemenang telah disimpan dalam file pemenang.json")
