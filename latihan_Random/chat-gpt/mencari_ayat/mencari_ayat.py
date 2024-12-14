@@ -93,7 +93,7 @@ def main():
             print("Hasil pencarian:")
             for surat in results:
                 print(f""" 
-                    Nomor Surat: {surat['id']}
+                Nomor Surat: {surat['id']}
                 Nama Arab: {surat['name']}
                 Transliterasi: {surat['transliteration']}
                 Terjemahan: {surat['translation']}
