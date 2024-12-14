@@ -1,17 +1,29 @@
 import requests
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
+import os
+import json
 
 # Url data surat Alquran
 url = "https://cdn.jsdelivr.net/npm/quran-json@3.1.2/dist/quran_id.json"
+local_file = "quran.json"
 
 # fungsi untuk mengambil data dari URL
 def fetch_data(url):
     try:
-        response = requests.get(url)
+        print(f"Fetching data from {url}")
+        response = requests.get(url, timeout=10)
         response.raise_for_status()
+        print(f"Data fetched successfully from {url}")
         return response.json()
     except requests.exceptions.RequestException as e:
         print(f"Error fetching data: {e}")
-        return []
+        if os.path.exists(local_file):
+            with open(local_file, "r") as file:
+                return json.load(file)
+        else:
+            print(f"Local file {local_file} not found.")
+            return []
 
 # fungsi untuk mencari ayat berdasarkan nomor surat dan nomor ayat
 def search_surat(data, query):
@@ -20,6 +32,41 @@ def search_surat(data, query):
         if str(query).lower() == surat["transliteration"].lower() or str(query) == str(surat["id"]):
             result.append(surat)
     return result
+
+def save_to_pdf(surat, filename="surat_alquran.pdf"):
+    try:
+        pdf = canvas.Canvas(filename, pagesize=letter)
+        pdf.setTitle("Surat Alquran")
+        pdf.setFont("Times-Roman", 12)
+        y_position = 750
+
+        # Menulis informasi surat ke PDF
+        pdf.drawString(50, y_position, "Hasil Pencarian Surat Al-Qur'an:")
+        y_position -= 20
+        pdf.drawString(50, y_position, f"Nomor Surat    : {surat['id']}")
+        y_position -= 20
+        pdf.drawString(50, y_position, f"Nama Arab      : {surat['name']}")
+        y_position -= 20
+        pdf.drawString(50, y_position, f"Transliterasi  : {surat['transliteration']}")
+        y_position -= 20
+        pdf.drawString(50, y_position, f"Terjemahan     : {surat['translation']}")
+        y_position -= 20
+        pdf.drawString(50, y_position, f"Jenis Surat    : {'Mekah' if surat['type'] == 'meccan' else 'Madinah'}")
+        y_position -= 20
+        pdf.drawString(50, y_position, f"Total Ayat     : {surat['total_verses']}")
+        y_position -= 40
+
+        # Menulis ayat-ayat surat ke PDF
+        pdf.drawString(50, y_position, "Ayat Pertama:")
+        y_position -= 20
+        pdf.drawString(50, y_position, surat["verses"][0]["text"])
+        y_position -= 20
+        pdf.drawString(50, y_position, f"Terjemahan: {surat['verses'][0]['translation']}")
+
+        pdf.save()
+        print(f"Surat Alquran berhasil disimpan dalam {filename}")
+    except Exception as e:
+        print(f"Error saving PDF: {e}")
 
 #  Fungsi Utama
 def main():
@@ -55,6 +102,13 @@ def main():
                 Ayat Pertama: {surat['verses'][0]['text']}
                 Terjemahan Ayat Pertama: {surat['verses'][0]['translation']}
                 """)
+
+        #         menyimpan hasil pencarian ke PDF
+            save_option = input("Apakah Anda ingin menyimpan hasil pencarian ke PDF? (y/n): ").strip().lower()
+            if save_option == 'y':
+                file_name = input("Masukkan nama file PDF: ").strip()
+                file_name = file_name if file_name else "surat_alquran.pdf"
+                save_to_pdf(results[0], file_name)
         else:
             print("Surat atau ayat tidak ditemukan.")
 
