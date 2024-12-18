@@ -1,0 +1,11 @@
+<field name="partner_ref" position="attributes">
+                <attribute name="attrs">{
+                    'readonly': [('state', 'in', ['purchase', 'done', 'cancel', 'rfq_approved'])]}</attribute>
+            </field>
+            <field name="currency_id" position="attributes">
+                <attribute name="attrs">{
+                    'readonly': [('state', 'in', ['purchase', 'done', 'cancel', 'rfq_approved'])]}</attribute>
+            </field>
+            <field name="date_order" position="attributes">
+                <attribute name="attrs">{'invisible': [('state', '=', 'purchase')], 'readonly': [('state', 'in', ['purchase', 'done', 'cancel', 'rfq_approved'])]}</attribute>
+            </field>
