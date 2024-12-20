@@ -1,0 +1,19 @@
+<odoo>
+  <data>
+
+<!--      <record id="view_crm_case_my_activities_filter_inherit_replace" model="ir.ui.view">-->
+<!--        <field name="name">crm.lead.search.myactivities.replace</field>-->
+<!--        <field name="model">crm.lead</field>-->
+<!--        <field name="inherit_id" ref="crm.view_crm_case_opportunities_filter"/>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <xpath expr="//filter[@name='no_quote']" position="attributes">-->
+<!--              <attribute name="invisible">1</attribute>-->
+<!--            </xpath>-->
+<!--            <xpath expr="//filter[@name='no_activity']" position="after">-->
+<!--                <filter string="No Quote" name="no_quote1" domain="[('quotation_counts', '=', 0)]"/>-->
+<!--            </xpath>-->
+<!--        </field>-->
+<!--      </record>-->
+
+  </data>
+</odoo>
