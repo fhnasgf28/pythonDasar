@@ -103,3 +103,5 @@ File dump.sql besar:
     pg_restore -U postgres -d odoo_database /path/to/dump.sql
 
 Periksa log Odoo jika ada masalah saat mencoba mengakses database.
+
+ALTER DATABASE odoo_database OWNER TO odoo14;
