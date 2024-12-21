@@ -1,0 +1,105 @@
+Langkah 1: Persiapan
+
+    Pastikan PostgreSQL sudah diinstal di server atau komputer Anda.
+        Jika belum, instal PostgreSQL sesuai sistem operasi Anda.
+
+    Unzip file odoo_database.zip untuk mendapatkan dump.sql.
+        Gunakan aplikasi seperti WinRAR, 7-Zip, atau perintah berikut di terminal:
+
+    unzip odoo_database.zip
+
+    File dump.sql akan diekstrak ke folder saat ini.
+
+Masuk ke user PostgreSQL:
+
+    Di Linux:
+
+        sudo -i -u postgres
+
+        Di Windows, pastikan Anda memiliki akses ke psql melalui command prompt atau terminal PostgreSQL.
+
+Langkah 2: Buat Database Baru
+
+    Login ke PostgreSQL shell:
+
+psql
+
+Buat database baru yang akan menjadi tujuan restore:
+
+CREATE DATABASE odoo_database;
+
+Keluar dari psql:
+
+    \q
+
+Langkah 3: Restore Database
+
+    Gunakan perintah psql untuk merestore database dari dump.sql:
+
+psql -U postgres -d odoo_database -f /path/to/dump.sql
+
+    -U postgres: Nama pengguna PostgreSQL.
+    -d odoo_database: Nama database yang dibuat di langkah sebelumnya.
+    -f /path/to/dump.sql: Path lengkap ke file dump.sql.
+
+Contoh:
+
+    psql -U postgres -d odoo_database -f /home/user/dump.sql
+
+    Masukkan password PostgreSQL jika diminta.
+
+Langkah 4: Verifikasi Restore
+
+    Login kembali ke PostgreSQL shell:
+
+psql -U postgres -d odoo_database
+
+Pastikan data sudah tersedia:
+
+\dt
+
+    Ini akan menampilkan tabel-tabel yang ada di database.
+
+Jalankan query untuk memverifikasi data:
+
+SELECT * FROM some_table LIMIT 10;
+
+    Ganti some_table dengan nama tabel yang ingin Anda periksa.
+
+Keluar dari PostgreSQL shell:
+
+    \q
+
+Langkah 5: Hubungkan Database dengan Odoo
+
+    Edit file konfigurasi Odoo (odoo.conf) untuk menunjuk ke database yang baru direstore:
+
+[options]
+db_name = odoo_database
+db_user = postgres
+db_password = your_password
+db_host = localhost
+db_port = 5432
+
+Restart Odoo server:
+
+sudo systemctl restart odoo
+
+Atau, jika Anda menjalankan Odoo secara manual:
+
+    ./odoo-bin -c /path/to/odoo.conf
+
+Troubleshooting
+
+    Error terkait akses user:
+        Pastikan user PostgreSQL (postgres) memiliki akses ke database:
+
+    GRANT ALL PRIVILEGES ON DATABASE odoo_database TO postgres;
+
+File dump.sql besar:
+
+    Jika ukuran file besar, gunakan pg_restore jika file dalam format custom/tar:
+
+    pg_restore -U postgres -d odoo_database /path/to/dump.sql
+
+Periksa log Odoo jika ada masalah saat mencoba mengakses database.
