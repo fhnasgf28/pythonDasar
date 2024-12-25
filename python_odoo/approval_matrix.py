@@ -1,4 +1,4 @@
-@api.depends('amount', 'branch_id', 'currency_id')
+    @api.depends('amount', 'branch_id', 'currency_id')
     def _compute_approval_matrix_id(self):
         for record in self:
             set_approval_matrix = self.env['ir.config_parameter'].sudo().get_param('is_purchase_tender_approval_matrix')
