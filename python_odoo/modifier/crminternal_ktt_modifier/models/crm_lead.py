@@ -64,7 +64,7 @@ class CRMLead(models.Model):
             where_params += " or partner_name = '{}'".format(partner_name)
         if my_id:
             id_params += " and id != {}".format(my_id)
-        # Menghapus bagian id_params karena my_id tidak digunakan
+
         self.env.cr.execute(query.format(name, where_params, id_params))
         query_result = self.env.cr.dictfetchall()
         return query_result
