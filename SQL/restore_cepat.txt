@@ -1,0 +1,60 @@
+Langkah-langkah Restore dengan pg_restore
+Buka terminal dan navigasi ke direktori di mana file odoo_database.tar berada.
+
+bash
+Salin kode
+cd /path/to/your/backup
+Buat database baru untuk restore. Sebelum menjalankan pg_restore, kamu harus membuat database kosong dengan nama yang akan digunakan.
+
+bash
+Salin kode
+psql -U postgres -c "CREATE DATABASE odoo_database OWNER odoo;"
+Gantilah odoo_database dengan nama database yang kamu inginkan dan odoo dengan nama user PostgreSQL yang sesuai.
+
+Jalankan pg_restore. Setelah database dibuat, gunakan pg_restore untuk memulihkan data dari file .tar.
+
+bash
+Salin kode
+pg_restore -U postgres -d odoo_database --verbose odoo_database.tar
+Penjelasan:
+
+-U postgres: Menggunakan user PostgreSQL postgres.
+-d odoo_database: Menunjukkan database tujuan restore.
+--verbose: Menampilkan log proses restore.
+odoo_database.tar: Nama file backup yang akan dipulihkan.
+Cek hasil restore. Setelah proses selesai, kamu bisa mengecek apakah database berhasil di-restore dengan masuk ke PostgreSQL:
+
+bash
+Salin kode
+psql -U postgres -d odoo_database
+Lalu, jalankan:
+
+sql
+Salin kode
+\dt
+Ini akan menampilkan daftar tabel dalam database. Jika daftar tabel muncul, maka restore sudah berhasil.
+
+Konfigurasi Odoo untuk menggunakan database tersebut.
+
+Buka file konfigurasi Odoo (odoo.conf).
+Pastikan parameter db_name diatur ke nama database hasil restore (odoo_database).
+Contoh isi odoo.conf:
+
+ini
+Salin kode
+[options]
+db_host = localhost
+db_port = 5432
+db_user = odoo
+db_password = your_password
+db_name = odoo_database
+Jalankan Odoo. Jalankan Odoo dengan perintah berikut:
+
+bash
+Salin kode
+./odoo-bin -c /path/to/odoo.conf
+Catatan
+Pastikan PostgreSQL sudah berjalan (sudo service postgresql start).
+Jika kamu menggunakan environment virtual Python, aktifkan terlebih dahulu sebelum menjalankan Odoo.
+Jika ada error, beri tahu saya pesan errornya agar saya bisa bantu lebih lanjut.
+Silakan ikuti langkah-langkah ini, dan beri tahu jika ada kendala.
