@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="templates_company_details">
+        <span style="text-transform:capitalize; padding:0px; margin:0; color: #51565b;">
+            <t t-if="o.company_id and o.company_id.is_company_bold">
+                <strong>
+                    <span t-field="o.company_id.partner_id"/>
+                </strong>
+            </t>
+            <t t-if="not o.company_id.is_company_bold">
+                <span t-field="o.company_id.partner_id"/>
+            </t>
+        </span>
+        <div style="color: #51565b;">
+            <span t-esc="o.with_context(is_company=True)._get_street(o.company_id.partner_id)"/>
+            <br/>
+            <span t-esc="o.with_context(is_company=True)._get_address_details(o.company_id.partner_id)"/>
+            <br/>
+        </div>
+        <div style="color: #51565b;">
+            <t t-if="o.company_id.partner_id.mobile">
+                <strong>Mobile:</strong>
+                <span t-field="o.company_id.partner_id.mobile"/>
+                <br/>
+            </t>
+            <t t-if="o.company_id.partner_id.email">
+                <strong>Email:</strong>
+                <span t-field="o.company_id.partner_id.email"/>
+                <br/>
+            </t>
+            <!--  <t t-if="o.company_id.is_show_bank_details"><strong>Bank: </strong><span t-esc="o.company_id.report_bank_id.acc_number"/></t>-->
+        </div>
+    </template>
+
+    <template id="inherit_order_header" inherit_id="equip3_purchase_operation.purchase_exclusive_header">
+        <xpath expr="//t[@t-call='general_template.templates_company_details']" position="replace">
+            <t t-call="equip3_purchase_accessright_setting.templates_company_details"/>
+        </xpath>
+    </template>
+
+    <template id="inherit_purchase_quotation_template_header" inherit_id="equip3_purchase_operation.quotation_exclusive_headers">
+        <xpath expr="//t[@t-call='general_template.templates_company_details']" position="replace">
+            <t t-call="equip3_purchase_accessright_setting.templates_company_details"/>
+        </xpath>
+    </template>
+
+    <template id="inherit_purchase_request_template_header" inherit_id="equip3_purchase_operation.purchase_request_template_header">
+        <xpath expr="//t[@t-call='general_template.templates_company_details']" position="replace">
+            <t t-call="equip3_purchase_accessright_setting.templates_company_details"/>
+        </xpath>
+    </template>
+
+</odoo>
