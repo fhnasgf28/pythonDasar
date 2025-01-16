@@ -70,3 +70,31 @@ class CalendarEvent(models.Model):
                 record.end_duration = record.stop_date.strftime("%B %d, %Y")
             else:
                 record.end_duration = False
+
+    def check_overlap(self, start_date, stop_date, resource_id=None, exclude_id=None):
+        domain = [
+            ('datetime_start', '<', stop_date),
+            ('datetime_end', '>', start_date),
+        ]
+        if resource_id:
+            domain.append(('resource_id', '=', resource_id))
+        if exclude_id:
+            domain.append(('id', '!=', exclude_id))
+        return self.search_count(domain) > 0
+
+@api.constrains('stop_date', 'start_date', 'resource_id')
+    def _check_dates(self):
+        for event in self:
+            if event.start_date and event.stop_date and event.resource_id:
+                for resource in event.resource_id:
+                    appointment_overlap = self.env['business.appointment'].check_overlap(
+                        event.start_date,
+                        event.stop_date,
+                        resource.id,
+                        event.business_appointment_id.id if event.business_appointment_id else None
+                    )
+                    if appointment_overlap:
+                        raise ValidationError(
+                            f"Schedule conflict detected for resource: {resource.name} on {event.start_date} - {event.stop_date}!"
+                        )
+
