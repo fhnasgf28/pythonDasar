@@ -12,3 +12,20 @@
                         ('id', '!=', appointment.calendar_event_id.id)
                     ]) > 0:
                         raise ValidationError("Konflik jadwal terdeteksi di Calendar Event!")
+
+
+def check_overlap(self, start_date, stop_date, resource_id=None, exclude_id=None):
+    print(
+        f'Checking overlap: start_date={start_date}, stop_date={stop_date}, resource_id={resource_id}, exclude_id={exclude_id}')
+    domain = [
+        ('datetime_start', '<', stop_date),
+        ('datetime_end', '>', start_date),
+    ]
+    if resource_id:
+        domain.append(('resource_id', '=', resource_id))
+    if exclude_id:
+        domain.append(('id', '!=', exclude_id))
+
+    result_count = self.search_count(domain)
+    print(f'Overlap count: {result_count}')  # Debugging jumlah hasil pencarian
+    return result_count > 0
