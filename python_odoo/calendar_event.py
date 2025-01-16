@@ -34,12 +34,17 @@ class CalendarEvent(models.Model):
                 event.business_appointment_id = appointment.id
         return events
 
-    @api.constrains('stop_date', 'start_date')
+    @api.constrains('stop_date', 'start_date','resource_id')
     def _check_dates(self):
         for event in self:
-            if event.start_date and event.stop_date:
-                if self.env['business.appointment'].check_overlap(event.start_date, event.stop_date, event.business_appointment_id.id if event.business_appointment_id else None):
-                    raise ValidationError("Konflik jadwal terdeteksi di Business Appointment!")
+            if event.start_date and event.stop_date and event.resource_id:
+                for resource in event.resource_id:
+                    if self.env['business.appointment'].check_overlap(
+                            event.start_date,
+                            event.stop_date,
+                            event.resource_id.id,
+                            event.business_appointment_id.id if event.business_appointment_id else None):
+                        raise ValidationError(f"Konflik jadwal terdeteksi di Business Appointment untuk resource: {resource.name} pada waktu yang sama!")
 
     def check_overlap(self, start_datetime, stop_datetime, exclude_id=None):
         """
