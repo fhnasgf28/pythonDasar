@@ -20,6 +20,9 @@ class Pengguna:
     def rekomendasi(self, daftar_film):
         pass
 
+def rekomendasi_berdasarkan_genre(pengguna, daftar_film):
+    genre_favorit = set(genre for film, rating in pengguna.film_ditonton.items() if rating >= 4)
+
 
 def rekomendasi_berdasarkan_genre(pengguna, daftar_film):
     # Create a mapping of film titles to Film objects
