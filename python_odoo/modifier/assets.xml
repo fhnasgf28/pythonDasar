@@ -1,0 +1,10 @@
+<odoo>
+    <template id="assets_backend" name="Calendar Popup Assets" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <link rel="stylesheet" type="text/css" href="/crminternal_ktt_modifier/static/src/css/calendar_popup.css"/>
+            <script type="text/javascript" src="/crminternal_ktt_modifier/static/src/js/calendar_hover.js"/>
+            <script type="text/javascript" src="/crminternal_ktt_modifier/static/src/js/simple_popup.js"/>
+            <script type="text/javascript" src="/crminternal_ktt_modifier/static/src/js/hover.js"/>
+        </xpath>
+    </template>
+</odoo>
