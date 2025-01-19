@@ -1,0 +1,91 @@
+<odoo>
+
+    <record id="view_crm_lead_form_tracking" model="ir.ui.view">
+        <field name="name">crm.lead.form.tracking</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='user_id']" position="after">
+                <group>
+                    <field name="first_meeting_date"/>
+                    <field name="tracking_duration"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_crm_lead_tracking_pivot" model="ir.ui.view">
+        <field name="name">crm.lead.tracking.pivot</field>
+        <field name="model">crm.lead</field>
+        <field name="arch" type="xml">
+            <pivot string="Tracking Duration Analysis">
+                <field name="stage_id" type="row"/>
+                <field name="user_id" type="row"/>
+                <field name="tracking_duration" type="measure"/>
+                <field name="first_meeting_date" type="col"/>
+            </pivot>
+        </field>
+    </record>
+<!--    real time assignation-->
+<!--    kanban-->
+    <record id="crm_case_kanban_view_leads_realtime" model="ir.ui.view">
+        <field name="name">crm.lead.kanban.realtime</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_case_kanban_view_leads" />
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+             <kanban position="replace">
+                <kanban class="o_kanban_mobile">
+                    <field name="user_id"/>
+                    <field name="name"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_card oe_kanban_global_click">
+                                <div class="o_kanban_record_top">
+                                     <strong><field name="name"/></strong>
+                                </div>
+                                <div class="o_kanban_record_bottom">
+                                    <field name="user_id" />
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </kanban>
+        </field>
+        </record>
+
+        <record id="crm_case_kanban_view_leads_realtime_action" model="ir.actions.act_window">
+            <field name="name">Leads by Salesperson</field>
+            <field name="res_model">crm.lead</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="view_id" ref="crm_case_kanban_view_leads_realtime"/>
+            <field name="domain">[('type','=','lead')]</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No leads found. Let's create one!
+                </p>
+            </field>
+        </record>
+     <!-- Action -->
+        <record id="action_crm_lead_tracking_duration" model="ir.actions.act_window">
+            <field name="name">Opportunities Warm - Fokus Leads</field>
+            <field name="res_model">crm.lead</field>
+            <field name="view_mode">tree,form,pivot</field>
+            <field name="domain">[('tracking_duration', '&gt;', 0),('tracking_duration', '&lt;=', 7)]</field>
+        </record>
+
+        <!-- Menu -->
+        <menuitem id="menu_crm_lead_tracking_duration"
+                  name="Fokus - Warm Leads"
+                  parent="crm.crm_menu_sales"
+                  action="action_crm_lead_tracking_duration"
+                  sequence="5"/>
+
+        <menuitem id="menu_crm_lead_realtime_assignation"
+                  name="Leads by Salesperson"
+                  parent="crm.crm_menu_sales"
+                  action="crm_case_kanban_view_leads_realtime_action"
+              sequence="5"/>
+
+</odoo>
