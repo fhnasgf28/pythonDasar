@@ -98,3 +98,11 @@ class CalendarEvent(models.Model):
                             f"Schedule conflict detected for resource: {resource.name} on {event.start_date} - {event.stop_date}!"
                         )
 
+warm_stage = self.env['crm.stage'].search([('name', '=', '(BD)WARM')], limit=1)
+        focus_stage = self.env['crm.stage'].search([('name', '=', '(BD)FOCUS LEAD(MORE THAN 1 MEETING AND OWN TARGET)')], limit=1)
+        # Kumpulkan ID stage yang ditemukan
+        stage_ids = []
+        if warm_stage:
+            stage_ids.append(warm_stage.id)
+        if focus_stage:
+            stage_ids.append(focus_stage.id)
