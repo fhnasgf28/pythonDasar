@@ -1,0 +1,21 @@
+<odoo>
+    <templates id="template" xml:space="preserve">
+        <t t-name="CalendarPopupTemplate">
+            <div>
+                <t t-if="events.length">
+                    <ul>
+                        <t t-foreach="events" t-as="event">
+                            <li>
+                                <strong><t t-esc="event.name"/></strong>
+                                (<t t-esc="event.start"/> - <t t-esc="event.stop"/>)
+                            </li>
+                        </t>
+                    </ul>
+                </t>
+                <t t-else="">
+                    <p>No events for today!</p>
+                </t>
+            </div>
+        </t>
+    </templates>
+</odoo>
