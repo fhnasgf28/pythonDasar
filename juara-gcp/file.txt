@@ -1,0 +1,15 @@
+curl -LO raw.githubusercontent.com/QUICK-GCP-LAB/2-Minutes-Labs-Solutions/main/Cloud%20Speech%20API%203%20Ways%20Challenge%20Lab/arc132.sh
+
+sudo chmod +x arc132.sh
+
+./arc132.sh
+
+
+export API_KEY=AIzaSyCEebYBwrCaXgx7h1MCjP8yBVv_8EY1j3Y
+export task_2_file_name="synthesize-text.txt"
+export task_3_request_file="speech_request.json"
+export task_3_response_file="speech_response_fr.json"
+export task_4_sentence="これは日本語です。"
+export task_4_file="translated_response.txt"
+export task_5_sentence="Este%é%japonês."
+export task_5_file="detection_response.txt"
