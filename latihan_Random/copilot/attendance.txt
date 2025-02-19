@@ -1,0 +1,5 @@
+John Doe, Present
+Jane Smith, Absent
+Alex Johnson, Present
+Mary Brown, Present
+Tom White, Absent
