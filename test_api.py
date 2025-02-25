@@ -1,13 +1,13 @@
 import requests
 import json
 
-url = "https://kttx1ae.hashmicro.com/api/v1/check/industries"
+url = "https://kttx1ae.hashmicro.com/api/v1/check/modules"
 headers = {
     "Content-Type": "application/json"
 }
 payload = {
-    "CompanyName": "Google Inc.",
-    "Industries": "['Manufacturing', 'Retail', 'F&B', 'Services', 'IT']"
+    "ModulesName": "<p>Hash Core Package for Following Modules: </p> <ul> <li> <p>Manufacture Management</p></li> <li> <p>CRM Sales Management<p><li><li><p>Inventory Management</p></li><li> <p>Accounting Management</p></li><li><p>Purchase Management</p></li> <li><p>Implementation Service</p></li><li> <p>Cloud Server &amp; Storage</p></li></ul>",
+    "ModulesList": '["Manufacturing", "CRM Module", "Sales Module","Purchase Module","Construction Module","Inventory Module","HRM"]'
 }
 
 try:
