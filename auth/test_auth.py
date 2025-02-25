@@ -6,8 +6,8 @@ url = "https://kttx1ae.hashmicro.com/api/v1/check/modules"
 
 # Data yang dikirim ke API
 payload = {
-    "Manufacture": 1,
-    "CRM Module": 1,
+    "ModulesName": 1,
+    "ModulesList": 1,
     "Sales Module": 1,
     "Purchase Module": 1,
     "Construction Module": 0,
