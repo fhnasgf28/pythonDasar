@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="crminternal_ktt_modifier.activity_feedback_form" t-inherit="mail.activity_feedback_form" t-inherit-mode="extension" owl="1">
+        <xpath expr="//div/textarea[@id='activity_feedback']" position="after">
+            <div class="mt-2 mb-3">
+                <label for="activity_feedback_attachment" class="d-block mb-1">Upload File:</label>
+                <input type="file" class="form-control mb-4" id="activity_feedback_attachment" multiple="multiple"/>
+            </div>
+            <div class="mt-2 mb-3">
+        <label for="activity_feedback_attachment1" class="d-block mb-1">Feedback:</label>
+        <div class="o_field_html o_input" style="border: 1px solid #ccc; padding: 10px; overflow-y: auto;">
+            <img id="activity_feedback_attachment1" style="border: 1px solid silver; width: 320px; height: 240px;" />
+            <br /><br />
+            <button type="button" class="btn btn-primary" id="btn_paste_image">Paste Image from Clipboard</button>
+        </div>
+    </div>
+        </xpath>
+    </t>
+</templates>
