@@ -1,4 +1,20 @@
-pengeluaran = []
+import json
+import os
+
+file_pengeluaran = "pengeluaran.json"
+
+def load_data():
+    if os.path.exists(file_pengeluaran):
+        with open(file_pengeluaran, 'r') as file:
+            return json.load(file)
+
+    return []
+
+def save_data():
+    with open(file_pengeluaran, 'w') as file:
+        json.dump(pengeluaran, file, indent=4)
+
+pengeluaran = load_data()
 
 def tambah_pengeluaran():
     tanggal = input("Masukan tanggal pengeluaran (dd-mm-yyyy): ")
@@ -12,6 +28,7 @@ def lihat_semua():
     print("Daftar pengeluaran:")
     for idx, p in enumerate(pengeluaran, 1):
         print(f"{idx}. {p['tanggal']} - {p['kategori']} - {p['nominal']}")
+        save_data()
     print()
 
 def total_per_hari():
