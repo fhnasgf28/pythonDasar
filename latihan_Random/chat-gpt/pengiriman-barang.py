@@ -30,6 +30,7 @@ def tambah_pengiriman():
     }
 
     pengiriman.append(data_baru)
+    print("Pengiriman berhasil ditambahkan.",pengiriman)
     save_data(pengiriman)
     print("Pengiriman berhasil ditambahkan.")
 
