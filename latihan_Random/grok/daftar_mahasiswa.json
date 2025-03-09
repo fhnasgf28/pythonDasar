@@ -1,0 +1,18 @@
+[
+    {
+        "nama": "farhan",
+        "nim": "190192832934",
+        "nilai": {
+            "Matematika": 99,
+            "Fisika": 99,
+            "Kimia": 99,
+            "Biologi": 99
+        },
+        "mata_kuliah": [
+            "Matematika",
+            "Fisika",
+            "Kimia",
+            "Biologi"
+        ]
+    }
+]
