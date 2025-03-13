@@ -37,3 +37,25 @@ def _compute_industry(self):
     won_industry = self._get_won_record('crm.lead')
     for record in self:
         record.industry_id = won_industry.id if won_industry else False
+
+    def _get_won_partners_domain(self):
+        won_partners = self.env['crm.lead'].search([('stage_id', '=', 'won')]).mapped('partner_id.id')
+        return [('id', 'in', won_partners)]
+
+    @api.onchange('partner_id')
+    def _onchange_partner_id(self):
+        if self.partner_id:
+            # Cari lead yang terkait dengan partner dan stage_id = 'won'
+            lead = self.env['crm.lead'].search([
+                ('partner_id', '=', self.partner_id.id),
+                ('stage_id', '=', 'won')
+            ], limit=1)
+
+            if lead:
+                self.background = lead.description or ""
+                self.module_ids = [(6, 0, lead.module_ids.ids)]
+                self.industry_id = lead.industry_id.id if lead.industry_id else False
+            else:
+                self.background = ""
+                self.module_ids = [(5,)]
+                self.industry_id = False
