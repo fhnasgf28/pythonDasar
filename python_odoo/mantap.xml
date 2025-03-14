@@ -1,0 +1,10 @@
+<record id="purchase_order_view_form_inherit" model="ir.ui.view">
+      <field name="name">view.form.purchase.order</field>
+      <field name="model">purchase.order</field>
+      <field name="inherit_id" ref="purchase_stock.purchase_order_view_form_inherit"/>
+      <field name="arch" type="xml">
+        <button name="action_view_picking" position="attributes">
+          <attribute name="attrs">{'invisible': ['|', '|' , ('state','not in', ('purchase','done')), ('picking_count', '=', 0), ('dp', '=', True)]}</attribute>
+        </button>
+      </field>
+    </record>
