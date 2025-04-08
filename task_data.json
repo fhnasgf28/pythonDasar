@@ -1,0 +1,28 @@
+[
+    {
+        "id": 1,
+        "judul": "Belajar Python",
+        "deskripsi": "Mempelajari dasar-dasar Python.",
+        "status": "belum selesai"
+    },
+    {
+        "deskripsi": "makan",
+        "prioritas": "sedang",
+        "status": "belum selesai"
+    },
+    {
+        "deskripsi": "minumandrink",
+        "prioritas": "sedang",
+        "status": "mantap"
+    },
+    {
+        "deskripsi": "minum",
+        "prioritas": "tinggi",
+        "status": "belum selesai"
+    },
+    {
+        "deskripsi": "makananan ringan",
+        "prioritas": "tinggi",
+        "status": "belum selesai"
+    }
+]
