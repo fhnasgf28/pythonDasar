@@ -1,0 +1,5 @@
+okeyy terimakasih, sekarang sya akan coba untuk hide button start dengan study kasus seperti ini,   bisakah kamu bantu saya, saya di modul production odoo
+
+The work order cannot be started if there are no available / reserved material
+STATUS will be set accordingly to the current condition > Waiting For Material
+And there will be no button available to have action to the work orders
