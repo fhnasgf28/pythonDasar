@@ -1,0 +1,13 @@
+2025-04-17 07:00:00,001 INFO - Aplikasi web dimulai.
+2025-04-17 07:00:05,123 DEBUG - Menerima permintaan dari IP: 192.168.1.100
+2025-04-17 07:00:10,456 INFO - Pengguna 'alice' berhasil login.
+2025-04-17 07:00:15,789 WARNING - Percobaan login gagal untuk pengguna 'bob' dari IP: 192.168.1.101
+2025-04-17 07:00:20,000 ERROR - Terjadi kesalahan database: Koneksi ditolak.
+2025-04-17 07:00:25,333 DEBUG - Memproses transaksi dengan ID: TXN-001
+2025-04-17 07:00:30,666 INFO - Transaksi TXN-001 berhasil diselesaikan.
+2025-04-17 07:00:35,999 WARNING - Penggunaan memori mendekati batas maksimum.
+2025-04-17 07:00:40,222 ERROR - Kesalahan sistem: File tidak ditemukan.
+2025-04-17 07:00:45,555 DEBUG - Respon dikirim ke IP: 192.168.1.100 dengan status: 200 OK
+2025-04-17 07:00:50,888 INFO - Aplikasi web berjalan stabil.
+2025-04-17 07:00:55,111 WARNING - Potensi serangan XSS terdeteksi.
+2025-04-17 07:01:00,444 ERROR - Unhandled exception: NullPointerException
