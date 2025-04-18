@@ -6,6 +6,9 @@ class Task:
         self.deadline = deadline
         self.status = "To Do"
 
+    def is_overdue(self):
+        return self.deadline < date.today() and self.status != "Done"
+
     def update_status(self, new_status):
         if new_status in ["To Do", "In Progress", "Done"]:
             self.status = new_status
@@ -13,7 +16,8 @@ class Task:
             raise ValueError("Invalid status")
 
     def __str__(self):
-        return f"{self.name} ({self.deadline}, {self.status})"
+        overdue_mark = " (Overdue)" if self.is_overdue() else ""
+        return f"{self.name} ({self.deadline}, {self.status}) {overdue_mark}"
 
 class Employee:
     def __init__(self, name):
@@ -34,6 +38,24 @@ class Employee:
         else:
             raise ValueError("Invalid task index")
 
+    def show_overdue_tasks(self):
+        print(f"Overdue tasks for {self.name}:")
+        overdue = [t for t in self.tasks if t.is_overdue()]
+        if overdue:
+            for task in overdue:
+                print(task)
+        else:
+            print("No overdue tasks.")
+
+    def filter_tasks_by_status(self, status):
+        print(f"Tasks for {self.name} with status '{status}':")
+        filtered = [t for t in self.tasks if t.status == status]
+        if filtered:
+            for task in filtered:
+                print(task)
+        else:
+            print("No tasks with the specified status.")
+
 def main():
     emp1 = Employee("John")
     emp2 = Employee("Jane")
@@ -41,6 +63,9 @@ def main():
     task1 = Task("Buat laporan mingguan", date(2023, 5, 1))
     task2 = Task("Buat laporan bulanan", date(2023, 5, 2))
     task3 = Task("Buat laporan tahunan", date(2023, 5, 3))
+    terlambat = Task("Buat laporan tahunan", date(2022, 5, 3))
+
+    emp1.assign_task(terlambat)
 
     emp1.assign_task(task1)
     emp1.assign_task(task2)
