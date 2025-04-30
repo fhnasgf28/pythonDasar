@@ -1,0 +1,15 @@
+<div class="row" t-if="o.company_id.is_show_barcode==True">
+    <div style="
+        position: absolute;
+        top: 20px;  /* Naik secukupnya, jangan pakai nilai negatif */
+        right: 30px;
+        border: 1px solid #ddd;
+        padding: 4px;
+        background: white;
+        z-index: 10;">
+        <img
+            style="width: 190px; height: 35px; display: block;"
+            t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', o.name, 600, 100)"
+        />
+    </div>
+</div>
