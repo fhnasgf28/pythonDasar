@@ -11,6 +11,6 @@ try:
         new_x = current_x + random.randint(1,1000)
         pyautogui.moveTo(new_x, current_y, duration=0.5)
         print(f"Mouse moved to: ({new_x}, {current_y})")
-        time.sleep(10)  # tunggu 1 menit
+        time.sleep(70)  # tunggu 1 menit
 except KeyboardInterrupt:
     print("Program dihentikan.")
