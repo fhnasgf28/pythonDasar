@@ -1,0 +1,22 @@
+{
+  "name": "pythondasar",
+  "version": "1.0.0",
+  "description": "- Menjadi Odoo developer",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fhnasgf28/pythonDasar.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fhnasgf28/pythonDasar/issues"
+  },
+  "homepage": "https://github.com/fhnasgf28/pythonDasar#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.52.0",
+    "@types/node": "^22.15.21"
+  }
+}
