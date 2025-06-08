@@ -1,0 +1,130 @@
+<template id="sale_invoice_summary_doc2">
+        <t t-call="equip3_sale_report.sale_invoice_summary_doc_external_layout">
+            <t t-set="theme_color" t-value="o.company_id and o.company_id.theme_color"/>
+            <t t-set="theme_text_color" t-value="o.company_id and o.company_id.theme_text_color"/>
+            <t t-set="company_color" t-value="o.company_id and o.company_id.company_color"/>
+            <t t-set="company_address_color" t-value="o.company_id and o.company_id.company_address_color"/>
+            <t t-set="customer_color" t-value="o.company_id and o.company_id.customer_color"/>
+            <t t-set="customer_address_color" t-value="o.company_id and o.company_id.customer_address_color"/>
+            <t t-set="text_color" t-value="o.company_id and o.company_id.text_color"/>
+            <div class="page" t-att-style="'font-family:'+o.company_id.font_id.family+';font-size:'+str(o.company_id.font_size)+'px;'">
+                <div class="oe_structure" />
+                <div t-attf-style="background-color:#f2f2f2;border-bottom:1px solid #{theme_color or '#ececec'}; overflow: visible; margin-bottom: 20px;"/>
+                <div class="row pt-4">
+                    <div class="col-12 mx-auto">
+                        <div class="text-center">
+                            <b>
+                                <h4>Sale Invoice Summary</h4>
+                            </b>
+                            <b>
+                                <span t-field="o.sh_start_date" t-options="{'widget': 'date', 'format': 'dd MMMM yyyy'}" />
+                                -
+                                <span t-field="o.sh_end_date" t-options="{'widget': 'date', 'format': 'dd MMMM yyyy'}" />
+                            </b>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <table border="0" cellpadding="0" cellspacing="0" t-attf-style="color:#fff; text-transform:capitalize; border: 1px solid #{theme_color or '#000000'};" width="100%">
+                    <tr t-attf-style="color: #{theme_text_color or '#FFFFFF'}; background-color: #{theme_color or '#000000'};">
+                        <td t-attf-style="font-weight:bold;">
+                            <div style="padding:9px 15px; margin_right: 50px">
+                                <span>Printed On </span>
+                                <br/>
+                                <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d %H:%M')"/>
+                            </div>
+                        </td>
+                        <td t-attf-style="font-weight:bold;">
+                            <div style="padding:9px 15px">
+                                <span>Status: </span>
+                                <br/>
+                                <span t-field="o.sh_status"/>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <hr/>
+                <br />
+                <t t-if="o.customer_order_dic">
+                    <t t-set="total_amount_invoiced" t-value="0" />
+                    <t t-set="total_amount_paid" t-value="0" />
+                    <t t-set="total_amount_due" t-value="0" />
+                    <table style="margin-top: 10px;" class="table table-striped">
+                    <tr t-attf-style="color: #{theme_text_color or '#FFFFFF'}; background-color: #{theme_color or '#000000'};">
+                        <th align="center" width="20%" style="font-family: 'Helvetica'; font-size: 14px; font-weight: bold; border-bottom: 2px solid #ddd;">
+                            <b>Salesperson</b>
+                        </th>
+                        <th align="center" width="20%" style="font-family: 'Helvetica'; font-size: 14px; font-weight: bold; border-bottom: 2px solid #ddd;">
+                            <b>Order Number</b>
+                        </th>
+                        <th align="center" width="20%" style="font-family: 'Helvetica'; font-size: 14px; font-weight: bold; border-bottom: 2px solid #ddd;">
+                            <b>Order Date</b>
+                        </th>
+                        <th align="center" width="20%" style="font-family: 'Helvetica'; font-size: 14px; font-weight: bold; border-bottom: 2px solid #ddd;">
+                            <b>Invoice Number</b>
+                        </th>
+                        <th align="center" width="20%" style="font-family: 'Helvetica'; font-size: 14px; font-weight: bold; border-bottom: 2px solid #ddd;">
+                            <b>Invoice Date</b>
+                        </th>
+                        <th align="center" width="20%" style="font-family: 'Helvetica'; font-size: 14px; font-weight: bold; border-bottom: 2px solid #ddd;">
+                            <b>Amount Invoice</b>
+                        </th>
+                        <th align="center" width="20%" style="font-family: 'Helvetica'; font-size: 14px; font-weight: bold; border-bottom: 2px solid #ddd;">
+                            <b>Amount Paid</b>
+                        </th>
+                        <th align="center" width="20%" style="font-family: 'Helvetica'; font-size: 14px; font-weight: bold; border-bottom: 2px solid #ddd;">
+                            <b>Amount Due</b>
+                        </th>
+                    </tr>
+                    <t t-foreach="o.customer_order_dic" t-as="customer">
+                        <t t-foreach="customer.list_order" t-as="order">
+                            <tr>
+                                <td style="border: 1px solid black;">
+                                    <span t-esc="customer.saleperson" />
+                                </td>
+                                <td style="border: 1px solid black;">
+                                    <span t-field="order.order_number" />
+                                </td>
+                                <td style="border: 1px solid black;">
+                                    <span t-field="order.order_date" t-options="{'widget': 'datetime'}" />
+                                </td>
+                                <td style="border: 1px solid black;">
+                                    <span t-field="order.invoice_number"/>
+                                </td>
+                                <td style="border: 1px solid black;">
+                                    <span t-field="order.invoice_date" t-options="{'widget': 'datetime'}" />
+                                </td>
+                                <td style="border: 1px solid black;">
+                                    <span t-esc="order.total" t-options='{"widget": "float", "precision": 2}'/>
+                                </td>
+                                <td style="border: 1px solid black;">
+                                    <span t-esc="order.paid_amount" t-options='{"widget": "float", "precision": 2}'/>
+                                </td>
+                                <td style="border: 1px solid black;">
+                                    <span t-esc="order.due_amount" t-options='{"widget": "float", "precision": 2}'/>
+                                </td>
+                            </tr>
+                        </t>
+                    </t>
+                <tr>
+                    <td style="border:1px solid black;"></td>
+                    <td style="border:1px solid black;"></td>
+                    <td style="border: 1px solid black;"></td>
+                    <td style="border: 1px solid black;">
+                        <b>Total</b>
+                    </td>
+                    <td style="border: 1px solid black;">
+                        <span t-esc="sum(o.customer_order_dic.list_order.mapped('total'))" t-options='{"widget": "float", "precision": 2}'/>
+                    </td>
+                    <td style="border: 1px solid black;">
+                        <span t-esc="sum(o.customer_order_dic.list_order.mapped('paid_amount'))" t-options='{"widget": "float", "precision": 2}'/>
+                    </td>
+                    <td style="border: 1px solid black;">
+                        <span t-esc="sum(o.customer_order_dic.list_order.mapped('due_amount'))" t-options='{"widget": "float", "precision": 2}'/>
+                    </td>
+                </tr>
+                </table>
+                </t>
+            </div>
+        </t>
+    </template>

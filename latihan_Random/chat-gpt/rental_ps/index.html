@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Rental PS</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+  <div class="container">
+    <h1>Rental PS</h1>
+    <form id="rentalForm">
+      <input type="text" id="name" placeholder="Nama Penyewa" required />
+      <input type="number" id="duration" placeholder="Durasi (jam)" required />
+      <button type="submit">Sewa Sekarang</button>
+    </form>
+
+    <div id="totalPrice" class="info"></div>
+    
+    <h2>Daftar Penyewa</h2>
+    <ul id="renterList"></ul>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

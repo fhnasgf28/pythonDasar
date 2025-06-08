@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="crm_journey_plan_feedback_wizard_form_view" model="ir.ui.view">
+        <field name="name">crm.journey.plan.feedback.wizard.form.view</field>
+        <field name="model">crm.journey.plan.feedback.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Activity Feedback">
+                <group>
+                    <field name="feedback"/>
+                </group>
+                <footer>
+                    <button string="Confirm" type="object" name="action_confirm" attrs="{'invisible': [('is_call', '=', True)]}" class="btn-primary"/>
+                    <button string="Confirm" type="object" name="action_confirm_feedback" attrs="{'invisible': [('is_call', '=', False)]}" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>
