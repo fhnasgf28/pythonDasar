@@ -3,5 +3,9 @@
   <component name="Black">
     <option name="sdkName" value="Python 3.12" />
   </component>
-  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.12 virtualenv at ~/.pyenv/versions/projek" project-jdk-type="Python SDK" />
+<<<<<<< HEAD
+  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.8 virtualenv at ~/.pyenv/versions/hashmicro" project-jdk-type="Python SDK" />
+=======
+  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.10 virtualenv at ~/.pyenv/versions/venv310" project-jdk-type="Python SDK" />
+>>>>>>> 9916a0f (woke)
 </project>

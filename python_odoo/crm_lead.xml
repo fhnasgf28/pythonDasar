@@ -1,0 +1,236 @@
+<odoo>
+
+    <record id="view_crm_lead_form_tracking" model="ir.ui.view">
+        <field name="name">crm.lead.form.tracking</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='user_id']" position="after">
+                <group>
+                    <field name="first_meeting_date" invisible="1"/>
+                    <field name="tracking_duration"/>
+                    <field name="has_meeting_this_week" invisible="1"/>
+                </group>
+                <group>
+                    <field name="is_activity_this_week" invisible="1"/>
+                    <field name="is_activity_today" invisible="1"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_crm_lead_tracking_pivot" model="ir.ui.view">
+        <field name="name">crm.lead.tracking.pivot</field>
+        <field name="model">crm.lead</field>
+        <field name="arch" type="xml">
+            <pivot string="Tracking Duration Analysis">
+                <field name="stage_id" type="row"/>
+                <field name="user_id" type="row"/>
+                <field name="tracking_duration" type="measure"/>
+                <field name="first_meeting_date" type="col"/>
+            </pivot>
+        </field>
+    </record>
+
+     <record id="crm_case_kanban_view_log_icon" model="ir.ui.view">
+        <field name="name">crm.lead.kanban.view.log.icon</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_case_kanban_view_leads"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@class='oe_kanban_bottom_left']" position="inside">
+                <div class="oe_kanban_partner no-wrap-text" t-field="partner_id.name"/>
+            </xpath>
+           <xpath expr="//div[@class='o_kanban_record_title']" position="after">
+                <div>
+                    <field name="crm_business_type_id"/>,
+                    <field name="scale"/>,
+                    <field name="crm_industry_id"/>
+                </div>
+            </xpath>
+            <xpath expr="//div[@class='oe_kanban_bottom_left']" position="inside">
+                <div>
+                    <button type="object"
+                            name="action_create_quotation"
+                            title="Create Quotation"
+                            class="oe_stat_button"
+                            style="background-color: transparent; border: none; padding: 0; color: #434d8f;">
+                            <i class="fa fa-pencil-square-o"/>
+                    </button>
+                </div>
+                <div>
+                    <button type="object"
+                            name="action_view_sale_quotation"
+                            title="Show Quotation"
+                            class="oe_stat_button"
+                            style="background-color: transparent; border: none; padding: 0; color: #434d8f;">
+                            <i class="fa fa-eye"/>
+                    </button>
+                </div>
+                <div>
+                    <button name="action_open_activity_popup"
+                            title="View Activity Log"
+                            type="object"
+                            class="oe_stat_button"
+                            style="background-color: transparent; border: none; padding: 0; color: #434d8f;">
+                            <i class="fa fa-history"/>
+                    </button>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="crm_lead_tree_inherit" model="ir.ui.view">
+        <field name="name">crm.lead.tree.inherit</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_case_tree_view_oppor"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="attributes">
+                <attribute name="style">white-space: normal;</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_crm_lead_popup_form" model="ir.ui.view">
+        <field name="name">crm.lead.popup.form</field>
+        <field name="model">crm.lead</field>
+        <field name="arch" type="xml">
+            <form string="Logs and Activities">
+                <sheet>
+                    <notebook>
+                        <page string="Activities">
+                            <field name="activity_ids" widget="mail_thread">
+                                <tree>
+                                    <field name="activity_type_id"/>
+                                    <field name="activity_category"/>
+                                    <field name="summary"/>
+                                    <field name="note"/>
+                                    <field name="date_deadline"/>
+                                    <field name="user_id"/>
+                                    <field name="state"/>
+                                    <field name="request_partner_id"/>
+                                    <field name="first_attachment_id" invisible="1"/>
+                                    <field name="first_attachment_mimetype" invisible="1"/>
+                                    <field name="first_attachment_is_image" invisible="1"/>
+                                </tree>
+                            </field>
+                           <div class="d-flex flex-wrap justify-content-start attachments-container">
+                               <field name="attachment_ids">
+                                    <kanban edit="false" import="false">
+                                    <field name="id"/>
+                                    <field name="mimetype"/>
+                                    <field name="type"/>
+                                    <field name="create_uid"/>
+                                    <field name="url"/>
+                                    <field name="create_date"/>
+                                    <field name="name"/>
+                                    <templates>
+                                        <t t-name="kanban-box">
+                                            <div class="oe_kanban_global_area oe_kanban_global_click o_kanban_attachment">
+                                                <div class="row">
+                                                    <div class="offset-10">
+                                                        <div class="o_dropdown_kanban dropdown" groups="base.group_user">
+                                                            <a role="button" class="dropdown-toggle o-no-caret btn" data-toggle="dropdown" href="#" aria-label="Dropdown menu" title="Dropdown menu">
+                                                                <span class="fa fa-ellipsis-v"/>
+                                                            </a>
+                                                            <div class="dropdown-menu" role="menu">
+                                                                <a t-if="widget.deletable" role="menuitem" type="delete" class="dropdown-item">Delete</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="o_kanban_image1">
+                                                    <div class="o_kanban_image_wrapper1">
+                                                        <t t-set="webimage" t-value="new RegExp('image.*(gif|jpeg|jpg|png)').test(record.mimetype.value)"/>
+                                                        <t t-if="webimage">
+                                                            <img t-attf-src="/web/image/#{record.id.raw_value}"
+                                                                width="300" height="300" alt="Document"
+                                                                class="o_attachment_image1 img-preview"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#imagePreviewModal"
+                                                                t-att-data-src="'/web/image/%s' % record.id.raw_value"/>
+                                                        </t>
+                                                    </div>
+                                                </div>
+                                                <div class="o_kanban_details">
+                                                    <div class="o_kanban_details_wrapper">
+                                                        <div t-att-title="record.name.raw_value" class="o_kanban_record_title">
+                                                            <field name="name" class="o_text_overflow"/>
+                                                        </div>
+                                                        <div class="o_kanban_record_bottom">
+                                                            <time class="oe_kanban_bottom_left">
+                                                                <field name="create_date" widget="date"/>
+                                                            </time>
+                                                            <div class="oe_kanban_bottom_right">
+                                                                <field name="create_uid" widget="many2one_avatar_user"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </t>
+                                    </templates>
+                                </kanban>
+                                    <div class="modal fade" id="imagePreviewModal" tabindex="-1" aria-labelledby="previewModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="previewModalLabel">Preview Image</h5>
+                                                <button type="button" class="btn-close" name="farhan" data-bs-dismiss="modal" aria-label="Close"/>
+                                            </div>
+                                            <div class="modal-body text-center">
+                                                <img id="modalImagePreview" src="" class="img-fluid" style="max-height: 500px;"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                               </field>
+                                <field name="attachment_preview_html" widget="html" nolabel="1"/>
+                            </div>
+
+                            <field name="message_ids" widget="mail_thread">
+                            <tree>
+                                <field name="date"/>
+                                <field name="subject"/>
+                                <field name="message_type"/>
+                                <field name="author_id"/>
+                                <field name="description"/>
+                                <field name="body" widget="html"/>
+                                <field name="tracking_value_ids" widget="many2many_tags"/>
+                            </tree>
+                        </field>
+                    </page>
+                    <page string="Followers">
+                        <field name="message_follower_ids">
+                            <tree>
+                                <field name="name"/>
+                                <field name="email"/>
+                                <field name="partner_id"/>
+                                <field name="subtype_ids" widget="many2many_tags"/>
+                            </tree>
+                        </field>
+                    </page>
+                </notebook>
+            </sheet>
+                <footer>
+                    <button string="Close" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+     <!-- Action -->
+        <record id="action_crm_lead_tracking_duration" model="ir.actions.act_window">
+            <field name="name">Opportunities Warm - Fokus Leads</field>
+            <field name="res_model">crm.lead</field>
+            <field name="view_mode">tree,form,pivot</field>
+            <field name="domain">[('tracking_duration', '&gt;', 0),('tracking_duration', '&lt;=', 7)]</field>
+        </record>
+
+        <!-- Menu -->
+        <menuitem id="menu_crm_lead_tracking_duration"
+                  name="Fokus - Warm Leads"
+                  parent="crm.crm_menu_sales"
+                  action="action_crm_lead_tracking_duration"
+                  sequence="5"/>
+
+</odoo>

@@ -1,0 +1,14 @@
+[
+    {
+        "id": "32",
+        "penerima": "farhan",
+        "alamat": "cirebon",
+        "status": "Dalam Perjalanan"
+    },
+    {
+        "id": "23",
+        "penerima": "jojon",
+        "alamat": "karawang",
+        "status": "Dalam Perjalanan"
+    }
+]

@@ -1,0 +1,75 @@
+<odoo>
+    <template id="custom_sale_report_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <!-- Wrapper Header -->
+<div style="width:100%; background:#fff;">
+    <div style="display:flex; align-items:center; gap:24px; padding:0 16px 0 0;">
+        <!-- Logo -->
+        <div style="flex:0 0 110px;">
+            <img src="/path/to/logo.png" style="width:100px; height:auto;" alt="Logo"/>
+        </div>
+        <!-- Nama & Subjudul -->
+        <div style="flex:1;">
+            <div style="font-size:28px; font-weight:bold; color:#fff; background:#2b7250; padding:8px 0 8px 16px; letter-spacing:2px;">
+                PT. KARYA NADISO UTAMA
+            </div>
+            <div style="font-size:14px; color:#2b7250; background:#d9f7e3; padding:4px 0 4px 16px; font-weight:bold; letter-spacing:1px;">
+                MANUFACTURER OF OFFICE &amp; LABORATORY FURNITURE
+            </div>
+            <div style="font-size:12px; color:#2b7250; padding:6px 0 0 16px;">
+                Jl. Dikat Pemda, Kp. Dukuh Pinang No. 24 RT 001/03 Kel. Bojong Nangka Kec. Kelapa Dua Kab. Tangerang 15821 - Indonesia
+            </div>
+        </div>
+    </div>
+    <!-- Info Kontak -->
+    <div style="display:flex; justify-content:center; align-items:center; gap:36px; margin:10px 0 0 0;">
+        <!-- Website -->
+        <div style="display:flex; align-items:center; gap:8px;">
+            <span style="display:inline-flex; justify-content:center; align-items:center; width:32px; height:32px; border-radius:50%; border:2px solid #2b7250; background:#fff; color:#2b7250; font-size:16px;">
+                <i class="fa fa-globe"></i>
+            </span>
+            <span style="font-size:13px; color:#2b7250;">www.nadisolab.com</span>
+        </div>
+        <!-- Email -->
+        <div style="display:flex; align-items:center; gap:8px;">
+            <span style="display:inline-flex; justify-content:center; align-items:center; width:32px; height:32px; border-radius:50%; border:2px solid #2b7250; background:#fff; color:#2b7250; font-size:16px;">
+                <i class="fa fa-envelope"></i>
+            </span>
+            <span style="font-size:13px; color:#2b7250;">sales@nadisolab.com</span>
+        </div>
+        <!-- Telepon 1 -->
+        <div style="display:flex; align-items:center; gap:8px;">
+            <span style="display:inline-flex; justify-content:center; align-items:center; width:32px; height:32px; border-radius:50%; border:2px solid #2b7250; background:#fff; color:#2b7250; font-size:16px;">
+                <i class="fa fa-phone"></i>
+            </span>
+            <span style="font-size:13px; color:#2b7250;">(62-21) 5421 0226-28</span>
+        </div>
+        <!-- Telepon 2 -->
+        <div style="display:flex; align-items:center; gap:8px;">
+            <span style="display:inline-flex; justify-content:center; align-items:center; width:32px; height:32px; border-radius:50%; border:2px solid #2b7250; background:#fff; color:#2b7250; font-size:16px;">
+                <i class="fa fa-phone"></i>
+            </span>
+            <span style="font-size:13px; color:#2b7250;">(62-21) 5421 0229</span>
+        </div>
+    </div>
+    <!-- Garis Bawah -->
+    <div style="border-bottom:5px solid #2b7250; margin:10px 0 0 0;"></div>
+</div>
+            </t>
+        </t>
+    </template>
+
+
+
+    <!-- Main Report Template -->
+    <template id="custom_sale_report_template">
+        <t t-call="custom_report.custom_sale_report_header"/>
+        <div class="page">
+            <h2>Sales Order: <t t-esc="o.name"/></h2>
+            <p>Customer: <t t-esc="o.partner_id.name"/></p>
+            <p>Order Date: <t t-esc="o.date_order"/></p>
+            <p>Total: <t t-esc="o.amount_total"/></p>
+        </div>
+    </template>
+</odoo>

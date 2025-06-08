@@ -1,0 +1,32 @@
+<!--            <field name="mp_invoice_number" position="attributes">-->
+<!--                <attribute name="optional">hide</attribute>-->
+<!--            </field>-->
+<!--            <field name="mp_accept_deadline" position="attributes">-->
+<!--                <attribute name="optional">hide</attribute>-->
+<!--            </field>-->
+            <field name="mp_shipping_deadline" position="attributes">
+                <attribute name="optional">hide</attribute>
+            </field>
+            <field name="partner_id" position="attributes">
+                <attribute name="optional">hide</attribute>
+            </field>
+            <field name="marketplace" position="attributes">
+                <attribute name="optional">hide</attribute>
+            </field>
+            <field name="mp_order_status" position="attributes">
+                <attribute name="optional">hide</attribute>
+            </field><field name="reserve_from" position="attributes">
+                <attribute name="optional">hide</attribute>
+            </field>
+            <field name="reserve_to" position="attributes">
+                <attribute name="optional">hide</attribute>
+            </field>
+            <field name="pos_config_id" position="attributes">
+                <attribute name="optional">hide</attribute>
+            </field>
+            <field name="pos_location_id" position="attributes">
+                <attribute name="optional">hide</attribute>
+            </field>
+            <field name="branch_id" position="attributes">
+                <attribute name="optional">hide</attribute>
+            </field>

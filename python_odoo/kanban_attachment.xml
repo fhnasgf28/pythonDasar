@@ -1,0 +1,22 @@
+<page string="Attachments">
+                        <field name="attachment_ids">
+                            <kanban>
+                                <templates>
+                                    <t t-name="kanban-box">
+                                        <div class="oe_kanban_global">
+                                            <t t-foreach="record.attachment_ids" t-as="attachment">
+                                            <div class="oe_kanban_attachment">
+                                                <t t-if="attachment.datas">
+                                                    <img t-att-src="'data:image/png;base64,' + attachment.datas"/>
+                                                </t>
+                                                <t t-else="">
+                                                    <span>Attachment: <t t-esc="attachment.name"/></span>
+                                                </t>
+                                            </div>
+                                        </t>
+                                        </div>
+                                    </t>
+                                </templates>
+                            </kanban>
+                        </field>
+                    </page>

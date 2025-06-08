@@ -1,1 +1,1 @@
-data = "Bulan Ramadhan yang penuh dengan berkah"
+data = "Bulan Ramadhan yang penuh dengan berkah" mantap
