@@ -20,4 +20,4 @@
                 print("DEBUG - Forcing button to show because state is 'sent'")
                 
             rec.show_action_confirm = show_action_confirm
-            print("DEBUG - Final show_action_confirm value: %s", show_action_confirm)
+            print("DEBUG - Final show_action_confirm value revisi: %s", show_action_confirm)
