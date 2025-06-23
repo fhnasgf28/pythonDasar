@@ -1,0 +1,1 @@
+mengulang nama farhan
