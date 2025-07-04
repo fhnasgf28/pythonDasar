@@ -2,7 +2,7 @@ import pyautogui
 import time
 
 def switch_chrome_tab(interval_minutes=4):
-    """
+    """ 
     Berpindah tab di Google Chrome setiap interval waktu tertentu.
 
     Args:
@@ -10,7 +10,7 @@ def switch_chrome_tab(interval_minutes=4):
     """
     print(f"Memulai otomatisasi perpindahan tab Chrome setiap {interval_minutes} menit.")
     print("Pastikan Google Chrome adalah aplikasi yang aktif saat menjalankan skrip ini.")
-    print("Tekan Ctr    l+C di terminal untuk menghentikan skrip.")
+    print("Tekan     Ctr    l+C di terminal untuk menghentikan skrip.")
 
     try:
         while True:
