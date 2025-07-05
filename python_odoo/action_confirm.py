@@ -1,4 +1,9 @@
-@api.depends('approving_matrix_sale_id','is_over_limit_validation','state','approval_matrix_state')
+from odoo import models, fields, api
+import logging
+class SaleOrder(models.Model):
+    _inherit = 'sale.order'
+
+    @api.depends('approving_matrix_sale_id','is_over_limit_validation','state','approval_matrix_state')
     def _compute_show_action_confirm(self):
         _logger = logging.getLogger(__name__)
         for rec in self:
