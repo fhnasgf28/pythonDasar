@@ -1,0 +1,79 @@
+<template id="table_rfq_inherit" inherit_id="sh_rfq_portal.sh_portal_my_rfqs">
+        <xpath expr="//t[contains(@t-call, 'portal.portal_table')]" position="replace">
+            <div class="vendor_portal_table_scroll">
+                <form action="/my/rfq/export" method="post" id="export_rfq_form">
+                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                <t t-if="rfqs" t-call="portal.portal_table">
+                    <t t-foreach="grouped_rfq" t-as="g_rfq">
+                        <thead>
+                            <tr class="thead-light" t-if="groupby and groupby!='none'">
+                                <th colspan="5">
+                                    <t t-if="groupby == 'period_by_day'">
+                                        <em class="font-weight-normal text-muted"></em>
+                                        <span t-field="g_rfq[0].date_order" t-options='{"widget": "date","format": "d MMMM Y"}'/>
+                                    </t>
+                                    <t t-if="groupby == 'period_by_month'">
+                                        <em class="font-weight-normal text-muted"></em>
+                                        <span t-field="g_rfq[0].date_order" t-options='{"widget": "date","format": "MMMM Y"}'/>
+                                    </t>
+                                    <t t-if="groupby == 'period_by_year'">
+                                        <em class="font-weight-normal text-muted"></em>
+                                        <span t-field="g_rfq[0].date_order" t-options='{"widget": "date","format": "Y"}'/>
+                                    </t>
+                                </th>
+                            </tr>
+                            <tr class="active">
+                                <th style="width: 30px;">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input select-all" id="select_all_rfqs"/>
+                                        <label class="custom-control-label" for="select_all_rfqs">All</label>
+                                    </div>
+                                </th>
+                                <th>Request For Quotation #</th>
+                                <th>Vendor</th>
+                                <th>Vendor Bill Address</th>
+                                <th>Order Date</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="g_rfq" t-as="order">
+                                <tr>
+                                    <td>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input rfq-select" t-att-id="'select_rfq_' + str(order.id)" t-att-name="'rfq_ids[]'" t-att-value="order.id"/>
+                                            <label class="custom-control-label" t-att-for="'select_rfq_' + str(order.id)"></label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <a t-attf-href="/my/rfq/#{order.id}?#{keep_query()}"><t t-esc="order.name"/></a>
+                                    </td>
+                                    <td><span t-field="order.partner_id" /></td>
+                                    <td><span t-field="order.partner_invoice_id" /></td>
+                                    <td><span t-field="order.date_order"/></td>
+                                    <td><span t-field="order.amount_total" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: order.currency_id}"/></td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </t>
+                </t>
+                </form>
+            </div>
+        </xpath>
+        <xpath expr="//t[contains(@t-call, 'portal.portal_searchbar')]" position="replace">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Purchase Tenders</t>
+            </t>
+        </xpath>
+<!--        <xpath expr="//tr[hasclass('active')]/th[1]" position="replace">-->
+<!--            <th>Request For Quotation</th>-->
+<!--            <th>Vendor</th>-->
+<!--            <th>Vendor Bill Address</th>-->
+<!--        </xpath>-->
+<!--        <xpath expr="//tr/td[1]" position="after">-->
+<!--            <td><span t-field="order.partner_id" /></td>-->
+<!--            <td><span t-field="order.partner_invoice_id" /></td>-->
+<!--        </xpath>-->
+    </template>
