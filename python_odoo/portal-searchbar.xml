@@ -1,0 +1,31 @@
+>
+        <xpath expr="//div[@id='o_portal_navbar_content']/div/div/span" position="before">
+            <t t-if="request.httprequest.path.startswith('/my/rfq')">
+<!--                <span class="btn btn-secondary btn-sm mr-2 vendor_pricelist">-->
+<!--                    Vendor Pricelist Import<input type="file" class="vendor_pricelist_import"/>-->
+<!--                </span>-->
+<!--                <span class="small mr-1 navbar-text"></span>-->
+                <div class="btn-group">
+                    <button type="button" class="btn btn-secondary btn-sm mr-2 dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Actions
+                    </button>
+                    <div class="dropdown-menu">
+                        <!-- New Pricelist -->
+                        <a class="dropdown-item" href="/vendor_pricelist">New Pricelist</a>
+
+                        <!-- Download Template -->
+                        <a class="dropdown-item" href="/equip3_purchase_vendor_portal/static/xlsx/vendor_pricelist_template.xlsx"
+                           download="vendor_pricelist_template.xlsx">
+                            Download Template
+                        </a>
+
+                        <!-- Import Pricelist -->
+<!--                        <a class="dropdown-item">Import Pricelist<input type="file" class="vendor_pricelist_import"/></a>-->
+                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#modal_import_vendor_pricelist">
+                            Import Pricelist
+                        </a>
+                    </div>
+                </div>
+            </t>
+        </xpath>
+    </template>
