@@ -37,3 +37,11 @@ class SaleOrderLine(models.Model):
                 have_pph = True if line.tax_id.filtered(lambda x: x.is_pph) else False
             line.have_ppn = have_ppn
             line.have_pph = have_pph
+
+    @api.depends('order_id.partner_id')
+    def _compute_customer_city_id(self):
+        for line in self:
+            if line.order_id and line.order_id.partner_id:
+                line.customer_city = line.order_id.partner_id.city
+            else:
+                line.customer_city = False
