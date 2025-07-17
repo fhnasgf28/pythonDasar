@@ -26,3 +26,14 @@ class SaleOrderLine(models.Model):
                     'warehouse_id': self.line_warehouse_id_new.id,
                 })
             line.product_uom_change()
+
+    @api.depends('tax_id')
+    def _compute_have_ppn(self):
+        for line in self:
+            have_ppn = False
+            have_pph = False
+            if line.tax_id:
+                have_ppn = True if line.tax_id.filtered(lambda x: x.is_ppn) else False
+                have_pph = True if line.tax_id.filtered(lambda x: x.is_pph) else False
+            line.have_ppn = have_ppn
+            line.have_pph = have_pph
