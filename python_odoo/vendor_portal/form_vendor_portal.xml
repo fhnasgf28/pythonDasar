@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+
+    <template id="vendor_portal_form">
+        <t t-name="vendor_portal_form">
+            <div class="oe_form">
+                <div class="oe_form_header">
+                    <h2><t t-esc="sobject.name"/></h2></div>
+                    <div class="oe_form_content">
+                        <form action="/rfq/edit" method="post">
+                    <input type="hidden" name="order_id" t-att-value="quotes.id" id="order_id"/>
+                    <t t-foreach="quotes.order_line" t-as="ol">
+                        <tr t-if="ol.display_type in ('line_section', 'line_note')">
+                            <td t-att-colspan="11">
+                                <span t-field="ol.name"/>
+                            </td>
+                        </tr>
+                        <tr t-if="not ol.display_type">
+                            <td>
+                                <img t-if="ol.product_id.image_128" class="rounded-circle mt-1 o_portal_contact_img"
+                                     t-att-src="image_data_uri(ol.product_id.image_128)" alt="Product"/>
+                                <img t-if="not ol.product_id.image_128" class="rounded-circle mt-1 o_portal_contact_img"
+                                     src="/web/static/src/img/placeholder.png" alt="Product"/>
+                            </td>
+                            <td id="product_name" class="col-lg-3">
+                                <span t-field="ol.product_id"/>
+                            </td>
+                            <td class="col-lg-2" id='update_product_qty'>
+                                <input type="text" pattern="[0-9]+([\.,][0-9]+)?" class="form-control quantity"
+                                       id="unit_price" t-att-name="ol.id" t-att-value="str(ol.price_unit)"
+                                       readonly="True"/>
+                            </td>
+                            <td class="col-lg-2" id="update_note">
+                                <t t-set="tender_note" t-value=""/>
+                                <t t-if="ol.sh_tender_note">
+                                    <t t-set="tender_note" t-value="str(ol.sh_tender_note)"/>
+                                </t>
+                                <input type="text" class="form-control note" id="note" t-attf-name="#{ol.id}_note"
+                                       t-att-value="tender_note" readonly="True"/>
+                            </td>
+                            <td class="col-lg-2 text-right">
+                                <span t-esc="ol.product_qty"/>
+                            </td>
+                            <td class="col-lg-2 text-right">
+                                <span t-field="ol.price_subtotal"
+                                      t-options='{"widget": "monetary", "display_currency": quotes.currency_id}'/>
+                            </td>
+                        </tr>
+                    </t>
+                    <div class="row">
+                        <div class="col-12">
+                            <label for="rfq_note" style="margin-top: 10px;">Note/Comment</label>
+                            <textarea type="text" name="rfq_note"
+                                      class="form-control o_survey_question_text_box bg-transparent text-dark rounded-0 p-0"
+                                      placeholder="Terms and conditions......" readonly="True"><t
+                                    t-raw="quotes.term_condition_box"/></textarea>
+                        </div>
+                    </div>
+                </form>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+</odoo>
