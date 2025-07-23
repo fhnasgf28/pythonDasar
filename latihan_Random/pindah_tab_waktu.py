@@ -29,3 +29,6 @@ def switch_tab_every_5_minutes():
 
     except KeyboardInterrupt:
         print("Program dihentikan secara manual.")
+
+if __name__ == "__main__":
+    switch_tab_every_5_minutes()
