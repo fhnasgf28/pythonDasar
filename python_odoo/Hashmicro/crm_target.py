@@ -31,3 +31,62 @@ class CrmTarget(models.Model):
                 if rejected_button:
                     hide_button = False
             rec.hide = hide_button
+
+
+    def get_team_members_and_leaders(self):
+        """
+        Get team members and team leaders based on sale_team_id.
+        """
+        self.ensure_one()
+
+        team = self.sale_team_id
+        if not team:
+            return {
+                'team_members': self.env['res.users'],
+                'team_leaders': self.env['res.users'],
+                'all_users': self.env['res.users']
+            }
+
+        # Get all team members
+        team_members = team.member_ids
+
+        # Get all leaders
+        team_leaders = self.env['res.users']
+        if team.user_id:
+            team_leaders |= team.user_id
+        if team.additional_leader_ids:
+            team_leaders |= team.additional_leader_ids
+
+        # Combine members + leaders
+        all_users = team_members | team_leaders
+
+        return {
+            'team_members': team_members,
+            'team_leaders': team_leaders,
+            'all_users': all_users
+        }
+
+    def print_team_access_info(self):
+        """
+        Prints detailed information about team members and leaders.
+        Useful for debugging and verification.
+        """
+        self.ensure_one()
+        access_info = self.get_team_members_and_leaders()
+
+        print("\n=== Team Access Information ===")
+        print(f"Team: {self.name} (ID: {self.id})")
+
+        print("\nTeam Members:")
+        for member in access_info['team_members']:
+            print(f"- {member.name} (ID: {member.id})")
+
+        print("\nTeam Leaders:")
+        for leader in access_info['team_leaders']:
+            print(f"- {leader.name} (ID: {leader.id})")
+
+        print("\nAll Users with Access:")
+        for user in access_info['all_users']:
+            print(f"- {user.name} (ID: {user.id})")
+
+        return True
