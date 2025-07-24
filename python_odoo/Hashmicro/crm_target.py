@@ -1,4 +1,9 @@
-@api.depends('state', 'salesperson_id', 'team_leader_id')
+from odoo import models, fields, api
+
+class CrmTarget(models.Model):
+    _inherit = 'crm.target'
+
+    @api.depends('state', 'salesperson_id', 'team_leader_id')
     def _compute_hide(self):
         for rec in self:
             hide_button = True
