@@ -1,4 +1,5 @@
 from odoo import models, fields, api
+from odoo.exceptions import UserError, ValidationError
 
 class CrmTarget(models.Model):
     _inherit = 'crm.target'
@@ -90,3 +91,24 @@ class CrmTarget(models.Model):
             print(f"- {user.name} (ID: {user.id})")
 
         return True
+
+    def check_date(self, start_date, end_date, based_on):
+        for rec in self:
+            overlapping_targets = self.env['crm.target'].search([
+                ('id', '!=', rec.id),
+                ('salesperson_id', '=', rec.salesperson_id.id),
+                ('based_on', '=', based_on),
+                ('state', '!=', 'rejected'),
+                '|', '|',
+                '&', ('start_date', '<=', start_date), ('end_date', '>=', start_date),
+                '&', ('start_date', '<=', end_date), ('end_date', '>=', end_date),
+                '&', ('start_date', '>=', start_date), ('end_date', '<=', end_date),
+            ])
+
+            if overlapping_targets:
+                raise ValidationError("You already have a target for this period.")
+
+    def button_request(self):
+        for rec in self:
+            rec.check_date(rec.start_date, rec.end_date, rec.based_on)
+            rec.state = 'waiting_approval'
