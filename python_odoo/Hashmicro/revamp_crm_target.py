@@ -18,3 +18,23 @@ class CrmTarget(models.Model):
         res = super(CrmTarget, self).create(vals)
         res.name = self.env['ir.sequence'].next_by_code('crm.target.seq') or _('New')
         return res
+
+    def button_reject(self):
+        for rec in self:
+            rec.state = 'rejected'
+
+    @api.depends('state')
+    def _compute_hide(self):
+        for rec in self:
+            hide = False
+            current_user = self.env.user.id
+            if rec.state == 'draft':
+                if current_user != rec.salesperson_id.id:
+                    hide = True
+            elif rec.state == 'waiting_approval':
+                if current_user != rec.team_leader_id.id:
+                    hide = True
+            elif rec.state == 'rejected':
+                if current_user != rec.salesperson_id.id and current_user != rec.team_leader_id.id:
+                    hide = True
+            rec.hide = hide
