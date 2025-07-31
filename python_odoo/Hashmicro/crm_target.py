@@ -1,5 +1,5 @@
 from odoo import models, fields, api
-from odoo.exceptions import UserError, ValidationError
+from odoo.exceptions import UserError, ValidationError, _
 
 class CrmTarget(models.Model):
     _inherit = 'crm.target'
@@ -108,7 +108,51 @@ class CrmTarget(models.Model):
             if overlapping_targets:
                 raise ValidationError("You already have a target for this period.")
 
-    def button_request(self):
+    def button_approve(self):
         for rec in self:
-            rec.check_date(rec.start_date, rec.end_date, rec.based_on)
-            rec.state = 'waiting_approval'
+            current_user = self.env.user
+            if rec.team_leader_id.id:
+                rec.state = 'approved'
+            else:
+                raise ValidationError(_("Only the team leader can approve this target."))
+
+    def button_reject(self):
+        for rec in self:
+            current_user = self.env.user
+            if rec.team_leader_id.id:
+                rec.state = 'rejected'
+            else:
+                raise ValidationError(_("Only the team leader can reject this target."))
+
+    @api.depends('sale_team_id', 'company_id')
+    def _compute_available_salesperson_ids(self):
+        user = self.env['res.users']
+        company_id = self.env.company.id
+        for rec in self:
+            sales_team = self.env['crm.team'].search([
+                '|',
+                ('company_id', '=', company_id),
+                ('company_id', '=', False),
+            ])
+            # get all members from all sales teams
+            all_team_members = user.browse()
+            for sales_team in sales_team:
+                all_team_members |= sales_team.member_ids
+            rec.available_salesperson_ids = all_team_members
+            if rec.sale_team_id:
+                rec.available_salesperson_ids = rec.sale_team_id.member_ids
+
+    @api.onchange('salesperson_id')
+    def _onchange_salesperson_id(self):
+        for rec in self:
+            if rec.salesperson_id:
+                team = self.env['crm.team'].search([
+                    ('member_ids', 'in', rec.salesperson_id.id),
+                    '|',
+                    ('company_id', '=', rec.company_id.id),
+                    ('company_id', '=', False),
+                ])
+#                 mengetahui team dengan print
+                print("team",team)
+                if team:
+                    rec.sale_team_id = team[0].id
