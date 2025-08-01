@@ -1,5 +1,26 @@
+import simplejson
 from odoo import models, fields, api
 from odoo.exceptions import UserError, ValidationError, _
+from odoo.tools import html2plaintext
+from xml import etree
+from odoo.addons.base.models.ir_ui_view import (transfer_field_to_modifiers, transfer_node_to_modifiers,transfer_modifiers_to_node)
+
+def setup_modifiers(node, field=None, context=None, in_tree_view=False):
+    modifiers = {}
+    if field is not None:
+        transfer_field_to_modifiers(field, modifiers)
+    transfer_node_to_modifiers(node, modifiers,context=context)
+    transfer_modifiers_to_node(modifiers,node)
+
+def make_field_readonly(doc, field_name, res):
+    nodes = doc.xpath("//field[@name='%s']" % field_name)
+    if nodes:
+        node = nodes[0]
+        node.set('readonly', '1')
+        modifier = simplejson.loads(node.get('modifiers') or '{}')
+        modifier['readonly'] = True
+        node.set('modifiers', simplejson.dumps(modifier))
+        setup_modifiers(node,res['fields'][field_name])
 
 class CrmTarget(models.Model):
     _inherit = 'crm.target'
@@ -156,3 +177,20 @@ class CrmTarget(models.Model):
                 print("team",team)
                 if team:
                     rec.sale_team_id = team[0].id
+
+    @api.model
+    def fields_view_get(self, view_id=None, view_type=False, toolbar=False, submenu=False):
+        res = super().fields_view_get(view_id=view_id, view_type=view_type,toolbar=toolbar,submenu=submenu)
+        doc = etree.XML(res['arch'])
+        if view_type == 'form':
+            for node in doc.xpath('//field'):
+                node.set('readonly', '1')
+        setup_modifiers(node, res['fields']['target_left'])
+        make_field_readonly(doc, 'company_id', res)
+        make_field_readonly(doc, 'salesperson_id', res)
+        return res
+
+
+
+
+
