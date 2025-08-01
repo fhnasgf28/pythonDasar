@@ -38,3 +38,4 @@ class CrmTarget(models.Model):
                 if current_user != rec.salesperson_id.id and current_user != rec.team_leader_id.id:
                     hide = True
             rec.hide = hide
+
