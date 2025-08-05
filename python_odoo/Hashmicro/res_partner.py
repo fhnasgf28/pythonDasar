@@ -40,3 +40,15 @@ class res_partner(models.Model):
         is_approving_matrix = config.is_customer_partner_approval_matrix
         for record in self:
             record.is_approving_matrix_customer = is_approving_matrix
+
+    @api.onchange('company_id')
+    def _onchange_company_id(self):
+        branches = self.env.branches.ids
+        return {
+            'domain':{
+                'branch_id': [
+                    ('id', 'in', branches),
+                    ('company_id', '=', self.company_id.id)
+                ]
+            }
+        }
