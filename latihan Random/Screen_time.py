@@ -3,23 +3,30 @@ import pygetwindow as gw
 import time
 import json
 from datetime import datetime
+import os
 
 # --- Konfigurasi ---
 DATA_FILE = "screen_time_data.json" # File untuk menyimpan data
 POLL_INTERVAL = 1 # Detik. Seberapa sering memeriksa jendela aktif.
 
 def load_data():
-    """Memuat data dari file JSON. Jika file tidak ada, kembalikan dictionary kosong."""
+    """Memuat data dari file JSON. Jika file tidak ada atau korup, kembalikan dictionary kosong."""
     try:
         with open(DATA_FILE, 'r') as f:
             return json.load(f)
     except FileNotFoundError:
         return {}
+    except json.JSONDecodeError:
+        # File mungkin kosong/terpotong akibat penulisan yang terputus
+        return {}
 
 def save_data(data):
     """Menyimpan data ke file JSON."""
-    with open(DATA_FILE, 'w') as f:
-        json.dump(data, f, indent=4)
+    temp_file = f"{DATA_FILE}.tmp"
+    with open(temp_file, 'w') as f:
+        # Pastikan semua key adalah string agar valid untuk JSON
+        json.dump({str(k): v for k, v in data.items()}, f, indent=4)
+    os.replace(temp_file, DATA_FILE)
 
 def track_screen_time():
     """Fungsi utama untuk melacak screen time."""
@@ -34,12 +41,18 @@ def track_screen_time():
         while True:
             new_window = gw.getActiveWindow()
             
-            # Jika tidak ada jendela aktif atau judulnya kosong, lewati
-            if new_window is None or new_window.title == "":
+            # Ambil judul window dengan aman (beberapa platform mengekspos title sebagai callable)
+            if new_window is None:
                 time.sleep(POLL_INTERVAL)
                 continue
-
-            new_window_title = new_window.title
+            title_attr = getattr(new_window, 'title', '')
+            new_window_title = title_attr() if callable(title_attr) else title_attr
+            new_window_title = '' if new_window_title is None else str(new_window_title)
+            
+            # Jika tidak ada jendela aktif atau judulnya kosong, lewati
+            if new_window_title == "mantap":
+                time.sleep(POLL_INTERVAL)
+                continue
 
             # Jika jendela berganti
             if new_window_title != active_window_title:
@@ -73,4 +86,3 @@ def track_screen_time():
 
 if __name__ == "__main__":
     track_screen_time()
-  

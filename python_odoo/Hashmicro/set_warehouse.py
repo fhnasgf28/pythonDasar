@@ -26,4 +26,4 @@ class SetWarehouse(models.Model):
                         WHERE company_id = %s AND branch_id is null AND active = True ORDER BY sequence LIMIT 1
                     """ % (res.company_id.id))
                     stock_warehouse = self.env.cr.fetchall()
-            res.destination_warehouse_id = stock_warehouse[0][0] if stock_warehouse else False
+                res.destination_warehouse_id = stock_warehouse[0][0] if stock_warehouse else False
