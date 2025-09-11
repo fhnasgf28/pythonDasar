@@ -1,5 +1,6 @@
 from odoo.tools.misc import DEFAULT_SERVER_DATETIME_FORMAT
 from datetime import datetime
+from odoo import models, fields, api
 
 class SalesDetailWizard(models.TransientModel):
     _inherit = "sh.sale.details.report.wizard"
