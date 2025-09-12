@@ -1,5 +1,6 @@
 from odoo import fields, models, api
 from datetime import datetime
+from odoo.exceptions import ValidationError
 import pytz
 
 class PurchaseRequisition(models.Model):
@@ -19,3 +20,15 @@ class PurchaseRequisition(models.Model):
         noon_utc = noon_local_tz.astimezone(pytz.UTC)
         noon_naive = noon_utc.replace(tzinfo=None)
         return noon_naive
+
+    @api.constrains('main_target')
+    def _check_main_target(self):
+        for rec in self:
+            if rec.main_target is not None and rec.main_target <= 0:
+                raise ValidationError("Main Target must be greater than 0")
+
+    @api.constrains('current_achievement')
+    def _check_current_achievement(self):
+        for rec in self:
+            if rec.current_achievement is not None and rec.current_achievement < 0:
+                raise ValidationError("Current Achievement must be positive value!")
