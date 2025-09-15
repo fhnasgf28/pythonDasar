@@ -5,6 +5,39 @@ from odoo.exceptions import ValidationError
 class CrmLead(models.Model):
     _inherit = 'crm.lead'
 
+    lead_source = fields.Selection([
+        ('website', 'Website'),
+        ('social_media', 'Social Media'),
+        ('referral', 'Referral'),
+        ('other', 'Reverral')
+    ])
+
+    is_high_priority = fields.Boolean('High Priority', compute='_compute_is_high_priority', store=True)
+
+    def create_sample_lead(self):
+        return self.create({
+            'name': 'Lead Baru dari Python',
+            'partner_name': 'Lead Baru dari Python',
+            'email_from': 'lead@python.com',
+            'description': 'Lead Baru dari Python mantap wak',
+            'lead_source':'website'
+        })
+
+    def action_mark_as_qualified(self):
+        self.ensure_one()
+        return self.write({
+                'stage_id': self.env.ref('crm.stage_lead_qualified').id,
+                'probability':100
+            })
+
+    @api.depends('probability', 'expected_revenue')
+    def _compute_is_high_priority(self):
+        for lead in self:
+            if lead.probability >= 70 and lead.expected_revenue >= 1000000:
+                lead.is_high_priority = True
+            else:
+                lead.is_high_priority = False
+
     def write(self, vals):
         tot_weightage = 0
         status_main = 0
@@ -57,5 +90,6 @@ class CrmLead(models.Model):
                         rec.partner_id.write(fields_to_update)
 
                     return res
+
 
 
