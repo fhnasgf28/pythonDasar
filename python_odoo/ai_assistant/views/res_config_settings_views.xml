@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">AI Assistant Settings</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('settings')]" position="inside">
+                <div class="app_settings_block" data-key="ai_assistant" string="AI Assistant" data-string="AI Assistant" icon="fa-magic">
+                    <h2>AI Assistant Configuration</h2>
+                    <div class="row mt-4">
+                        <div class="col-12 col-lg-6">
+                            <div class="o_setting_right_pane">
+                                <label for="openai_api_key"/>
+                                <div class="text-muted">
+                                    Enter your OpenAI API key. You can get one from 
+                                    <a href="https://platform.openai.com/account/api-keys" target="_blank">OpenAI's website</a>.
+                                </div>
+                                <field name="openai_api_key" password="True" class="o_form_field"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>
