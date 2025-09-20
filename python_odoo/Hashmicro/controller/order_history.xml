@@ -1,0 +1,625 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <template id="customer_dashboard_form_view">
+        <t name="Customer Dashboard" t-name="website.vendor_pricelist">
+            <t t-call="website.layout">
+                <div id="wrap">
+                    <div class="oe_structure">
+                        <style>
+                            #customer_dashboard_form_section {
+                            .heading {
+                            font-size: 30px;
+                            font-weight: bolder;
+                            }
+                            .first-table {
+                            padding: 30px;
+                            box-shadow: 3px 3px 7px 2px #dbdbdb;
+                            border-radius: 15px;
+                            overflow: hidden;
+                            width: 100%;
+                            .main_div {
+                            .parent_div_1 {
+                            width: 65%;
+                            .child_div_1 {
+                            .child_child_div_1 {
+                            .child_child_div_1_title {
+                            .title {
+                            font-size: 20px;
+                            font-weight: bolder;
+                            }
+                            .count {
+                            font-size: 30px;
+                            font-weight: bold;
+                            }
+                            }
+                            }
+                            .child_child_div_2 {
+                            margin-left: 4rem;
+                            .child_child_div_2_title {
+                            .title {
+                            font-size: 20px;
+                            font-weight: bolder;
+                            }
+                            .count {
+                            .big_count {
+                            font-size: 30px;
+                            font-weight: bold;
+                            }
+                            .small_count {
+                            color: rgba(0, 0, 0, 0.5);
+                            font-size: 10px;
+                            margin-top: 21px;
+                            }
+                            }
+                            }
+                            }
+                            }
+                            .child_div_2 {
+                            .child_child_div_1 {
+                            .child_child_div_1_title {
+                            .title {
+                            font-size: 20px;
+                            font-weight: bolder;
+                            }
+                            .count {
+                            font-size: 30px;
+                            font-weight: bold;
+                            }
+                            }
+                            }
+                            .child_child_div_2 {
+                            margin-left: 10rem;
+                            .child_child_div_2_title {
+                            .title {
+                            font-size: 20px;
+                            font-weight: bolder;
+                            }
+                            .count {
+                            font-size: 30px;
+                            font-weight: bold;
+                            }
+                            }
+                            }
+                            }
+                            }
+                            .parent_div_2 {
+                            .child_picture {
+                            img {
+                            height: 250px;
+                            width: 250px;
+                            }
+                            }
+                            }
+                            }
+                            }
+                            .second-table {
+                            box-shadow: 3px 3px 7px 2px #dbdbdb;
+                            border-radius: 15px;
+                            overflow: hidden;
+                            width: 100%;
+                            .title {
+                            padding: 20px;
+                            font-size: 20px;
+                            font-weight: bolder;
+                            }
+                            .active_customer {
+                            table {
+                            thead {
+                            tr {
+                            color: rgba(0, 0, 0, 0.5);
+                            }
+                            }
+                            }
+                            }
+                            }
+                            .third-table {
+                            box-shadow: 3px 3px 7px 2px #dbdbdb;
+                            border-radius: 15px;
+                            overflow: hidden;
+                            width: 100%;
+                            .title {
+                            padding: 20px;
+                            font-size: 20px;
+                            font-weight: bolder;
+                            }
+                            .active_customer {
+                            table {
+                            thead {
+                            tr {
+                            color: rgba(0, 0, 0, 0.5);
+                            }
+                            }
+                            }
+                            }
+                            }
+                            }
+                        </style>
+                        <section id='customer_dashboard_form_section'>
+                            <div class='container'>
+                                <div class='heading mt-4 mb-4'>
+                                    <span>Customer Portal Dashboard</span>
+                                </div>
+                                <div class="first-table mb-4">
+                                    <div class="main_div d-flex">
+                                        <div class="parent_div_1 ">
+                                            <div class="d-flex child_div_2 mt-5">
+                                                <div class="d-flex child_child_div_1 customer_dashboard_box_button_top" onclick="location.href='/my/quotes';">
+                                                    <div class="child_child_div_1_img">
+                                                        <img src="/equip3_sale_customer_portal/static/src/img/quotation.png" style="width:70px; height:70px;margin-right:30px;"/>
+                                                    </div>
+                                                    <div class="child_child_div_1_title">
+                                                        <div class="title">Quotations</div>
+                                                        <div class="count"><t t-esc="quotation"/></div>
+                                                    </div>
+                                                </div>
+                                                <div class="d-flex child_child_div_2 customer_dashboard_box_button_top" onclick="location.href='/my/orders';">
+                                                    <div class="child_child_div_2_title">
+                                                        <div class="title">Sale Orders</div>
+                                                        <div class="count pull-right"><t t-esc="sale_order"/></div>
+                                                    </div>
+                                                    <div class="child_child_div_2_img">
+                                                        <img src="/equip3_sale_customer_portal/static/src/img/sale_order.png" style="width:70px; height:70px;margin-left:30px;"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex child_div_2" style="margin-top:20px;">
+                                                <div class="d-flex child_child_div_1 customer_dashboard_box_button_top" onclick="location.href='/my/delivery_orders';">
+                                                    <div class="child_child_div_1_img">
+                                                        <img src="/equip3_sale_customer_portal/static/src/img/delivery_order.png" style="width:70px; height:70px;margin-right:30px;"/>
+                                                    </div>
+                                                    <div class="child_child_div_1_title">
+                                                        <div class="title">Delivery Order</div>
+                                                        <div class="count"><t t-esc="delivery"/></div>
+                                                    </div>
+                                                </div>
+                                                <div class="d-flex child_child_div_2 customer_dashboard_box_button_top" onclick="location.href='/my/invoices';">
+                                                    <div class="child_child_div_2_title">
+                                                        <div class="title">Invoices</div>
+                                                        <div class="count pull-right"><t t-esc="invoices"/></div>
+                                                    </div>
+                                                    <div class="child_child_div_2_img">
+                                                        <img src="/equip3_sale_customer_portal/static/src/img/invoices.png" style="width:70px; height:70px;margin-left:30px;"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="parent_div_2">
+                                            <div class="child_picture">
+                                                <img src="/equip3_sale_customer_portal/static/src/img/icon.png"
+                                                     style="width: 300px; height: 300px; object-fit: contain;"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="third-table mb-4 mt-5">
+                                    <div class="title">
+                                        <span>Overdue Invoices</span>
+                                    </div>
+                                    <div class="active_customer">
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <th>Number</th>
+                                                <th>Due Date</th>
+                                                <th>Source Document</th>
+                                                <th>Grand Total</th>
+                                                <th>Payment Status</th>
+                                            </thead>
+                                            <tbody>
+                                                <t t-foreach="overdue_invoice" t-as="overdue_invoice_line">
+                                                    <tr>
+                                                        <td>
+                                                            <a t-att-href="overdue_invoice_line.get_portal_url()" t-att-title="overdue_invoice_line.name">
+                                                                <span t-esc="overdue_invoice_line.name"/>
+                                                            </a>
+                                                        </td>
+                                                        <td>
+                                                            <span t-esc="overdue_invoice_line.invoice_date_due.strftime('%Y-%m-%d %H:%M')"/>
+                                                        </td>
+                                                        <td>
+                                                            <span t-esc="overdue_invoice_line.invoice_origin"/>
+                                                        </td>
+                                                        <td>
+                                                            <span t-esc="overdue_invoice_line.amount_total" t-options='{"widget": "monetary", "display_currency": overdue_invoice_line.currency_id}'/>
+                                                        </td>
+                                                        <td>
+                                                            <span t-att-class="'badge ' + ('badge-danger' if overdue_invoice_line.payment_state == 'not_paid' else ('badge-warning' if overdue_invoice_line.payment_state == 'partial' else ''))"
+                                                                  t-esc="dict(request.env['account.move'].fields_get(allfields=['payment_state'])['payment_state']['selection']).get(overdue_invoice_line.payment_state, overdue_invoice_line.payment_state)"/>
+                                                        </td>
+                                                    </tr>
+                                                </t>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <!-- Styles for native details/summary -->
+    <template id="portal_order_history_toggle_styles" name="Portal Order History Toggle Styles" inherit_id="portal_order_history_template">
+        <xpath expr="//style" position="inside">
+            .order-details { margin-top: 10px; }
+            .order-details > summary.view-details-summary {
+                list-style: none;
+                cursor: pointer;
+                display: inline-block;
+                margin: 0 auto;
+                text-align: center;
+                border: 1px solid #007bff;
+                color: #007bff;
+                padding: 6px 16px;
+                border-radius: 4px;
+                font-weight: 600;
+            }
+            .order-details[open] > summary.view-details-summary { color: #0056b3; border-color: #0056b3; }
+            .order-details > summary.view-details-summary::-webkit-details-marker { display:none; }
+            .order-details-body { margin-top: 12px; }
+        </xpath>
+        <xpath expr="//t[@t-call='portal.portal_layout']" position="inside">
+            <script type="text/javascript">
+                (function(){
+                    var test = document.createElement('details');
+                    if (!('open' in test)) {
+
+                        document.addEventListener('click', function(e){
+                            var sm = e.target.closest('summary.view-details-summary');
+                            if (!sm) return;
+                            e.preventDefault();
+                            var d = sm.parentElement;
+                            if (!d) return;
+                            var body = d.querySelector('.order-details-body');
+                            if (!body) return;
+                            var opened = d.getAttribute('data-open') === '1';
+                            d.setAttribute('data-open', opened ? '0' : '1');
+                            body.style.display = opened ? 'none' : '';
+                        }, true);
+                        // Initialize collapsed state
+                        document.addEventListener('DOMContentLoaded', function(){
+                            document.querySelectorAll('.order-details .order-details-body').forEach(function(b){ b.style.display = 'none'; });
+                        });
+                    }
+                })();
+            </script>
+        </xpath>
+    </template>
+
+    <template id="my_account_link" name="Link to frontend portal" inherit_id="portal.user_dropdown">
+        <!-- sebelum tautan My Account -->
+        <xpath expr="//a[contains(@href, '/my/home')]" position="before">
+            <a href="/my/history/orders" role="menuitem" class="dropdown-item">Order History</a>
+        </xpath>
+    </template>
+
+    <!-- Order History Template -->
+    <template id="portal_order_history_template" name="Portal Order History">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Order History</t>
+            </t>
+
+            <!-- Custom CSS for Lato font and styling -->
+            <style>
+                @import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&amp;display=swap');
+
+                .order-history-container {
+                    font-family: 'Lato', sans-serif;
+                    max-width: 1200px;
+                    margin: 0 auto;
+                    padding: 20px;
+                }
+
+                .order-history-header {
+                    margin-bottom: 30px;
+                }
+
+                .order-history-title {
+                    font-size: 32px;
+                    font-weight: 700;
+                    color: #333;
+                    margin-bottom: 8px;
+                }
+
+                .order-history-subtitle {
+                    font-size: 16px;
+                    color: #666;
+                    font-weight: 400;
+                }
+
+                .order-card {
+                    border: 1px solid #e0e0e0;
+                    border-radius: 8px;
+                    margin-bottom: 20px;
+                    background: white;
+                    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                }
+
+                .order-header {
+                    background-color: #f8f9fa;
+                    padding: 15px 20px;
+                    border-bottom: 1px solid #e0e0e0;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+
+                .order-info {
+                    display: flex;
+                    gap: 40px;
+                }
+
+                .order-info-item {
+                    display: flex;
+                    flex-direction: column;
+                }
+
+                .order-info-label {
+                    font-size: 14px;
+                    color: #666;
+                    font-weight: 600;
+                    margin-bottom: 4px;
+                }
+
+                .order-info-value {
+                    font-size: 16px;
+                    color: #333;
+                    font-weight: 400;
+                }
+
+                .status-pending {
+                    color: #28a745;
+                    font-weight: 600;
+                }
+
+                .status-delivered {
+                    color: #28a745;
+                    font-weight: 600;
+                }
+
+                .order-items {
+                    padding: 20px;
+                }
+
+                .items-header {
+                    font-size: 14px;
+                    color: #666;
+                    margin-bottom: 15px;
+                    font-weight: 600;
+                }
+
+                .item-row {
+                    display: flex;
+                    align-items: center;
+                    padding: 15px 0;
+                    border-bottom: 1px solid #f0f0f0;
+                }
+
+                .item-row:last-child {
+                    border-bottom: none;
+                }
+
+                .item-image {
+                    width: 60px;
+                    height: 60px;
+                    border-radius: 8px;
+                    margin-right: 15px;
+                    object-fit: cover;
+                    border: 1px solid #e0e0e0;
+                }
+
+                .item-details {
+                    flex: 1;
+                }
+
+                .item-name {
+                    font-size: 16px;
+                    font-weight: 600;
+                    color: #333;
+                    margin-bottom: 4px;
+                }
+
+                .item-unit {
+                    font-size: 14px;
+                    color: #666;
+                }
+
+                .item-quantity {
+                    font-size: 16px;
+                    color: #333;
+                    margin: 0 30px;
+                    min-width: 60px;
+                    text-align: center;
+                }
+
+                .item-price {
+                    font-size: 16px;
+                    color: #333;
+                    margin: 0 30px;
+                    min-width: 120px;
+                    text-align: right;
+                }
+
+                .item-total {
+                    font-size: 16px;
+                    font-weight: 600;
+                    color: #333;
+                    min-width: 120px;
+                    text-align: right;
+                }
+
+                .detail-order-btn {
+                    background-color: #007bff;
+                    color: white;
+                    border: none;
+                    padding: 8px 20px;
+                    border-radius: 4px;
+                    font-size: 14px;
+                    font-weight: 600;
+                    cursor: pointer;
+                    margin-top: 15px;
+                    float: right;
+                }
+
+                .detail-order-btn:hover {
+                    background-color: #0056b3;
+                }
+
+                .items-table-header {
+                    display: flex;
+                    padding: 10px 0;
+                    border-bottom: 2px solid #e0e0e0;
+                    font-weight: 600;
+                    color: #666;
+                    font-size: 14px;
+                }
+
+                .header-qty {
+                    margin-left: auto;
+                    margin-right: 30px;
+                    min-width: 60px;
+                    text-align: center;
+                }
+
+                .header-price {
+                    margin-right: 30px;
+                    min-width: 120px;
+                    text-align: right;
+                }
+
+                .header-total {
+                    min-width: 120px;
+                    text-align: right;
+                }
+            </style>
+
+            <div class="order-history-container">
+                <div class="order-history-header">
+                    <h1 class="order-history-title">Order History</h1>
+                    <p class="order-history-subtitle">View complete information about your order status and details.</p>
+                </div>
+
+                <t t-if="not orders">
+                    <div class="alert alert-info">
+                        <strong>No orders found.</strong> You haven't placed any orders yet.
+                    </div>
+                </t>
+
+                <t t-foreach="orders" t-as="order_data">
+                    <div class="order-card">
+                        <!-- Order Header -->
+                        <div class="order-header">
+                            <div class="order-info">
+                                <div class="order-info-item">
+                                    <span class="order-info-label">Order Number</span>
+                                    <span class="order-info-value" t-esc="order_data['order_number']"/>
+                                </div>
+                                <div class="order-info-item">
+                                    <span class="order-info-label">Ordered On</span>
+                                    <span class="order-info-value" t-esc="order_data['create_date'].strftime('%m/%d/%Y')"/>
+                                </div>
+                                <div class="order-info-item">
+                                    <span class="order-info-label">Total Amount</span>
+                                    <span class="order-info-value">Rp.<t t-esc="'{:,.2f}'.format(order_data['total_amount'])"/></span>
+                                </div>
+                            </div>
+                            <div class="order-status">
+                                <div class="order-info-item">
+                                    <span class="order-info-label">Status Order</span>
+                                    <span t-att-class="'order-info-value ' + ('status-delivered' if 'Delivered' in order_data['delivery_status'] else 'status-pending')"
+                                          t-esc="order_data['delivery_status']"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Order Items -->
+                        <div class="order-items">
+                            <div class="items-header">
+                                Item Informations : <t t-esc="len(order_data['order_lines'])"/> Product<t t-if="len(order_data['order_lines']) > 1">s</t>
+                            </div>
+
+                            <!-- Table Header -->
+                            <div class="items-table-header">
+                                <span class="header-qty">Qty</span>
+                                <span class="header-price">Price</span>
+                                <span class="header-total">Total</span>
+                            </div>
+
+                            <!-- First line always visible -->
+                            <t t-if="order_data['order_lines']">
+                                <t t-set="first" t-value="order_data['order_lines'][0]"/>
+                                <div class="item-row">
+                                    <t t-if="first['product_image']">
+                                        <img class="item-image" t-att-src="'data:image/png;base64,' + first['product_image'].decode('utf-8')" alt="Product Image"/>
+                                    </t>
+                                    <t t-else="">
+                                        <div class="item-image" style="background-color: #f8f9fa; display: flex; align-items: center; justify-content: center; color: #666;">
+                                            <i class="fa fa-image"/>
+                                        </div>
+                                    </t>
+                                    <div class="item-details">
+                                        <div class="item-name" t-esc="first['product_name']"/>
+                                        <div class="item-unit" t-esc="first['product_uom']"/>
+                                    </div>
+                                    <div class="item-quantity">
+                                        x<t t-esc="int(first['quantity'])"/>
+                                    </div>
+                                    <div class="item-price">
+                                        Rp.<t t-esc="'{:,.2f}'.format(first['price_unit'])"/>
+                                    </div>
+                                    <div class="item-total">
+                                        Rp.<t t-esc="'{:,.2f}'.format(first['price_subtotal'])"/>
+                                    </div>
+                                </div>
+                            </t>
+
+                            <!-- Collapsible other lines (native details/summary) -->
+                            <t t-if="len(order_data['order_lines']) &gt; 1">
+                                <details class="order-details">
+                                    <summary class="view-details-summary">View Details</summary>
+                                    <div class="order-details-body">
+                                        <t t-foreach="order_data['order_lines'][1:]" t-as="line">
+                                            <div class="item-row">
+                                                <t t-if="line['product_image']">
+                                                    <img class="item-image" t-att-src="'data:image/png;base64,' + line['product_image'].decode('utf-8')" alt="Product Image"/>
+                                                </t>
+                                                <t t-else="">
+                                                    <div class="item-image" style="background-color: #f8f9fa; display: flex; align-items: center; justify-content: center; color: #666;">
+                                                        <i class="fa fa-image"/>
+                                                    </div>
+                                                </t>
+                                                <div class="item-details">
+                                                    <div class="item-name" t-esc="line['product_name']"/>
+                                                    <div class="item-unit" t-esc="line['product_uom']"/>
+                                                </div>
+                                                <div class="item-quantity">
+                                                    x<t t-esc="int(line['quantity'])"/>
+                                                </div>
+                                                <div class="item-price">
+                                                    Rp.<t t-esc="'{:,.2f}'.format(line['price_unit'])"/>
+                                                </div>
+                                                <div class="item-total">
+                                                    Rp.<t t-esc="'{:,.2f}'.format(line['price_subtotal'])"/>
+                                                </div>
+                                            </div>
+                                        </t>
+                                    </div>
+                                </details>
+                            </t>
+
+                            <!-- Detail Order Button -->
+                            <button class="detail-order-btn" type="button">Detail Order</button>
+                            <div style="clear: both;"/>
+                        </div>
+                    </div>
+                </t>
+            </div>
+        </t>
+    </template>
+
+</odoo>
