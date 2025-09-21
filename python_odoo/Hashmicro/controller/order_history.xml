@@ -240,54 +240,6 @@
         </t>
     </template>
 
-    <!-- Styles for native details/summary -->
-    <template id="portal_order_history_toggle_styles" name="Portal Order History Toggle Styles" inherit_id="portal_order_history_template">
-        <xpath expr="//style" position="inside">
-            .order-details { margin-top: 10px; }
-            .order-details > summary.view-details-summary {
-                list-style: none;
-                cursor: pointer;
-                display: inline-block;
-                margin: 0 auto;
-                text-align: center;
-                border: 1px solid #007bff;
-                color: #007bff;
-                padding: 6px 16px;
-                border-radius: 4px;
-                font-weight: 600;
-            }
-            .order-details[open] > summary.view-details-summary { color: #0056b3; border-color: #0056b3; }
-            .order-details > summary.view-details-summary::-webkit-details-marker { display:none; }
-            .order-details-body { margin-top: 12px; }
-        </xpath>
-        <xpath expr="//t[@t-call='portal.portal_layout']" position="inside">
-            <script type="text/javascript">
-                (function(){
-                    var test = document.createElement('details');
-                    if (!('open' in test)) {
-
-                        document.addEventListener('click', function(e){
-                            var sm = e.target.closest('summary.view-details-summary');
-                            if (!sm) return;
-                            e.preventDefault();
-                            var d = sm.parentElement;
-                            if (!d) return;
-                            var body = d.querySelector('.order-details-body');
-                            if (!body) return;
-                            var opened = d.getAttribute('data-open') === '1';
-                            d.setAttribute('data-open', opened ? '0' : '1');
-                            body.style.display = opened ? 'none' : '';
-                        }, true);
-                        // Initialize collapsed state
-                        document.addEventListener('DOMContentLoaded', function(){
-                            document.querySelectorAll('.order-details .order-details-body').forEach(function(b){ b.style.display = 'none'; });
-                        });
-                    }
-                })();
-            </script>
-        </xpath>
-    </template>
-
     <template id="my_account_link" name="Link to frontend portal" inherit_id="portal.user_dropdown">
         <!-- sebelum tautan My Account -->
         <xpath expr="//a[contains(@href, '/my/home')]" position="before">
@@ -496,6 +448,25 @@
                     min-width: 120px;
                     text-align: right;
                 }
+
+                .order-details { margin-top: 10px; text-align: center; }
+                .order-details > summary.view-details-summary {
+                    list-style: none;
+                    cursor: pointer;
+                    display: inline-block;
+                    margin: 0 auto;
+                    border: 1px solid #0d6efd;
+                    color: #0d6efd;
+                    padding: 6px 16px;
+                    border-radius: 4px;
+                    font-weight: 600;
+                    background-color: transparent;
+                    line-height: 1.5;
+                }
+                .order-details > summary.view-details-summary:hover { background-color: rgba(13,110,253,0.06); }
+                .order-details[open] > summary.view-details-summary { color: #0b5ed7; border-color: #0b5ed7; }
+                .order-details > summary.view-details-summary::-webkit-details-marker { display:none; }
+                .order-details-body { margin-top: 12px; }
             </style>
 
             <div class="order-history-container">
@@ -620,6 +591,30 @@
                 </t>
             </div>
         </t>
+        <script type="text/javascript">
+                (function(){
+                    var test = document.createElement('details');
+                    if (!('open' in test)) {
+
+                        document.addEventListener('click', function(e){
+                            var sm = e.target.closest('summary.view-details-summary');
+                            if (!sm) return;
+                            e.preventDefault();
+                            var d = sm.parentElement;
+                            if (!d) return;
+                            var body = d.querySelector('.order-details-body');
+                            if (!body) return;
+                            var opened = d.getAttribute('data-open') === '1';
+                            d.setAttribute('data-open', opened ? '0' : '1');
+                            body.style.display = opened ? 'none' : '';
+                        }, true);
+                        // Initialize collapsed state
+                        document.addEventListener('DOMContentLoaded', function(){
+                            document.querySelectorAll('.order-details .order-details-body').forEach(function(b){ b.style.display = 'none'; });
+                        });
+                    }
+                })();
+            </script>
     </template>
 
 </odoo>
