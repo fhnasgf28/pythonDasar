@@ -1,4 +1,4 @@
-## Belajar Python Dasar 
+snsn## Belajar Python Dasar 
 
 - Menjadi Odoo developer
 
