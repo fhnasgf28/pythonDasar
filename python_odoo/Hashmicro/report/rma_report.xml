@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Main wrapper template for RMA with custom layout -->
+        <template id="rma_address_wrapper" name="RMA Address Wrapper">
+            <!-- Multicompany -->
+            <t t-if="o and 'company_id' in o">
+                <t t-set="company" t-value="o.company_id"/>
+            </t>
+            <t t-if="not o or not 'company_id' in o">
+                <t t-set="company" t-value="res_company"/>
+            </t>
+
+            <!-- Set theme colors -->
+            <t t-set="theme_color" t-value="o.company_id and o.company_id.theme_color"/>
+            <t t-set="theme_text_color" t-value="o.company_id and o.company_id.theme_text_color"/>
+            <t t-set="text_color" t-value="o.company_id and o.company_id.text_color"/>
+
+            <t t-call="equip3_inventory_operation.report_rma_header_custom"/>
+            <div class="article o_report_layout_standard" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id">
+                <t t-raw="0"/>
+            </div>
+            <t t-call="general_template.templates_footer"/>
+        </template>
+
+        <!-- Custom header template for RMA report -->
+        <template id="report_rma_header_custom" name="RMA Header Custom">
+            <div class="header" t-att-style="'font-family:'+(o.company_id.font_id.family or 'Arial')+';font-size:'+str(o.company_id.font_size or 12)+'px;'">
+                <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <center>
+                                    <table border="0" cellpadding="0" cellspacing="0" style="padding:0px 20px 0px 20px; margin:0; background:#fff; line-height:20px;" width="100%">
+                                        <tr>
+                                            <td align="left" colspan="2" t-attf-style="color:#{text_color or '#000000'}; padding:0 0px;" valign="top">
+                                                <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                                                    <tr>
+                                                        <td align="left" style="text-align:center; color:#4D4D4F; padding:0px 5px; border-right:1px solid #D4D1D1;" valign="top" width="20%">
+                                                            <img style="max-height: 50px; margin-top: 8%;" t-att-src="'data:image/png;base64,%s' % to_text(o.company_id.logo)" t-if="o.company_id.logo"/>
+                                                            <br/>
+                                                            <br/>
+                                                            <img style="display: none;" t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', o.name, 600, 100)"/>
+                                                        </td>
+                                                        <td style="padding:15px 0px 0px 15px;width:40%;" valign="top">
+                                                            <p t-attf-style="text-transform:capitalize; color: #{theme_color or '#000000'}; font-weight:bold;margin:0; margin-bottom:5px;">Address</p>
+                                                            <t t-call="general_template.templates_company_details"/>
+                                                        </td>
+                                                        <td align="left" t-attf-style="color: #{theme_color or '#000000'}; padding:15px 0px 0px 0px;" valign="top" width="40%">
+                                                            <p t-attf-style="text-transform:capitalize; color: #{theme_color or '#000000'}; font-weight:bold;margin:0; margin-bottom:5px;">
+                                                                <strong>Customer Address:</strong>
+                                                                <br />
+                                                            </p>
+                                                            <t t-call="general_template.templates_customer_details"/>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </center>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </template>
+
+        <!-- Custom RMA Body Template -->
+        <template id="report_rma_custom_content">
+            <div class="page" t-att-style="'font-family:'+(o.company_id.font_id.family or 'Arial')+';font-size:'+str(o.company_id.font_size or 12)+'px;'">
+                <div width="100%">
+                    <div style="margin:0; background:#fff;" width="100%">
+                        <div class="oe_structure"/>
+                        <div style="clear: both;display: table;width: 100%;">
+                            <div t-attf-style="padding:10px 0px 0px 0px; height:5px;border-top: 1px solid #{theme_color or '#000000'}; margin-top: 25px;margin-bottom: 25px;"/>
+                        </div>
+
+                        <!-- Barcode and RMA Name -->
+                        <div class="row justify-content-end mb16">
+                            <div class="col-4" name="right_box">
+                                <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', o.name, 600, 100)" style="width:300px;height:50px;" alt="Barcode"/>
+                            </div>
+                        </div>
+
+                        <!-- RMA Title -->
+                        <div class="row mt16 mb16">
+                            <div class="col-12">
+                                <h3>Return Order # <span t-esc="o.name"/> -
+                                    <t t-if="o.state == 'draft'">Draft</t>
+                                    <t t-if="o.state == 'confirm'">Confirm</t>
+                                    <t t-if="o.state == 'process'">Process</t>
+                                    <t t-if="o.state == 'close'">Closed</t>
+                                    <t t-if="o.state == 'reject'">Reject</t>
+                                </h3>
+                            </div>
+                        </div>
+
+                        <!-- RMA Info Table -->
+                        <div align="left" style="color:#4D4D4F; padding:0 0px; margin-bottom: 20px;" valign="top">
+                            <table border="0" cellpadding="0" cellspacing="0" t-attf-style="color: #{theme_text_color or '#000000'}; border: 1px solid #{theme_color or '#000000'}; width: 100%;">
+                                <tr t-attf-style="background-color: #{theme_color or '#000000'};">
+                                    <t t-if="o.sale_id">
+                                        <td t-attf-style="padding:5px 15px; font-weight:bold;">
+                                            <strong>Order Ref.</strong><br/>
+                                            <span t-esc="o.sale_id.name"/>
+                                        </td>
+                                    </t>
+                                    <t t-if="o.picking_id">
+                                        <td t-attf-style="padding:5px 15px; font-weight:bold;">
+                                            <strong>Delivery Ref.</strong><br/>
+                                            <span t-esc="o.picking_id.name"/>
+                                        </td>
+                                    </t>
+                                    <t t-if="o.date">
+                                        <td t-attf-style="padding:5px 15px; font-weight:bold;">
+                                            <strong>Date</strong><br/>
+                                            <span t-esc="o.date" t-options='{"widget": "date"}'/>
+                                        </td>
+                                    </t>
+                                    <t t-if="o.deadline_date">
+                                        <td t-attf-style="padding:5px 15px; font-weight:bold;">
+                                            <strong>Expected Closing</strong><br/>
+                                            <span t-esc="o.deadline_date" t-options='{"widget": "date"}'/>
+                                        </td>
+                                    </t>
+                                    <t t-if="o.user_id">
+                                        <td t-attf-style="padding:5px 15px; font-weight:bold;">
+                                            <strong>Salesperson</strong><br/>
+                                            <span t-esc="o.user_id.name"/>
+                                        </td>
+                                    </t>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <!-- RMA Documents References -->
+                        <div class="row mt16 mb16" t-if="o.incoming_id or o.delivery_id or o.new_sale_id or o.invoice_id">
+                            <div class="col-12">
+                                <table style="width:100%; border: 1px solid #ccc;" cellpadding="10">
+                                    <tr>
+                                        <t t-if="o.incoming_id">
+                                            <td>
+                                                <b>RMA Shipment:</b><br/><span t-esc="o.incoming_id.name"/>
+                                            </td>
+                                        </t>
+                                        <t t-if="o.delivery_id">
+                                            <td>
+                                                <b>RMA Delivery Order:</b><br/><span t-esc="o.delivery_id.name"/>
+                                            </td>
+                                        </t>
+                                        <t t-if="o.new_sale_id">
+                                            <td>
+                                                <b>RMA Sale Order:</b><br/><span t-esc="o.new_sale_id.name"/>
+                                            </td>
+                                        </t>
+                                        <t t-if="o.invoice_id">
+                                            <td>
+                                                <b>RMA Credit Note:</b><br/>
+                                                <t t-if="o.invoice_id.name">
+                                                    <span t-esc="o.invoice_id.name"/>
+                                                </t>
+                                                <t t-if="not o.invoice_id.name">
+                                                    Draft Credit Note
+                                                </t>
+                                            </td>
+                                        </t>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Separator -->
+                        <div>
+                            <p t-attf-style="border-bottom:1px solid #{theme_color or '#ececec'}; padding:0px 0px 10px 0px; width:100%;"/>
+                        </div>
+
+                        <!-- RMA Lines Table -->
+                        <div class="row mt16 mb16">
+                            <div class="col-12">
+                                <table class="table table-sm" style="border:0.5px solid #ccc; border-collapse: collapse; width: 100%;">
+                                    <thead>
+                                        <tr t-attf-style="background-color: #{theme_color or '#000000'}; color: #{theme_text_color or '#FFFFFF'};">
+                                            <th t-attf-style="padding:5px 10px; border:1px solid #{theme_color or '#000000'}; font-weight:bold;">Product</th>
+                                            <th class="text-right" t-attf-style="padding:5px 10px; border:1px solid #{theme_color or '#000000'}; font-weight:bold;">Delivered Qty</th>
+                                            <th class="text-right" t-attf-style="padding:5px 10px; border:1px solid #{theme_color or '#000000'}; font-weight:bold;">Return Qty</th>
+                                            <t t-if="is_replace_product(o)">
+                                                <th t-attf-style="padding:5px 10px; border:1px solid #{theme_color or '#000000'}; font-weight:bold;">Replace Prod</th>
+                                                <th class="text-right" t-attf-style="padding:5px 10px; border:1px solid #{theme_color or '#000000'}; font-weight:bold;">Rep Prod Qty</th>
+                                            </t>
+                                            <th class="text-center" t-attf-style="padding:5px 10px; border:1px solid #{theme_color or '#000000'}; font-weight:bold;">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-foreach="o.rma_lines" t-as="line">
+                                            <tr style="page-break-inside: avoid" t-att-style="'background-color: ' + (o.company_id.even_party_color or '#ffffff') + ';'">
+                                                <td t-att-style="'padding:5px 10px; border:0.5px solid #ccc;'">
+                                                    <span t-field="line.product_id.name"/>
+                                                </td>
+                                                <td class="text-right" t-att-style="'padding:5px 10px; border:0.5px solid #ccc;'">
+                                                    <span t-esc="'%.2f'%(line.delivered_qty)"/>
+                                                </td>
+                                                <td class="text-right" t-att-style="'padding:5px 10px; border:0.5px solid #ccc;'">
+                                                    <span t-esc="'%.2f'%(line.return_qty)"/>
+                                                </td>
+                                                <t t-if="is_replace_product(o)">
+                                                    <td t-att-style="'padding:5px 10px; border:0.5px solid #ccc;'">
+                                                        <span t-esc="line.replace_product_id.name if line.replace_product_id else ''"/>
+                                                    </td>
+                                                    <td class="text-right" t-att-style="'padding:5px 10px; border:0.5px solid #ccc;'">
+                                                        <span t-esc="'%.2f'%(line.replace_qty)"/>
+                                                    </td>
+                                                </t>
+                                                <td class="text-center" t-att-style="'padding:5px 10px; border:0.5px solid #ccc;'">
+                                                    <t t-if="line.action == 'refund'">REFUND</t>
+                                                    <t t-if="line.action == 'repair'">REPAIR</t>
+                                                    <t t-if="line.action == 'replace'">REPLACE</t>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Reject Reason -->
+                        <div class="row mt16 mb16" t-if="o.reject_reason">
+                            <div class="col-12">
+                                <b>Reject Reason:</b><br/>
+                                <span t-esc="o.reject_reason"/>
+                            </div>
+                        </div>
+
+                        <!-- Signature -->
+                        <div align="right">
+                            <t t-call="general_template.report_signature"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <!-- Main RMA Report Body -->
+        <template id="report_rma_custom_body">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-set="o" t-value="o.with_context({'lang':o.partner_id.lang if o.partner_id else o.company_id.partner_id.lang})"/>
+                    <t t-call="equip3_inventory_operation.rma_address_wrapper">
+                        <t t-call="equip3_inventory_operation.report_rma_custom_content"/>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+        <!-- Override the original dev_rma report action to use our custom template -->
+        <record id="dev_rma.action_report_dev_rma" model="ir.actions.report">
+            <field name="name">RMA Report</field>
+            <field name="model">dev.rma.rma</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">equip3_inventory_operation.report_rma_custom_body</field>
+            <field name="report_file">equip3_inventory_operation.report_rma_custom_body</field>
+            <field name="print_report_name">'RMA - %s - %s' % (object.partner_id.name or '', object.name)</field>
+            <field name="binding_type">report</field>
+        </record>
+
+    </data>
+</odoo>
