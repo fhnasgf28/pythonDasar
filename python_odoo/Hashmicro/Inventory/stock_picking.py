@@ -65,3 +65,49 @@ class StockPicking(models.Model):
             else:
                 rec.journal_button = False
 
+
+    def _get_current_user(self):
+        self.current_user = False
+        for e in self:
+            if e.purchase_id or e.sale_id:
+                e.current_user = True
+                break
+            else:
+                if e.env.user.id == e.user_id.id:
+                    e.current_user = True
+                else:
+                    e.current_user = False
+
+    def _build_product_domain(self, barcode):
+        company = self.env.company
+        barcode_type = company.sh_stock_barcode_mobile_type
+        if self._is_lot_serial_scan_scenario():
+            lot = self.env['stock.production.lot'].search([('name', '=', barcode)], limit=1)
+            if lot:
+                return [('id', 'in', lot.product_id.ids)]
+        domain_parts = {
+            'barcode': ['|', ('barcode', '=', barcode), ('barcode_line_ids.name', '=', barcode)],
+            'int_ref': [('default_code', '=', barcode)],
+            'sh_qr_code': [('sh_qr_code', '=', barcode)],
+            'all': ['|', '|', ('barcode', '=', barcode), ('default_code', '=', barcode),
+                    ('barcode_line_ids.name', '=', barcode)]
+        }
+
+        if barcode_type not in domain_parts:
+            self._notify_user(False, 'Incorrect Configuration', 'Invalid mobile barcode type.')
+            return []
+        return domain_parts[barcode_type]
+
+    def _is_lot_serial_scan_scenario(self):
+        ir_config = self.env['ir.config_paramter'].sudo()
+        if self.transfer_id:
+            it_barcode_type = ir_config.get_param('equip3_inventory_scanning.sh_it_mobile_barcode_type', 'sku')
+            if it_barcode_type == 'lot_serial':
+                return True
+        if self.picking_type_code == 'outgoing' or self.is_transfer_out:
+            stock_barcode_type = ir_config.get_param('equip3_inventory_scanning.sh_stock_mobile_barcode_type', 'sku'
+                                                     )
+            if stock_barcode_type ==  'lot_serial':
+                return  True
+            return False
+
