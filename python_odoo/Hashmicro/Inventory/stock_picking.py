@@ -111,3 +111,44 @@ class StockPicking(models.Model):
                 return  True
             return False
 
+    def _get_previous_moves_delivered(self, picking):
+        result = {}
+        for picking in self:
+            is_pack = 'PACK' in picking.name
+            is_out_3step = (
+                picking.picking_type_code == 'outgoing'
+                and 'Output' in (picking.locationn_id.display_name or '')
+            )
+            if is_pack:
+                search_pattern = 'PICK'
+                step_name = 'PICK'
+            elif is_out_3step:
+                search_pattern = 'PACK'
+                step_name = 'PACK'
+            else:
+                continue
+
+            previous_pickings = self.env['stock.picking'].search([
+                ('name', 'ilike', search_pattern),
+                ('origin', '=', picking.origin),
+                ('state', '=', 'done'),
+            ])
+            for previous_picking in previous_pickings:
+                for move in previous_picking.move_ids_without_package:
+                    if move.quantity_done > 0:
+                        result[move.product_id.id] = result.get(move.product_id.id, 0)  + move.quantity_done
+
+            return result
+
+    def _reset_sequence(self):
+        for rec in self:
+            current_sequence = 1
+            for line in rec.move_ids_without_package:
+                line.sequence = current_sequence
+                current_sequence += 1
+            current_sequence = 1
+            for line in rec.move_line_ids_without_package:
+                line.move_line_sequence = current_sequence
+                current_sequence += 1
+
+
