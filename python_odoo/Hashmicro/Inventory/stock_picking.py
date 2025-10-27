@@ -151,4 +151,15 @@ class StockPicking(models.Model):
                 line.move_line_sequence = current_sequence
                 current_sequence += 1
 
+    @api.onchange('partner_id')
+    def onchange_partner_id(self):
+        res = super(StockPicking, self).onchange_partner_id()
+        self._compute_is_mba_on_transfer_operations()
+        return res
+
+    def _compute_is_mba_on_transfer_operations(self):
+        is_mbs_on_transfer_operations = self.env['ir.config_parameter'].sudo().get_param('is_mbs_on_transfer_operation', False)
+        for record in self:
+            record.is_mbs_on_transfer_operation = is_mbs_on_transfer_operations
+
 
