@@ -62,3 +62,32 @@ class MaintenanceEquipment(models.Model):
         })
         action['context'] = ctx
         return action
+
+    def action_account_asset(self):
+        context = dict(self.env.context) or {}
+        context.update({
+            'default_equipment_id': self.id
+        })
+        return {
+            'type': 'ir.actions.act_window',
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_model': 'account.asset.asset',
+            'target': 'current',
+            'context': context,
+            'res_id': self.account_asset_id.id,
+        }
+
+    def breakdown_action(self):
+        self.write({'state': 'breakdown'})
+
+    def scrapped_action(self):
+        self.write({'state': 'scrapped'})
+
+    def _compute_work_order_count(self):
+        work_order_obj = self.env['maintenance.work.order']
+        work_order_ids = work_order_obj.search([('facility', '=', self.id)])
+        for book in self:
+            book.update({
+                'wo_count': len(work_order_ids)
+            })

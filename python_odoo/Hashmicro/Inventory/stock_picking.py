@@ -163,3 +163,42 @@ class StockPicking(models.Model):
             record.is_mbs_on_transfer_operation = is_mbs_on_transfer_operations
 
 
+    def action_serialize(self):
+        self.ensure_one()
+        if self.env.context.get('skip_serializer', False):
+            for move in self.move_lines.filtered(lambda o:o.product_id._is_auto() and o._get_fullfillment_serialize() < 100):
+                move._generate_serial_number()
+                self.action_assign()
+                return True
+
+    def action_assign(self):
+        self.ensure_one()
+        res = super(StockPicking, self).action_assign()
+        if self.transfer_id and self.is_transfer_in:
+            picking_id = self.env['stock.picking'].search(
+                [('transfer_id', '=', self.transfer_id.id), ('is_transfer_out', '=', True), ('state','=', 'done')]
+            )
+            if not picking_id:
+                raise Warning (
+                    "You can only validate Operation IN if the Operation OUT is validated")
+
+        return res
+
+    def _check_product_limit(self):
+        self._check_limits(
+            picking_type_code='incoming',
+            limit_type_attrs='product_limit',
+            min_qty_attr = 'min_val',
+            max_qty_attr='max_val',
+            action_verb='received'
+        )
+
+    def _check_delivery_limits(self):
+        self._check_limits(
+            picking_type_code='outgoing',
+            limit_type_attrs='delivery_limit',
+            min_qty_attr= 'delivery_limit_min_val',
+            max_qty_attr='delivery_limit_max_val',
+            action_verb='delivered'
+        )
+
