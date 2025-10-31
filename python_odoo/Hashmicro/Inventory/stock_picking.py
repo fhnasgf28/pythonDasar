@@ -194,11 +194,26 @@ class StockPicking(models.Model):
         )
 
     def _check_delivery_limits(self):
-        self._check_limits(
+                self._check_limits(
             picking_type_code='outgoing',
             limit_type_attrs='delivery_limit',
             min_qty_attr= 'delivery_limit_min_val',
             max_qty_attr='delivery_limit_max_val',
             action_verb='delivered'
         )
+
+    def _check_missing_account_itr(self):
+        # is_interwarehouse_transfer_journal = eval(self.env['ir.config_parameter'].get_param('interwarehouse_transfer_journal', 'False'))
+        is_interwarehouse_transfer_journal = self.env['inventory.config.settings'].search([],
+                                                                                          limit=1).interwarehouse_transfer_journal
+        if not is_interwarehouse_transfer_journal:
+            return
+
+        for rec in self:
+            if rec.transfer_id:
+                for line in rec.move_ids_without_package:
+                    if line.product_id.valuation == 'real_time' and not line.product_id.categ_id.stock_transfer_transit_account_id:
+                        raise Warning(
+                            _('Please set up stock transfer transit account in product category for category {line.product_id.categ_id.display_name}'))
+
 
