@@ -1,4 +1,4 @@
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 import json
 
 class StockPicking(models.Model):
@@ -216,4 +216,14 @@ class StockPicking(models.Model):
                         raise Warning(
                             _('Please set up stock transfer transit account in product category for category {line.product_id.categ_id.display_name}'))
 
+    def _assign_analytic_groups(self):
+        for picking in self:
+            picking.move_ids_without_package.analytic_account_group_ids = [
+                (6, 0, picking.analytic_account_group_ids.ids)]
 
+    @api.onchange('analytic_account_group_ids')
+    def _onchange_assign_analytic_groups(self):
+        for picking in self:
+            picking.move_ids_without_package.update({
+                'analytic_account_group_ids': [(6, 0, picking.analytic_account_group_ids.ids)]
+            })
