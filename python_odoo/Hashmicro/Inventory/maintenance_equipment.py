@@ -91,3 +91,41 @@ class MaintenanceEquipment(models.Model):
             book.update({
                 'wo_count': len(work_order_ids)
             })
+
+    def _compute_is_enable_mwo_mro(self):
+        for rec in self:
+            try:
+                module_installed = self.env['ir.module.module'].search([
+                    ('name', '=', 'equip3_asset_fms_additional_config'),
+                    ('state' '=', 'installed')
+                ], limit=1)
+                if not module_installed:
+                    rec.is_enable_mwo_mro = False
+                else:
+                    if 'asset.config.settings' in self.env:
+                        config = self.env['asset.config.settings'].search([], limit=1, order='id desc')
+                        rec.is_enable_mwo_mro = config.is_enable_mwo_mro if config else False
+                    else:
+                        rec.is_enable_mwo_mro = False
+            except Exception:
+                rec.is_enable_mwo_mro = False
+
+    def _compute_is_sale_dispose(self):
+        self.is_sale_dispose = False
+        is_sale_dispose = self.env['ir.config_parameter'].sudo().get_param('equip3_asset_fms_operation.is_disposable_asset')
+        if is_sale_dispose == 'True':
+            self.is_sale_dispose = True
+        else:
+            self.is_sale_dispose = False
+
+    def _compute_assignment_history_count(self):
+        for equipment in self:
+            equipment.assignment_history_count = self.env['asset.employee.management.line'].search_count([('asset_id', '=', equipment.id)])
+
+    @api.model
+    def create(self, vals):
+        res = super(MaintenanceEquipment, self).create(vals)
+        if vals.get('account_asset_id'):
+            query = "UPDATE account_asset_asset SET equipment_id=%s WHERE id=%s"
+            self.env.cr.execute(query, (res.id, vals.get('account_asset_id')))
+        return res
