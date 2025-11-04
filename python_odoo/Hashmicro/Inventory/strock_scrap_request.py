@@ -1,4 +1,5 @@
 from odoo import models, fields, api
+import json
 
 class StockScrapRequest(models.Model):
     _inherit = 'stock.scrap'
