@@ -1,0 +1,1 @@
+python odoo-bin scaffold nama_modul path_yg_dutuju
