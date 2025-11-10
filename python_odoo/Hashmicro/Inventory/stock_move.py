@@ -33,3 +33,15 @@ class StockMove(models.Model):
                 raise UserError(_("Lot %s already exists") % barcode)
 
         return super(StockMove, self).sh_stock_move_barcode_mobile_has_tracking(CODE_SOUND_SUCCESS, CODE_SOUND_FAIL)
+
+    @api.depends('ha_tracking', 'picking_type_id.use_create_lots', 'picking_type_id.use_existing_lots', 'state')
+    def _compute_display_assign(self):
+        for move in self:
+            move.display_assign = (
+                move.has_tracking in ('lot', 'serial') and
+                move.state in ('partially_available', 'assigned', 'confirmed') and
+                move.picking_type_id.use_create_lots and not move.picking_type_id.use_existing_lots
+                and not move.origin_returned_move_id.id
+            )
+
+
