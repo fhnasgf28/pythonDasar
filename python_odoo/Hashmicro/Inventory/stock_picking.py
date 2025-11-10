@@ -227,3 +227,14 @@ class StockPicking(models.Model):
             picking.move_ids_without_package.update({
                 'analytic_account_group_ids': [(6, 0, picking.analytic_account_group_ids.ids)]
             })
+
+    def action_view_purchase_request_picking(self):
+        return {
+            'type': 'ir.actions.act_window',
+            'res_model': 'purchase.request',
+            'name': 'Purchase Request',
+            'domain': [('picking_id', '=', self.id)],
+            'view_mode': 'tree,form',
+            'target': 'current',
+            'context':  {'create':0}
+        }
