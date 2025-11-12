@@ -5,7 +5,7 @@ from odoo.exceptions import UserError
 class StockMove(models.Model):
     _inherit = 'stock.move'
 
-    width = fields.Float(string='Width', compute='_cal_move_width')
+    width = fields.Float(string='Width', compute='_cal_move_width') 
     height = fields.Float(string='Height', compute='_cal_move_height')
 
     @api.depends('product_id', 'product_uom_qty', 'product_uom')
@@ -42,6 +42,18 @@ class StockMove(models.Model):
                 move.state in ('partially_available', 'assigned', 'confirmed') and
                 move.picking_type_id.use_create_lots and not move.picking_type_id.use_existing_lots
                 and not move.origin_returned_move_id.id
+            )
+
+    @api.onchange('product_id')
+    def _onchange_product_id_initial_uom(self):
+        if self.product_id:
+            self.initial_unit_of_measure = self.product_id.uom_id.id
+            self.secondary_uom_id = self.product_id.secondary_uom_id.id
+
+    def _compute_package_ids(self):
+        for rec in self:
+            packaging_ids = self.env['product.packaging'].search(
+                [('product_id', 'in', self.product_id.ids)]
             )
 
 
