@@ -20,6 +20,15 @@ class PurchaseOrder(models.Model):
         })
         return res
 
+    def button_onhold_confirm(self):
+        self.state = 'sent'
+        self.with_context(order_confirm=True).button_confirm()
+
+    def onchange_partner_id(self):
+        res = super(PurchaseOrder, self).onchange_partner_id()
+        self._compute_hold_purchase_order()
+        return res
+
 class PurchaseOrderLine(models.Model):
     _inherit = 'purchase.order.line'
 
