@@ -1,8 +1,15 @@
+from email.policy import default
+from odoo.exceptions import ValidationError
+
 from odoo import models, fields, api, _
 import json
 
 class StockPicking(models.Model):
     _inherit = 'stock.picking'
+
+    driver_name = fields.Char(string="Driver Name")
+    vehicle_plate = fields.Char(string="Vehicle Plate")
+    is_urgent = fields.Boolean(string="Is Urgent", default=False)
 
 
     @api.model
@@ -65,7 +72,31 @@ class StockPicking(models.Model):
             else:
                 rec.journal_button = False
 
+    @api.constrains('is_urgent', 'driver_name')
+    def _check_driver_info(self):
+        for rec in self:
+            if rec.driver_name and not rec.driver_name:
+                raise ValidationError(_("Driver name is required for urgent picking."))
 
+    @api.onchange('partner_id')
+    def get_partner_location(self):
+        context = dict(self.env.context)
+        if context.get('picking_type_code') == 'incoming':
+            self.location_dest_id = self.partner_id.preferred_location.id
+        if context.get('picking_type_code') == 'outgoing':
+            self.location_id = self.partner_id.preferred_location.id
+
+    # def action_put_in_pack(self):
+    #     self.ensure_one()
+    #     if self.state not in ('done', 'cancel'):
+    #         picking_move_lines = self.move_line_ids
+    #         if (
+    #             not self.picking_type_id.show_reserved
+    #             and not self.immediate_transfer
+    #             and not self.env.context.get('barcode_view')
+    #         ):
+    #             picking_move_lines = self.move_line_nosugges_ids
+    #         move_line_ids = picking_move_lines.filtered(lambda ml:)
     def _get_current_user(self):
         self.current_user = False
         for e in self:
@@ -238,3 +269,5 @@ class StockPicking(models.Model):
             'target': 'current',
             'context':  {'create':0}
         }
+
+
