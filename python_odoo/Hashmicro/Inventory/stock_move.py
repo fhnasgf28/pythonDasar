@@ -1,5 +1,6 @@
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError
+import json
 
 
 class StockMove(models.Model):
@@ -56,4 +57,65 @@ class StockMove(models.Model):
                 [('product_id', 'in', self.product_id.ids)]
             )
 
+    # @api.depends('location_id', 'product_id', 'move_id', 'move_id.origin_returned_move_id')
+    # def _compute_lot_id_domain(self):
+    #     for line in self:
+    #         domain = [('id', '=', False)]
+    #         move = self.env['stock.move'].browse(self.env.context.get('move_id'))
+    #
+    #         print(f"Computing lot domain for move: {move.id}")
+    #
+    #         if move.origin_returned_move_id:
+    #             print(f"Move has origin_returned_move_id: {move.origin_returned_move_id.id}")
+    #             # For return moves, get lots from original move lines
+    #             lot_ids = move.origin_returned_move_id.move_line_ids.mapped('lot_id.id')
+    #             print(f"Found lot_ids from origin move: {lot_ids}")
+    #             if lot_ids:
+    #                 domain = [('id', 'in', lot_ids)]
+    #         else:
+    #             # For normal moves, get lots with available quantity > 0 and not fully reserved
+    #             if line.location_id and line.product_id:
+    #                 # Get quants with available quantity
+    #                 quants = self.env['stock.quant'].search([
+    #                     ('location_id', '=', line.location_id.id),
+    #                     ('product_id', '=', line.product_id.id),
+    #                     ('lot_id', '!=', False),
+    #                     ('quantity', '>', 0),
+    #                     ('available_quantity', '>', 0)  # Only lots with available (non-reserved) quantity
+    #                 ])
+    #                 print("ini adalah quants", quants)
+    #                 if quants:
+    #                     lot_ids = quants.mapped('lot_id.id')
+    #                     domain = [('id', 'in', lot_ids)]
+    #                     print(f"Found available lots with quantity > 0: {lot_ids}")
+    #                 else:
+    #                     domain = [('id', '=', False)]  # No available lots
+    #                     print("No available lots found with quantity > 0")
+    #             else:
+    #                 print("Location or product not set, using empty domain")
+    #
+    #         print(f"Final domain for move {move.id}: {domain}")
+    #         line.lot_id_domain = json.dumps(domain)
+    #
 
+    @api.depends('location_id', 'product_id', 'move_id', 'move_id.origin_returned_move_id')
+    def _compute_lot_id_domain(self):
+        for line in self:
+            domain = [('id', '=', False)]
+            move = self.env['stock.move'].browse(self.env.context.get('move_id'))
+            if move.origin_returned_move_id:
+                lot_ids = move.origin_returned_move_id.move_line_ids.mapped('lot_id.id')
+                if lot_ids:
+                    domain = [('id', 'in', lot_ids)]
+            else:
+                if line.location_id and line.product_id:
+                    all_quants = self.env['stock.quant'].search([
+                        ('location_id', '=', line.location_id.id),
+                        ('product_id', '=', line.product_id.id),
+                        ('lot_id', '!=', False),
+                    ])
+                    available_quants = all_quants.filtered(lambda quant: quant.quantity > 0 and quant.available_quantity > 0 and (quant.quantity - quant.reserved_quantity) > 0)
+                    if available_quants:
+                        lot_ids = available_quants.mapped('lot_id.id')
+                        domain = [('id', 'in', lot_ids)]
+            line.lot_id_domain = json.dumps(domain)

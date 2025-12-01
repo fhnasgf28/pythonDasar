@@ -9,5 +9,5 @@ class MaterialRequest(models.Model):
                 for line in record.ir_lines_ids:
                     record.itr_done_qty += line.transfer_qty
             else:
-                record.itr_done_qty = 0
+                record.itr_done_qty = 0 
 
