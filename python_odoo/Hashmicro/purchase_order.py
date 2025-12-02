@@ -28,10 +28,17 @@ class PurchaseOrder(models.Model):
                 else:
                     raise ValidationError("Picking Type not found")
 
-    def action_rfq_send(self):
-        self.ensure_one()
-        ir_model_data = self.env['ir.model.data']
-        try:
-            if self.env.context.get('send_rfq', False):
-
-<span class="o_field_char o_field_widget o_readonly_modifier" name="filter_parent_company" data-uniq="field_res.partner_filter_parent_company" data-original-title="" title="">["|", ["company_id", "=", 1], ["company_id", "=", false], ["is_customer", "=", true], ["state_customer", "=", "approved"], ["id", "not in", [545, 546, 517, 3035, 699]]]</span>
+    def action_reject(self):
+        if self.state != 'waiting_for_approve':
+            return {
+                'type': 'ir.actions.client',
+                'tag': 'reload',
+            }
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'rejected reason',
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_model': 'approval.reject',
+            'target': 'new'
+        }
