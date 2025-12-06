@@ -3,7 +3,7 @@ import time
 
 def switch_chrome_tab(interval_minutes=4):
     """ 
-    Berpindah tab di Google Chrome setiap interval waktu tertentu.
+    Berpindah tab di Google Chrome set  iap interval waktu tertentu.
             
     Args:
         interval_minutes (int): I   nterval waktu dalam menit untuk berpindah tab.
