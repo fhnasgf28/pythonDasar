@@ -4,9 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7453df53-5a42-414a-8743-2316b1054a1b" name="Changes" comment="salin code fleet vehicle">
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/python_odoo/Hashmicro/purchase_order.py" afterDir="false" />
+    <list default="true" id="7453df53-5a42-414a-8743-2316b1054a1b" name="Changes" comment="latihan RPC">
+      <change afterPath="$PROJECT_DIR$/latihan_Random/gemini/latihan-random/latihan_parameter.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/latihan_Random/chrome-tab-pindah.py" beforeDir="false" afterPath="$PROJECT_DIR$/latihan_Random/chrome-tab-pindah.py" afterDir="false" />
     </list>
     <list id="00247ce7-6dd8-4caa-8a4d-43a52e222bef" name="Changess" comment="Changess" />
     <option name="SHOW_DIALOG" value="false" />
@@ -47,15 +48,19 @@
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;Python.chrome-tab-pindah.executor&quot;: &quot;Run&quot;,
     &quot;Python.cycle_count.executor&quot;: &quot;Run&quot;,
     &quot;Python.ekonomi.executor&quot;: &quot;Run&quot;,
     &quot;Python.expense_tracker.executor&quot;: &quot;Run&quot;,
     &quot;Python.ganjil_genap.executor&quot;: &quot;Run&quot;,
     &quot;Python.generate_voucher.executor&quot;: &quot;Run&quot;,
     &quot;Python.http_response.executor&quot;: &quot;Run&quot;,
+    &quot;Python.json-tes.executor&quot;: &quot;Run&quot;,
+    &quot;Python.json.executor&quot;: &quot;Run&quot;,
     &quot;Python.jual_tabung.executor&quot;: &quot;Run&quot;,
     &quot;Python.kalkulator_bisnis.executor&quot;: &quot;Run&quot;,
     &quot;Python.keliling_lingkaran.executor&quot;: &quot;Run&quot;,
+    &quot;Python.latihan_rpc_2.executor&quot;: &quot;Run&quot;,
     &quot;Python.magic_method.executor&quot;: &quot;Run&quot;,
     &quot;Python.main (1).executor&quot;: &quot;Run&quot;,
     &quot;Python.main.executor&quot;: &quot;Run&quot;,
@@ -86,6 +91,7 @@
     &quot;Python.web_scraping.executor&quot;: &quot;Run&quot;,
     &quot;Python.web_scrapping.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;com.codeium.enabled&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
@@ -102,30 +108,8 @@
       <recent name="$PROJECT_DIR$/latihan_Random/grok" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.pindah-tab-chrome">
-    <configuration name="generate_voucher" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="BelajarPython" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/latihan_Random/chat-gpt" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/latihan_Random/chat-gpt/generate_voucher.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="jual_tabung" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Python.chrome-tab-pindah">
+    <configuration name="chrome-tab-pindah" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="pythonDasar" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -134,11 +118,55 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/latihan_Random/deepseek" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/latihan_Random" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/latihan_Random/deepseek/jual_tabung.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/latihan_Random/chrome-tab-pindah.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="json-tes" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="pythonDasar" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/python_odoo/filtering_data" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/python_odoo/filtering_data/json-tes.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="latihan_rpc_2" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="pythonDasar" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/python_odoo/python_RPC" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/python_odoo/python_RPC/latihan_rpc_2.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -191,42 +219,20 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="tugas_karyawan" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="BelajarPython" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/latihan_Random/chat-gpt" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/latihan_Random/chat-gpt/tugas_karyawan.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.chrome-tab-pindah" />
+        <item itemvalue="Python.latihan_rpc_2" />
+        <item itemvalue="Python.json-tes" />
         <item itemvalue="Python.pindah-tab-chrome" />
         <item itemvalue="Python.mouse" />
-        <item itemvalue="Python.jual_tabung" />
-        <item itemvalue="Python.generate_voucher" />
-        <item itemvalue="Python.tugas_karyawan" />
       </list>
     </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-python-sdk-598b0484d0b5-e2d783800521-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-251.26927.74" />
+        <option value="bundled-python-sdk-7bb8055f9097-cbfc7b97e6b2-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-252.28238.29" />
       </set>
     </attachedChunks>
   </component>
@@ -239,46 +245,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1739721344843</updated>
-    </task>
-    <task id="LOCAL-00004" summary="mantap chat gpt">
-      <option name="closed" value="true" />
-      <created>1740074886670</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1740074886670</updated>
-    </task>
-    <task id="LOCAL-00005" summary="hashy ai">
-      <option name="closed" value="true" />
-      <created>1740129177465</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1740129177465</updated>
-    </task>
-    <task id="LOCAL-00006" summary="sale invoice summary">
-      <option name="closed" value="true" />
-      <created>1740381160881</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1740381160881</updated>
-    </task>
-    <task id="LOCAL-00007" summary="terimakasih untuk hari ini yang begitu indah">
-      <option name="closed" value="true" />
-      <created>1740447645455</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1740447645455</updated>
-    </task>
-    <task id="LOCAL-00008" summary="query_default_modules_ai.py">
-      <option name="closed" value="true" />
-      <created>1740534072580</created>
-      <option name="number" value="00008" />
-      <option name="presentableId" value="LOCAL-00008" />
-      <option name="project" value="LOCAL" />
-      <updated>1740534072580</updated>
     </task>
     <task id="LOCAL-00009" summary="update_industries_ai.py">
       <option name="closed" value="true" />
@@ -632,7 +598,47 @@
       <option name="project" value="LOCAL" />
       <updated>1753027724644</updated>
     </task>
-    <option name="localTasksCounter" value="53" />
+    <task id="LOCAL-00053" summary="menambahkan material_request.py">
+      <option name="closed" value="true" />
+      <created>1764342924836</created>
+      <option name="number" value="00053" />
+      <option name="presentableId" value="LOCAL-00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1764342924836</updated>
+    </task>
+    <task id="LOCAL-00054" summary="menambahkan latihan baru">
+      <option name="closed" value="true" />
+      <created>1764576885574</created>
+      <option name="number" value="00054" />
+      <option name="presentableId" value="LOCAL-00054" />
+      <option name="project" value="LOCAL" />
+      <updated>1764576885574</updated>
+    </task>
+    <task id="LOCAL-00055" summary="purchase_order.py latihan">
+      <option name="closed" value="true" />
+      <created>1764662317663</created>
+      <option name="number" value="00055" />
+      <option name="presentableId" value="LOCAL-00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1764662317664</updated>
+    </task>
+    <task id="LOCAL-00056" summary="purchase_order.py, check_expected_date,  onchange_partner_id, button_on_hold_confirm">
+      <option name="closed" value="true" />
+      <created>1764664910996</created>
+      <option name="number" value="00056" />
+      <option name="presentableId" value="LOCAL-00056" />
+      <option name="project" value="LOCAL" />
+      <updated>1764664910996</updated>
+    </task>
+    <task id="LOCAL-00057" summary="latihan RPC">
+      <option name="closed" value="true" />
+      <created>1764905145133</created>
+      <option name="number" value="00057" />
+      <option name="presentableId" value="LOCAL-00057" />
+      <option name="project" value="LOCAL" />
+      <updated>1764905145133</updated>
+    </task>
+    <option name="localTasksCounter" value="58" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -647,11 +653,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="penggunaan_str.py" />
-    <MESSAGE value="magic method" />
-    <MESSAGE value="magic method rtr" />
-    <MESSAGE value="modul production latihan mantap oke gas" />
-    <MESSAGE value="modular" />
     <MESSAGE value="penghasilan" />
     <MESSAGE value="hitung sumbangan" />
     <MESSAGE value="web scrapping" />
@@ -672,6 +673,11 @@
     <MESSAGE value="hashcam" />
     <MESSAGE value="default domain" />
     <MESSAGE value="salin code fleet vehicle" />
-    <option name="LAST_COMMIT_MESSAGE" value="salin code fleet vehicle" />
+    <MESSAGE value="menambahkan material_request.py" />
+    <MESSAGE value="menambahkan latihan baru" />
+    <MESSAGE value="purchase_order.py latihan" />
+    <MESSAGE value="purchase_order.py, check_expected_date,  onchange_partner_id, button_on_hold_confirm" />
+    <MESSAGE value="latihan RPC" />
+    <option name="LAST_COMMIT_MESSAGE" value="latihan RPC" />
   </component>
 </project>

@@ -1,3 +1,6 @@
+from formatString import harga
+
+
 def tampilkan_menu(daftar_menu):
     """
     Fungsi untuk menampilkan menu.
@@ -7,65 +10,68 @@ def tampilkan_menu(daftar_menu):
     print("   MENU KOPI KITA   ")
     print("=" * 20)
     for item, harga in daftar_menu.items():
-        # Format string agar rapi
-        print(f"- {item.ljust(15)} : Rp {harga:,}")
+        # format string agar rapi
+        print(f"- {item.ljust(15)}: Rp {harga:,}")
     print("=" * 20)
 
 
 def hitung_total(harga_satuan, jumlah_beli):
     """
-    Fungsi untuk menghitung total harga.
-    Parameter: harga_satuan (int), jumlah_beli (int)
-    Return: total harga (int)
+    fungsi untuk menghitung totl harga
+    Args:
+        harga_satuan:
+        jumlah_beli:
+
+    Returns:
+
     """
     return harga_satuan * jumlah_beli
 
-
 def proses_pembayaran(total_tagihan, uang_pelanggan):
     """
-    Fungsi untuk memproses pembayaran dan kembalian.
-    Parameter: total_tagihan (int), uang_pelanggan (int)
+    fungsi untuk memproses pembayarran dan kembalian
+    Args:
+        total_tagihan:
+        uang_pelanggan:
+
+    Returns:
+
     """
     if uang_pelanggan >= total_tagihan:
         kembalian = uang_pelanggan - total_tagihan
         print(f"\n✅ Pembayaran Berhasil!")
         print(f"   Total Bayar : Rp {total_tagihan:,}")
         print(f"   Uang Masuk  : Rp {uang_pelanggan:,}")
-        print(f"   Kembalian   : Rp {kembalian:,}")
+        print(f"   Kembalian : Rp {kembalian:,}")
     else:
         kurang = total_tagihan - uang_pelanggan
         print(f"\n❌ Uang tidak cukup. Kurang Rp {kurang:,}")
 
-
-# --- PROGRAM UTAMA ---
-
-# Data Menu (Dictionary)
+# program utama
+# data menu (dictionary)
 menu_kopi = {
     "Espresso": 15000,
-    "Americano": 18000,
+    "Americano": 1,
     "Latte": 22000,
     "Cappuccino": 25000,
-    "Mocha": 28000
+    "Mocha": 28000,
 }
 
-# 1. Panggil fungsi dengan parameter dictionary
+# 1. panggil fungsi dengan parameter dictionary
 tampilkan_menu(menu_kopi)
 
-# Input dari pengguna
+# input dari pengguna
 pilihan = input("\nMasukkan nama kopi yang dipesan (sesuai menu): ").capitalize()
 qty = int(input("Masukkan jumlah pesanan: "))
 
-# Validasi apakah menu ada
+# validasi apakah menu ada
 if pilihan in menu_kopi:
     harga_per_cup = menu_kopi[pilihan]
-
-    # 2. Panggil fungsi hitung dengan parameter harga dan jumlah
     total_bayar = hitung_total(harga_per_cup, qty)
-
-    print(f"\nTotal yang harus dibayar: Rp {total_bayar:,}")
+    print(f"\nTotal yang harus dibayar: Rp {total_bayar}")
     bayar = int(input("Masukkan uang pembayaran: Rp "))
 
-    # 3. Panggil fungsi pembayaran dengan parameter total dan uang
+    # 3. panggil fungsi pembayaran dengan parameter total dan uang
     proses_pembayaran(total_bayar, bayar)
 else:
     print("\nMaaf, menu tersebut tidak tersedia.")
