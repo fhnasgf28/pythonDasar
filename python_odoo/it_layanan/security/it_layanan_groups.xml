@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record model="res.groups" id="group_it_user">
+        <field name="name">IT Layanan / Pengguna</field>
+        <field name="category_id" ref="base.module_category_services_helpdesk"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+
+    <record model="res.groups" id="group_it_technician">
+        <field name="name">IT Layanan / Teknisi</field>
+        <field name="category_id" ref="base.module_category_services_helpdesk"/>
+        <field name="implied_ids" eval="[(4, ref('group_it_user'))]"/>
+    </record>
+
+    <record model="res.groups" id="group_it_manager">
+        <field name="name">IT Layanan / Manajer</field>
+        <field name="category_id" ref="base.module_category_services_helpdesk"/>
+        <field name="implied_ids" eval="[(4, ref('group_it_technician'))]"/>
+    </record>
+</odoo>

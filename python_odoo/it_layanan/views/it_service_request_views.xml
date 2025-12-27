@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Tree View -->
+    <record id="view_it_service_request_tree" model="ir.ui.view">
+        <field name="name">it.service.request.tree</field>
+        <field name="model">it.service.request</field>
+        <field name="arch" type="xml">
+            <tree string="Permintaan Layanan IT">
+                <field name="name"/>
+                <field name="requester_id"/>
+                <field name="assigned_to_id" optional="hide"/>
+                <field name="request_date"/>
+                <field name="deadline_date"/>
+                <field name="status" decoration-info="status == 'draft'"
+                                      decoration-warning="status == 'submitted'"
+                                      decoration-primary="status == 'in_progress'"
+                                      decoration-success="status == 'resolved'"
+                                      decoration-danger="status == 'cancelled'"
+                                      widget="badge"/>
+                <field name="priority"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_it_service_request_form" model="ir.ui.view">
+        <field name="name">it.service.request.form</field>
+        <field name="model">it.service.request</field>
+        <field name="arch" type="xml">
+            <form string="Detail Permintaan Layanan IT">
+                <header>
+                    <button name="action_submit_request" type="object" string="Kirim Permintaan"
+                            class="oe_highlight"
+                            attrs="{'invisible': [('status', '!=', 'draft')]}"/>
+                    <button name="action_assign_request" type="object" string="Mulai Pengerjaan"
+                            class="oe_highlight"
+                            attrs="{'invisible': [('status', '!=', 'submitted')]}"
+                            groups="it_layanan.group_it_manager"/> <!-- Hanya manager IT yang bisa assign -->
+                    <button name="action_resolve_request" type="object" string="Selesai"
+                            class="oe_highlight"
+                            attrs="{'invisible': [('status', '!=', 'in_progress')]}"
+                            groups="it_layanan.group_it_technician"/> <!-- Hanya teknisi yang bisa resolve -->
+                    <button name="action_cancel_request" type="object" string="Batalkan"
+                            attrs="{'invisible': [('status', 'in', ['resolved', 'cancelled'])]}"/>
+                    <button name="action_reopen_request" type="object" string="Buka Kembali"
+                            attrs="{'invisible': [('status', 'not in', ['resolved', 'cancelled'])]}"
+                            groups="it_layanan.group_it_manager"/>
+
+                    <field name="status" widget="statusbar" statusbar_visible="draft,submitted,in_progress,resolved"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1><field name="name" placeholder="Judul Permintaan"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="requester_id"/>
+                            <field name="request_date"/>
+                            <field name="deadline_date" attrs="{'readonly': [('status', 'in', ['resolved', 'cancelled'])]}"/>
+                            <field name="priority" widget="priority"/>
+                        </group>
+                        <group>
+                            <field name="assigned_to_id" attrs="{'readonly': [('status', 'in', ['resolved', 'cancelled'])]}" groups="it_layanan.group_it_manager"/>
+                            <field name="resolved_date" attrs="{'invisible': [('status', '!=', 'resolved')]}"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Deskripsi">
+                            <field name="description" placeholder="Jelaskan detail permintaan Anda..."/>
+                        </page>
+                        <page string="Catatan Penyelesaian" attrs="{'invisible': [('status', 'not in', ['in_progress', 'resolved'])]}">
+                            <field name="resolution_notes" attrs="{'readonly': [('status', 'in', ['resolved', 'cancelled'])]}"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action Window -->
+    <record id="action_it_service_request" model="ir.actions.act_window">
+        <field name="name">Permintaan Layanan IT</field>
+        <field name="res_model">it.service.request</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Buat permintaan layanan IT baru
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu Item -->
+    <menuitem id="menu_it_service_root"
+              name="Layanan IT"
+              sequence="10"/>
+
+    <menuitem id="menu_it_service_requests"
+              name="Permintaan Layanan"
+              parent="menu_it_service_root"
+              action="action_it_service_request"
+              sequence="10"/>
+
+</odoo>
