@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_it_service_request_user,IT Service Request User,model_it_service_request,it_layanan.group_it_user,1,1,1,0
+access_it_service_request_technician,IT Service Request Technician,model_it_service_request,it_layanan.group_it_technician,1,1,1,0
+access_it_service_request_manager,IT Service Request Manager,model_it_service_request,it_layanan.group_it_manager,1,1,1,1
