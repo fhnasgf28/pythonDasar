@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="picking_address_itr_in_out" name="Picking Address ITR IN/OUT">
+            <!-- Multicompany -->
+            <t t-if="o and 'company_id' in o">
+                <t t-set="company" t-value="o.company_id"/>
+            </t>
+            <t t-if="not o or not 'company_id' in o">
+                <t t-set="company" t-value="res_company"/>
+            </t>
+            <t t-call="equip3_inventory_operation.picking_exclusive_header_new"/>
+            <div class="article o_report_layout_standard" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id">
+                <t t-raw="0"/>
+            </div>
+            <t t-call="general_template.templates_footer"/>
+        </template>
+        <template id="picking_exclusive_header_new" name="Picking Exclusive Header New">
+            <t t-set="border_color" t-value="o.company_id and o.company_id.border_color"/>
+            <t t-set="text_color" t-value="o.company_id and o.company_id.text_color"/>
+            <div class="header" t-att-style="'font-family:'+o.company_id.font_id.family+';font-size:'+str(o.company_id.font_size)+'px;'">
+                <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <center>
+                                    <table border="0" cellpadding="0" cellspacing="0" style="padding:0px 20px 0px 20px; margin:0; background:#fff; line-height:20px;" width="100%">
+                                        <tr>
+                                            <td align="left" colspan="2" t-attf-style="color:#{text_color or '#ffffff'}; padding:0 0px;" valign="top">
+                                                <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                                                    <tr>
+                                                        <td align="left" style="text-align:center; color:#4D4D4F; padding:0px 5px; border-right:1px solid #{border_color or '#D4D1D1'};" valign="top" width="20%">
+                                                            <img style="max-height: 50px; margin-top: 8%;" t-att-src="'data:image/png;base64,%s' % to_text(o.company_id.logo)" t-if="o.company_id.logo"/>
+                                                            <br/>
+                                                            <br/>
+                                                            <img style="display: none;" t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', o.name, 600, 100)"/>
+                                                        </td>
+                                                        <td style="padding:15px 0px 0px 15px;width:40%;" valign="top">
+                                                            <p t-attf-style="text-transform:capitalize; color: #{text_color or '#ffffff'}; font-weight:bold;margin:0; margin-bottom:5px;">Address</p>
+
+                                                            <t t-set="config_setting" t-value="env['inventory.config.settings'].with_context(company_id=o.company_id.id).search([], limit=1)"/>
+                                                            <t t-set="address_source" t-value="config_setting.address_document_itr_out_in or 'company_address'"/>
+
+                                                            <t t-if="o.picking_type_id.code == 'internal'">
+                                                                <!--  warehouse_address -->
+                                                                <t t-if="address_source == 'warehouse_address'">
+                                                                    <t t-if="o.location_id and o.location_id.usage == 'transit' and o.location_dest_id and o.location_dest_id.warehouse_id">
+                                                                        <p>
+                                                                            <span t-esc="o.location_dest_id.warehouse_id.name"/><br/>
+                                                                            <span t-esc="o.location_dest_id.warehouse_id.street"/>
+                                                                        </p>
+                                                                    </t>
+                                                                    <t t-elif="o.location_id and o.location_id.warehouse_id">
+                                                                        <p>
+                                                                            <span t-esc="o.location_id.warehouse_id.name"/><br/>
+                                                                            <span t-esc="o.location_id.warehouse_id.street"/>
+                                                                        </p>
+                                                                    </t>
+                                                                </t>
+
+                                                                <!-- branch_address -->
+                                                                <t t-elif="address_source == 'branch_address' and o.branch_id">
+                                                                    <p>
+                                                                        <span t-esc="o.branch_id.name"/><br/>
+                                                                        <span t-esc="o.branch_id.street"/>
+                                                                    </p>
+                                                                </t>
+
+                                                                <!-- company_address -->
+                                                                <t t-elif="address_source == 'company_address' and o.company_id">
+                                                                    <span style="text-transform:capitalize; padding:0px; margin:0; color: #51565b;">
+                                                                        <t t-if="o.company_id and o.company_id.is_company_bold">
+                                                                            <strong>
+                                                                                <span t-field="o.company_id.partner_id"/>
+                                                                            </strong>
+                                                                        </t>
+                                                                        <t t-if="not o.company_id.is_company_bold">
+                                                                            <span t-field="o.company_id.partner_id"/>
+                                                                        </t>
+                                                                    </span>
+                                                                    <div style="color: #51565b;">
+                                                                        <span t-esc="o._get_street(o.company_id.partner_id)"/>
+                                                                        <br/>
+                                                                        <span t-esc="o._get_address_details(o.company_id.partner_id)"/>
+                                                                        <br/>
+                                                                    </div>
+                                                                    <div style="color: #51565b;">
+                                                                        <t t-if="o.company_id.partner_id.mobile">
+                                                                            <strong>Mobile:</strong>
+                                                                            <span t-field="o.company_id.partner_id.mobile"/>
+                                                                            <br/>
+                                                                        </t>
+                                                                        <t t-if="o.company_id.partner_id.email">
+                                                                            <strong>Email:</strong>
+                                                                            <span t-field="o.company_id.partner_id.email"/>
+                                                                            <br/>
+                                                                        </t>
+                                                                    </div>
+                                                                </t>
+                                                            </t>
+                                                            <t t-else="">
+                                                                <t t-call="general_template.templates_company_details"/>
+                                                            </t>
+                                                        </td>
+                                                        <td align="left" t-attf-style="color: #{theme_color or '#ffffff'}; padding:15px 0px 0px 0px;" valign="top" width="40%">
+                                                            <p t-attf-style="text-transform:capitalize; color: #{text_color or '#ffffff'}; font-weight:bold;margin:0; margin-bottom:5px;    margin: auto;">
+                                                                <strong>
+                                                                    <t t-if="o.picking_type_id.code=='incoming' and o.partner_id">Vendor Address:</t>
+                                                                    <t t-if="o.picking_type_id.code=='internal' and o.partner_id">Contact Address:</t>
+                                                                    <t t-if="o.picking_type_id.code=='outgoing' and o.partner_id">Customer Address:</t>
+                                                                </strong>
+                                                                <br />
+                                                            </p>
+                                                            <t t-call="general_template.templates_customer_details"/>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </center>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </template>
+
+        <template id="report_detailed_operations">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.html_container">
+                        <t t-call="equip3_inventory_operation.picking_address_itr_in_out">
+                            <t t-set="o" t-value="o.with_context({'lang':o.partner_id.lang})"/>
+                            <t t-set="theme_color" t-value="o.company_id and o.company_id.theme_color"/>
+                            <t t-set="theme_text_color" t-value="o.company_id and o.company_id.theme_text_color"/>
+                            <t t-set="company_color" t-value="o.company_id and o.company_id.company_color"/>
+                            <t t-set="company_address_color" t-value="o.company_id and o.company_id.company_address_color"/>
+                            <t t-set="customer_color" t-value="o.company_id and o.company_id.customer_color"/>
+                            <t t-set="customer_address_color" t-value="o.company_id and o.company_id.customer_address_color"/>
+                            <t t-set="text_color" t-value="o.company_id and o.company_id.text_color"/>
+                            <t t-set="border_color" t-value="o.company_id and o.company_id.border_color"/>
+                            <div class="page" t-att-style="'font-family:'+o.company_id.font_id.family+';font-size:'+str(o.company_id.font_size)+'px;'">
+                                <div width="100%">
+                                    <div   style="margin:0; background:#fff;" width="100%">
+                                        <div class="oe_structure"/>
+                                        <div style="clear: both;display: table;width: 100%;">
+                                            <div  t-attf-style="padding:10px 0px 0px 0px; height:5px;border-top: 1px solid #{theme_color or '#000000'};    margin-top: 25px;margin-bottom: 25px;"/>
+                                        </div>
+                                        <div class="row justify-content-end mb16">
+                                            <div class="col-4" name="right_box">
+                                                <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', o.name, 600, 100)" style="width:300px;height:50px;" alt="Barcode"/>
+                                            </div>
+                                        </div>
+                                        <h1 t-field="o.name" class="mt0 float-left" style="padding-bottom: 25px !important;"/>
+                                        <div align="left"  style="color:#4D4D4F; padding:0 0px;" valign="top">
+                                            <table border="0" cellpadding="0" cellspacing="0" t-attf-style="color: #{theme_text_color or '#000000'}; border: 1px solid #{border_color or '#cccccc'};" width="100%">
+                                                <tr t-attf-style="background-color: #{theme_color or '#000000'};">
+                                                    <td name="td_sched_date_h" t-attf-style="padding:5px 15px; font-weight:bold;">
+                                                        <strong>
+                                                            <span class="text-left">Scheduled Date</span>
+                                                        </strong>
+                                                        <br/>
+                                                        <span t-field="o.scheduled_date"/>
+                                                    </td>
+                                                    <td t-attf-style="padding:5px 15px; font-weight:bold;" t-if="o._check_delivery_installed()">
+                                                        <strong>
+                                                            <span class="text-left">Weight</span>
+                                                        </strong>
+                                                        <br/>
+                                                        <span t-field="o.weight"/>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        <div>
+                                            <p t-attf-style="border-bottom:1px solid #{theme_color or '#ececec'}; padding:0px 0px 10px 0px; width:100%;"/>
+                                        </div>
+                                        <div align="left" style="padding:20px 0px 0 0; font-weight:bold; width:100%;" valign="top">
+                                            <t t-set="is_print_exp_date_do" t-value="request.env['inventory.config.settings'].search([], limit=1).is_print_exp_date_do"/>
+                                            <table class="table table-sm" style="border:0.5px solid #ccc; border-collapse: collapse; padding:15px;" width="100%" t-if="o.move_line_ids and o.move_ids_without_package">
+                                                <t t-set="has_barcode" t-value="any(move_line.product_id and move_line.product_id.sudo().barcode or move_line.package_id for move_line in o.move_line_ids)"/>
+                                                <t t-set="has_serial_number" t-value="any(move_line.lot_id or move_line.lot_name for move_line in o.move_line_ids)" groups="stock.group_production_lot"/>
+                                                <thead>
+                                                    <tr t-attf-style="page-break-inside: avoid !important;background-color: #{theme_color or '#000000'}; color: #{theme_text_color or '#000000'}; border: 2px solid #{border_color or '#ccc'};">
+                                                        <th name="th_serial_no" style="padding:5px 10px; font-weight:bold;" width="8%">No.</th>
+                                                        <th name="th_product" style="padding:5px 10px; font-weight:bold;" width="22%">
+                                                            <strong>Product</strong>
+                                                        </th>
+                                                        <th name="th_serial_number" class="text-center" t-if="has_serial_number" style="padding:5px 10px; font-weight:bold;" width="15%">
+                                                           <strong>Lot/Serial Number</strong>
+                                                        </th>
+                                                        <th name="th_package" style="padding:5px 10px; font-weight:bold;" width="10%">
+                                                            <strong>Package</strong>
+                                                        </th>
+                                                        <th name="th_name" class="text-center" style="padding:5px 10px; font-weight:bold;" width="15%">
+                                                            <strong>Description</strong>
+                                                        </th>
+                                                        <th name="th_destination" class="text-center" style="padding:5px 10px; font-weight:bold;" width="10%">
+                                                            <strong>Destination</strong>
+                                                        </th>
+                                                        <th name="th_done_qty" class="text-right" style="padding:5px 10px; font-weight:bold;" width="10%">
+                                                            <strong>Done</strong>
+                                                        </th>
+                                                        <th name="th_uom" class="text-center" style="padding:5px 10px; font-weight:bold;" width="10%">
+                                                            <strong>Unit of Measure</strong>
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <t t-set="count" t-value="0" />
+                                                    <t t-foreach="o.move_ids_without_package" t-as="move">
+                                                        <!-- In case you come across duplicated lines, ask NIM or LAP -->
+                                                        <t t-foreach="move.move_line_ids.sorted(key=lambda ml: ml.location_id.id)" t-as="ml">
+                                                            <t t-set="count" t-value="count+1" />
+                                                            <t t-if="count % 2 == 0">
+                                                                <t t-set="po_color" t-value="o.company_id.even_party_color"/>
+                                                            </t>
+                                                            <t t-else="">
+                                                                <t t-set="po_color" t-value="o.company_id.odd_party_color"/>
+                                                            </t>
+                                                            <tr t-att-style="'page-break-inside: avoid !important;background-color: '+ po_color + '; color: ' + text_color ">
+                                                                <td t-att-style="'padding:5px 10px; border:0.5px solid #ccc !important; border-right:0px solid #ccc !important;'"><span t-esc="count" /></td>
+                                                                <td t-att-style="'padding:5px 10px; border:0.5px solid #ccc !important; border-right:0px solid #ccc !important;'">
+                                                                    <span t-field="ml.product_id.display_name"/><br/>
+                                                                    <t t-if="o.company_id.add_product_image == True">
+                                                                        <img t-if="ml.product_id.image_128" class="mt-1" t-att-src="image_data_uri(ml.product_id.image_128)" alt="Product" />
+                                                                    </t>
+                                                                </td>
+                                                                <td class=" text-center h6" t-if="has_serial_number" t-att-style="'padding:5px 10px; border:0.5px solid #ccc !important; border-right:0px solid #ccc !important;'">
+                                                                    <span t-if="has_serial_number and (ml.lot_id or ml.lot_name)" t-field="ml.lot_id"/>
+                                                                    <br/>
+                                                                    <t t-if="is_print_exp_date_do and ml.exp_date">
+                                                                        <small>(Exp. date: <span t-esc="ml.exp_date.strftime('%m/%d/%Y')"/>)</small>
+                                                                    </t>
+                                                                </td>
+                                                                <td class="text-center" t-att-style="'padding:5px 10px; border:0.5px solid #ccc !important; border-right:0px solid #ccc !important;'">
+                                                                    <span t-field="ml.result_package_id"/>
+                                                                </td>
+                                                                <td class="text-center" t-att-style="'padding:5px 10px; border:0.5px solid #ccc !important; border-right:0px solid #ccc !important;'">
+                                                                    <span t-field="ml.move_id.product_description"/>
+                                                                </td>
+                                                                <td class="text-center" t-att-style="'padding:5px 10px; border:0.5px solid #ccc !important; border-right:0px solid #ccc !important;'">
+                                                                    <span t-field="ml.location_dest_id"/>
+                                                                </td>
+                                                                <td class="text-right" t-att-style="'padding:5px 10px; border:0.5px solid #ccc !important; border-right:0px solid #ccc !important;'">
+                                                                    <span t-field="ml.qty_done"/>
+                                                                </td>
+                                                                <td class="text-center" t-att-style="'padding:5px 10px; border:0.5px solid #ccc !important; border-right:0px solid #ccc !important;'">
+                                                                    <span t-field="ml.product_uom_id"/>
+                                                                </td>
+                                                            </tr>
+                                                        </t>
+                                                    </t>
+                                                  </tbody>
+                                            </table>
+                                        </div>
+                                        <div align="right">
+                                            <t t-call="general_template.report_signature"/>
+                                        </div>
+                                        <t t-set='is_signature' t-value="request.env['inventory.config.settings'].search([], limit=1).is_signature"/>
+                                        <t t-if="is_signature and o.signature">
+                                            <div class="col-6" style="padding-left:20px;padding-top:30px;">
+                                                    <span t-esc="o.sign_on.strftime('%d %B %Y')" t-if="o.sign_on"/>
+                                                    <br />
+                                                    <img style="max-height: 80px; padding:5px;" t-att-src="'data:image/png;base64,%s' %  to_text(o.signature)"/>
+                                                    <br />
+                                                    <div class="row" style="position:absolute;left:25px;border-top:2px solid black;width:250px; margin-left:15px;"></div>
+                                                <strong t-field="o.sign_by" />
+                                                <br />
+                                                <span t-field="o.designation" />
+                                                <br />
+                                            </div>
+                                        </t>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </t>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+        <record id="action_report_detailed_operations" model="ir.actions.report">
+            <field name="name">Detailed Operations</field>
+            <field name="model">stock.picking</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">equip3_inventory_operation.report_detailed_operations</field>
+            <field name="report_file">equip3_inventory_operation.report_detailed_operations</field>
+            <field name="print_report_name">'Detailed Operations - %s - %s' % (object.partner_id.name or '', object.name)</field>
+            <field name="binding_model_id" ref="model_stock_picking"/>
+            <field name="binding_type">report</field>
+        </record>
+        <record id="stock.action_report_delivery" model="ir.actions.report">
+            <field name="report_name">equip3_inventory_operation.report_detailed_operations</field>
+            <field name="report_file">equip3_inventory_operation.report_detailed_operations</field>
+        </record>
+
+    </data>
+</odoo>
