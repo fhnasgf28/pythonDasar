@@ -68,7 +68,19 @@ class MailActivity(models.Model):
         url = base_url + '/web#action=' + str(action_id.id) + '&view_type=list&model=crm.lead&id='
         leaders = crm_leads.mapped('team_id').mapped('user_id')
         for leader in leaders:
-            break
+            activity_ids_filtered = activity_ids.filtered(lambda a: a.user_id.id == leader.id)
+            crm_leads_filtered = activity_ids.filtered(lambda a: a.user_id.id == leader.id)
+            ctx = {
+                'url': url,
+                'email_from': self.env.user.company_id.email,
+                'email_to': leader.email,
+                'all_crm_leads': crm_leads_filtered,
+                'leader_name': leader.name,
+                'hari_ini': today_date,
+            }
+            if crm_leads_filtered:
+                template_id.with_context(ctx).send_mail(crm_leads_filtered.ids[-1] and crm_leads_filtered or False)
+                self.send_activity_notification(crm_leads_filtered, crm_leads_filtered, leader)
 
     def recap_message_activity_wa(self, lead, activity,is_leader=False):
         judul = activity.activity_type_id.name
@@ -82,4 +94,29 @@ class MailActivity(models.Model):
                 msg += "Due Date : {}\n".format(activity.date_deadline)
                 msg += "-------------------------\n"
                 return msg
+
+    def send_activity_notification(self, record, ctx, template_id, user):
+        if user and user.partner_id:
+            body_html = (
+                self.env['mail.render.mixin'].with_context(ctx)._render_template(
+                    template_id.body_html, 'crm.lead', record.ids, post_process=False
+                )[record[-1].id]
+            )
+            message_id = (
+                self.env['mail.message'].sudo().create(
+                    {
+                        'subject': "AutoFollow Up Notification",
+                        'body': body_html,
+                        'message_type': 'notification',
+                        'model': 'crm.lead',
+                        'res_id': record[-1].id,
+                        'partner_ids': user.partner_id.ids,
+                        'author_id': self.env.user.partner_id.id,
+                        'notification_ids': [(0,0, {
+                            'res_partner_id': user.partner_id.id,
+                            'notification_type': 'inbox'
+                        })]
+                    }
+                )
+            )
 
