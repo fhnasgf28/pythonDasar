@@ -20,4 +20,10 @@ class StockLocation(models.Model):
                         ('id', 'child_of', warehouse.view_location.id),
                     ], limit=1)
                     if existing_return_loc:
-                        raise ValidationError(_("A return location already exists for this warehouse. Only one return location is allowed per warehouse"))
+                        raise ValidationError(_("A return location already exists for this warehouse. Only one return location is allowed per warehouse."))
+
+    @api.returns('stock.warehouse', lambda value: value.id)
+    def get_warehouse(self):
+        """ Returns warehouse id of warehouse that contains location """
+        domain = [('view_location_id', 'parent_of', self.ids)]
+        return self.env['stock.warehouse'].search(domain, limit=1)
