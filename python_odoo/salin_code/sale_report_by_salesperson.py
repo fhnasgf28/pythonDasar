@@ -64,3 +64,46 @@ class SalespersonWizard(models.TransientModel):
         if 'branch_ids' in self._fields and self.branch_ids:
             self.branch_ids = self.branch_ids.filtered(lambda b: b in allowed_branches)
         return {'domain': {'branch_id': domain, 'branch_ids': domain}}
+
+    def _get_address_details(self, partner):
+        self.ensure_one()
+        res = {}
+        address = ''
+        if partner.city:
+            address = "%s" % (partner.city)
+        if partner.state_id.name:
+            address += ", %s" % (partner.state_id.name)
+        if partner.zip:
+            address += ", %s" % (partner.zip)
+        if partner.country_id.name:
+            address += ", %s" % (partner.country_id.name)
+        html_text = str(tools.plaintext2html(address, container_tag = True))
+        data = html_text.split('p>')
+        if data:
+            return data[1][:-2]
+        return False
+
+    def print_report(self):
+        data_list_view = []
+        order_dic_obj = self.env['user.order.dic']
+        list_order_obj = self.env['list.order']
+        datas = self.read()[0]
+        datas.update(self._get_report_values(datas))
+        for user in datas['user_list']:
+            dic = order_dic_obj.create({
+                'report_id': self.id,
+                'salesperson': user
+            })
+            data_list_view.append(dic.id)
+            for line in datas['user_order_dic'][user]:
+                list_order_obj.create({
+                    'order_dic_id': dic.id,
+                    'order_number': line['order_number'],
+                    'order_date': line['order_date'],
+                    'customer': line['customer'],
+                    'total': line['total'],
+                    'paid_amount': line['paid_amount'],
+                    'due_amount': line['due_amount'],
+                    'salesperson' : user,
+                    'branch_id': line.get('branch_id', False)
+                })
