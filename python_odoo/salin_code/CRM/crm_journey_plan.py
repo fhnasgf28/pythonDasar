@@ -37,3 +37,15 @@ class CrmJourneyPlan(models.Model):
             rec.sale_team_id = sale_team_id
             rec.sale_team_leader_id = sale_team_leader_id
 
+    @api.depends('plan_date')
+    def _compute_day_name(self):
+        for rec in self:
+            if rec.plan_date:
+                hari = rec.plan_date.strftime("%A")
+                format_date = rec.plan_date.strftime("%d %B %Y")
+                indonesian_date = f"{hari}, {format_date}"
+                rec.day_name = indonesian_date
+            else:
+                rec.day_name = False
+
+
