@@ -44,3 +44,22 @@ class SetupBarBankConfigWizard(models.TransientModel):
             [('type', '=', 'bank'), ('bank_account_id', '=', False), ('company_id', 'in', [False, self.company_id.id])],
             limit=1)
         return default[:1].id
+
+class AccountReconcile(models.Model):
+    _inherit = 'account.reconcile.model'
+
+    @api.model
+    def _default_branch(self):
+        default_branch_id = self.env.context.get('default_branch_id', False)
+        if default_branch_id:
+            return default_branch_id
+        return self.env.company_branches[0].id if len(self.env.company_branches) == 1 else self.env.branch.id
+
+    @api.onchange('branch_id')
+    def _onchange_branch_id(self):
+        selected_branch = self.branch_id
+        if selected_branch:
+            user_id = self.env['res.users'].browse(self.env.uid)
+            allowed_branch = user_id.sudo().branch_ids
+            if allowed_branch and selected_branch.id not in [ids.id for ids in allowed_branch]:
+                raise UserError()
