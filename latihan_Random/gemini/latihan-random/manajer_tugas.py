@@ -43,3 +43,22 @@ class Money:
     def gt(self, other: "Money") -> bool:
         self._ensure_currency(other)
         return self.amount > other.amount
+
+@dataclass(frozen=True)
+class LineItem:
+    sku: str 
+    name: str 
+    qty: int 
+    unit_price: Money
+
+    def __post_init_(self):
+        if self.qty <= 0:
+            raise ValueError("QTY must be > 0")
+
+@dataclass
+class PurchaseRequest:
+    requster: str 
+    department: str 
+    tax_rate: Decimal("0.00")
+    id: str = field(default_factory=lambda: str(uuid.uuid4()))
+    
