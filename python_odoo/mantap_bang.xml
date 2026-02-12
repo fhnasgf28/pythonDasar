@@ -1,9 +1,0 @@
-<div attrs="{'invisible': [('discount_type','=','line')]}">
-                        <field name="multilevel_disc" invisible="1"/>
-                        <field name="discount_amount" class="oe_inline"
-                               attrs="{'readonly': [('state', 'in', ['purchase', 'done', 'cancel', 'rfq_approved'])], 'invisible': [('discount_type','=','line')]}"/>
-                        <label for="discount_amount" string="%%"
-                               attrs="{'invisible': ['|', ('discount_type','=','line'), ('discount_method', '=', 'fix')], 'readonly': [('multilevel_disc','=',True), ('discount_method', '=', 'per')]}"
-                               class="oe_inline"/>
-                    </div>
-                    <span>Payment Terms</span>

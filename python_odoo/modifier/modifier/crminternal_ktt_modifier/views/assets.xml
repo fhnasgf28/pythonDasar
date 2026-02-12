@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<odoo>
-    <template id="assets_backend" name="my_calendar_enhancements" inherit_id="web.assets_backend">
-        <xpath expr="." position="inside">
-            <script type="text/javascript" src="/crminternal_ktt_modifier/static/src/js/calendar_view.js"></script>
-        </xpath>
-    </template>
-</odoo>
