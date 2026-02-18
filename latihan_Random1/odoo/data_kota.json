@@ -1,0 +1,66 @@
+[
+  {
+    "name": "Banda Aceh",
+    "province_name": "Aceh"
+  },
+  {
+    "name": "Medan",
+    "province_name": "Sumatera Utara"
+  },
+  {
+    "name": "Padang",
+    "province_name": "Sumatera Barat"
+  },
+  {
+    "name": "Pekanbaru",
+    "province_name": "Riau"
+  },
+  {
+    "name": "Palembang",
+    "province_name": "Sumatera Selatan"
+  },
+  {
+    "name": "Jakarta Pusat",
+    "province_name": "DKI Jakarta"
+  },
+  {
+    "name": "Jakarta Selatan",
+    "province_name": "DKI Jakarta"
+  },
+  {
+    "name": "Bandung",
+    "province_name": "Jawa Barat"
+  },
+  {
+    "name": "Bekasi",
+    "province_name": "Jawa Barat"
+  },
+  {
+    "name": "Semarang",
+    "province_name": "Jawa Tengah"
+  },
+  {
+    "name": "Surakarta",
+    "province_name": "Jawa Tengah"
+  },
+  {
+    "name": "Yogyakarta",
+    "province_name": "DI Yogyakarta"
+  },
+  {
+    "name": "Surabaya",
+    "province_name": "Jawa Timur"
+  },
+  {
+    "name": "Malang",
+    "province_name": "Jawa Timur"
+  },
+  {
+    "name": "Denpasar",
+    "province_name": "Bali"
+  },
+  {
+    "name": "Makassar",
+    "province_name": "Sulawesi Selatan"
+  }
+]
