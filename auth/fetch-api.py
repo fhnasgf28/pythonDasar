@@ -1,11 +1,8 @@
 def fetch_industry_from_ai(self, description):
-    """
-    Mengirim data quotation description ke Hashy AI dan mengembalikan industri yang sesuai.
-    """
-    url = "https://api.hashmicro.com/industry-classification"
+    url = "farhan"
     headers = {
         "Content-Type": "application/json",
-        "Authorization": "Basic aG0tcHJvZHVjdC1kZXYxQGhzaG1pY3JvLmNvbS5zZzpwI0p2dFlTZEtWJA=="
+        "Authorization": ""
     }
     payload = {"description": description}
 
@@ -21,7 +18,7 @@ def fetch_industry_from_ai(self, description):
 
 def update_industries_ai(self):
     """
-    Mengupdate field industries_ai berdasarkan hasil dari Hashy AI.
+    Mengupdate field industries_ai berdasarkan hasil.
     """
     leads = self.search([('industries_ai', '=', False), ('description', '!=', False)])
 
