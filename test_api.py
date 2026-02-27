@@ -1,7 +1,7 @@
 import requests
 import json
 
-url = "https://kttx1ae.hashmicro.com/api/v1/check/modules"
+url = "dih"
 headers = {
     "Content-Type": "application/json"
 }
