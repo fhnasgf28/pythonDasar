@@ -1,5 +1,5 @@
 def fetch_industry_from_ai(self, description):
-    url = "https://kttx1ae.hashmicro.com/api/v1/check/industries"
+    url = "farhana"
     headers = {
         "Content-Type": "application/json"
     }
