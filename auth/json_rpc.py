@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 
 # ================= KONFIGURASI ODOO =================
 URL = 'http://localhost:8069'
-DB = 'mln_new'  # Ganti dengan nama DB Anda
+DB = 'farhan'  # Ganti dengan nama DB Anda
 USER = 'admin'  # Ganti dengan email login Anda
 PASSWORD = 'admin'  # Ganti dengan password Anda
 
