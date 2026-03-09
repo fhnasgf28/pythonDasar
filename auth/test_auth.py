@@ -2,7 +2,7 @@ import requests
 import json
 
 # Endpoint API
-url = "https://kttx1ae.hashmicro.com/api/v1/check/modules"
+url = "farhan"
 
 # Data yang dikirim ke API
 payload = {

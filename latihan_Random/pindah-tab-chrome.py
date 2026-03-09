@@ -7,7 +7,7 @@ INTERVAL_PINDANG_TAB_MENIT = 4
 # Ubah sesuai sistem operasi Anda
 # Untuk Windows/Linux: ['ctrl', 'tab']
 # Untuk macOS: ['command', 'tab']
-TOMBOL_PINTAS_PINDAH_TAB = ['ctrl', 'tab'] 
+TOMBOL_PINTAS_PINDAH_TAB = ['ctrl', 'tab']
 # ===================
 
 print(f"Script akan mulai memindahkan tab Chrome setiap {INTERVAL_PINDANG_TAB_MENIT} menit.")
@@ -17,13 +17,13 @@ try:
     while True:
         # Pindahkan tab menggunakan kombinasi tombol pintas
         pyautogui.hotkey(*TOMBOL_PINTAS_PINDAH_TAB)
-        print(f"Tab Chrome berhasil dipindahkan pada {time.ctime()}")
-
+        print(f"Tab Chrome berh asil dipindahkan pada {time.ctime()}")
+    
         # Tunggu selama interval yang ditentukan (dalam detik)
         time.sleep(INTERVAL_PINDANG_TAB_MENIT * 60)
 
 except pyautogui.FailSafeException:
-    print("\nScript dihentikan secara paksa oleh pengguna (fail-safe diaktifkan).")
+    print("\nScript dihentikan   secara paksa oleh pengguna (fail-safe diaktifkan).")
 except KeyboardInterrupt:
     print("\nScript dihentikan oleh pengguna (Ctrl+C).")
 except Exception as e:
