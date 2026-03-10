@@ -44,3 +44,18 @@ class Reservation:
             "time": self.time,
             "num_guests": self.num_guests
         }
+
+    @classmethod
+    def from_dict(cls, data):
+        return cls(data['reservation_id'],data['table_id'],data['customer_name'],
+        data['phone_number'], data['date'], data['time'],data['num_guests'])
+
+#------------ sistem reservasi utama ----- 
+class CafeReservationSystem:
+    def __init__(self,data_file='cafe_reservations.json'):
+        self.tables = [] 
+        self.Reservations = [] 
+        self.data_files = data_file
+        self.next_table_id = 1 
+        self.nex_reservation_id = 1 
+        self._load_data()
