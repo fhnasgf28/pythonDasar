@@ -29,3 +29,21 @@ class PurchaseOrder(models.Model):
                 order.date_planned = max(dates_list)
             else:
                 order.date_planned = False
+
+    @api.depends('partner_ref', 'origin', 'partner_id')
+    def _compute_duplicated_order_ids(self):
+        draft_orders = self.filtered(lambda o: o.state == 'draft')
+        order_to_duplicate_orders = draft_orders._fetch_duplicate_orders()
+        for order in draft_orders:
+            duplicate_ids = order_to_duplicate_orders.get(order.id, [])
+            order.duplicated_order_ids = [(6, 0, duplicate_ids)]
+        (self - draft_orders).duplicated_order_ids = False
+
+    def action_open_business_doc(self):
+        self.ensure_one()
+        return {
+            'name': _('Business Documents'),
+            'type': 'ir.actions.act_url',
+            'target': 'new',
+            'views': [(False, 'form')]
+        }
