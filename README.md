@@ -1,26 +1,36 @@
 # Salary Manager API
 
-Project FastAPI sederhana untuk mengelola data karyawan dan menghitung gaji bulanan.
+Project FastAPI yang sudah di-upgrade agar lebih siap dipakai project lain.
 
-## Fitur
+## Upgrade yang sudah ditambahkan
 
-- Melihat daftar karyawan
-- Menambah data karyawan
-- Melihat detail karyawan berdasarkan ID
-- Menghitung gaji bulanan
-- Menyimpan salary slip sementara di memory
-- Melihat daftar salary slip dan slip terakhir per karyawan
+- **SQLite database** untuk penyimpanan permanen
+- **CORS enabled** agar bisa diakses frontend/project lain
+- **Data karyawan dan slip gaji persisten**
+- Struktur project lebih rapi dengan file terpisah
+
+## Struktur project
+
+```bash
+salary_manager_api/
+├── main.py
+├── models.py
+├── database.py
+├── requirements.txt
+├── salary_manager.db   # otomatis dibuat saat dijalankan
+└── README.md
+```
 
 ## Endpoint
 
-### 1. `GET /`
-Menampilkan informasi dasar API.
+### `GET /`
+Info dasar API.
 
-### 2. `GET /employees`
-Mengambil semua data karyawan.
+### `GET /employees`
+Ambil semua data karyawan.
 
-### 3. `POST /employees`
-Menambah data karyawan baru.
+### `POST /employees`
+Tambah karyawan baru.
 
 Contoh body:
 
@@ -35,11 +45,11 @@ Contoh body:
 }
 ```
 
-### 4. `GET /employees/{employee_id}`
-Mengambil detail satu karyawan.
+### `GET /employees/{employee_id}`
+Ambil detail satu karyawan.
 
-### 5. `POST /salary/calculate`
-Menghitung gaji bulanan.
+### `POST /salary/calculate`
+Hitung gaji bulanan dan simpan salary slip ke database.
 
 Contoh body:
 
@@ -52,43 +62,61 @@ Contoh body:
 }
 ```
 
-### 6. `GET /salary/slips`
-Melihat semua salary slip yang sudah dihitung.
+### `GET /salary/slips`
+Ambil semua slip gaji.
 
-### 7. `GET /salary/slip/{employee_id}`
-Melihat slip gaji terbaru untuk karyawan tertentu.
+### `GET /salary/slip/{employee_id}`
+Ambil slip gaji terbaru berdasarkan employee id.
 
-## Cara Menjalankan
+## Cara menjalankan
 
-### Opsi virtualenv biasa
-
-```bash
-python -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-uvicorn main:app --reload
-```
-
-### Opsi pyenv environment `django`
+### Pakai pyenv `django`
 
 ```bash
+cd /home/fhnasgf/.openclaw/workspace/salary_manager_api
 pyenv activate django
 pip install -r requirements.txt
-uvicorn main:app --reload
+uvicorn main:app --reload --port 8001
 ```
 
-## Dokumentasi otomatis
+## Dokumentasi API
 
-Setelah dijalankan, buka:
+- Swagger UI: `http://127.0.0.1:8001/docs`
+- ReDoc: `http://127.0.0.1:8001/redoc`
 
-- Swagger UI: `http://127.0.0.1:8000/docs`
-- ReDoc: `http://127.0.0.1:8000/redoc`
+## Cara pakai dari project lain
 
-## Struktur project
+### JavaScript / Frontend
 
-```bash
-salary_manager_api/
-├── main.py
-├── requirements.txt
-└── README.md
+```javascript
+fetch("http://127.0.0.1:8001/employees")
+  .then((res) => res.json())
+  .then((data) => console.log(data));
 ```
+
+### Hitung gaji dari project lain
+
+```javascript
+fetch("http://127.0.0.1:8001/salary/calculate", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    employee_id: 1,
+    overtime_hours: 8,
+    bonus: 500000,
+    deduction: 100000
+  })
+})
+  .then((res) => res.json())
+  .then((data) => console.log(data));
+```
+
+## Catatan
+
+Untuk production, sebaiknya lanjut upgrade dengan:
+- auth/login
+- environment file (`.env`)
+- PostgreSQL
+- folder `routers/`, `services/`, `schemas/`
