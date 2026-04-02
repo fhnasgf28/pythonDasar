@@ -1,3 +1,4 @@
+from contextlib import asynccontextmanager
 from datetime import date
 from io import BytesIO
 from typing import List, Optional
@@ -7,9 +8,17 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 from reportlab.lib.pagesizes import A4
 from reportlab.pdfgen import canvas
+from reportlab.lib import colors
+from reportlab.lib.units import inch
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Table, TableStyle, Spacer
+from fastapi.responses import HTMLResponse
+from pathlib import Path
+from string import Template
+from weasyprint import HTML as WeasyHTML
 from sqlmodel import Session, select
 
-from database import create_db_and_tables, get_session
+from database import create_db_and_tables, engine, get_session
 from models import (
     Employee,
     EmployeeCreate,
@@ -18,26 +27,10 @@ from models import (
     SalarySlip,
 )
 
-app = FastAPI(
-    title="Salary Manager API",
-    description="API sederhana untuk mengelola data karyawan dan menghitung gaji bulanan.",
-    version="3.0.0",
-)
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-
-@app.on_event("startup")
-def on_startup():
+@asynccontextmanager
+async def lifespan(app: FastAPI):
     create_db_and_tables()
-
-    from database import engine
 
     with Session(engine) as session:
         employees = session.exec(select(Employee)).all()
@@ -63,6 +56,24 @@ def on_startup():
                 )
             )
             session.commit()
+
+    yield
+
+
+app = FastAPI(
+    title="Salary Manager API",
+    description="API sederhana untuk mengelola data karyawan dan menghitung gaji bulanan.",
+    version="3.0.0",
+    lifespan=lifespan,
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.get("/")
@@ -184,46 +195,101 @@ def get_latest_salary_slip(employee_id: int, session: Session = Depends(get_sess
 
 @app.get("/salary/slip/{employee_id}/pdf")
 def export_salary_slip_pdf(employee_id: int, session: Session = Depends(get_session)):
+    """Generate PDF by rendering the HTML template and converting with WeasyPrint."""
     slips = session.exec(select(SalarySlip).where(SalarySlip.employee_id == employee_id)).all()
     if not slips:
         raise HTTPException(status_code=404, detail="Salary slip not found")
 
     slip = slips[-1]
-    buffer = BytesIO()
-    pdf = canvas.Canvas(buffer, pagesize=A4)
-    width, height = A4
 
-    pdf.setFont("Helvetica-Bold", 16)
-    pdf.drawString(50, height - 50, "Salary Slip")
+    template_path = Path(__file__).parent / "templates" / "salary_template.html"
+    if not template_path.exists():
+        raise HTTPException(status_code=500, detail="Template file missing")
 
-    pdf.setFont("Helvetica", 11)
-    lines = [
-        f"Employee ID   : {slip.employee_id}",
-        f"Employee Name : {slip.employee_name}",
-        f"Period        : {slip.period}",
-        "",
-        f"Base Salary   : Rp {slip.base_salary:,.0f}",
-        f"Allowance     : Rp {slip.allowance:,.0f}",
-        f"Overtime Pay  : Rp {slip.overtime_pay:,.0f}",
-        f"Bonus         : Rp {slip.bonus:,.0f}",
-        f"Gross Salary  : Rp {slip.gross_salary:,.0f}",
-        f"Tax Amount    : Rp {slip.tax_amount:,.0f}",
-        f"Deduction     : Rp {slip.deduction:,.0f}",
-        f"Net Salary    : Rp {slip.net_salary:,.0f}",
-    ]
+    tpl_text = template_path.read_text(encoding="utf-8")
+    t = Template(tpl_text)
 
-    y = height - 90
-    for line in lines:
-        pdf.drawString(50, y, line)
-        y -= 20
+    currency = lambda v: f"Rp {v:,.0f}"
+    rows = []
+    rows.append(f"<tr><td>Base Salary</td><td class=\"amount\">{currency(slip.base_salary)}</td></tr>")
+    rows.append(f"<tr><td>Allowance</td><td class=\"amount\">{currency(slip.allowance)}</td></tr>")
+    rows.append(f"<tr><td>Overtime Pay</td><td class=\"amount\">{currency(slip.overtime_pay)}</td></tr>")
+    rows.append(f"<tr><td>Bonus</td><td class=\"amount\">{currency(slip.bonus)}</td></tr>")
+    rows.append(f"<tr><td>Tax</td><td class=\"amount\">- {currency(slip.tax_amount)}</td></tr>")
+    rows.append(f"<tr><td>Other Deductions</td><td class=\"amount\">- {currency(slip.deduction)}</td></tr>")
 
-    pdf.showPage()
-    pdf.save()
-    buffer.seek(0)
+    status = "Paid" if slip.net_salary >= 0 else "Pending"
+    badge_class = "paid" if status == "Paid" else "pending"
 
-    filename = f"salary_slip_{slip.employee_id}_{slip.period}.pdf"
-    return StreamingResponse(
-        buffer,
-        media_type="application/pdf",
-        headers={"Content-Disposition": f"attachment; filename={filename}"},
+    rendered = t.safe_substitute(
+        company_name="Salary Manager",
+        company_address="Jl. Contoh No.1 · +62 812-3456-7890",
+        period=slip.period,
+        section_title="Salary Details",
+        employee_name=slip.employee_name,
+        position="-",
+        employee_id=slip.employee_id,
+        generated_date=date.today().isoformat(),
+        rows="\n".join(rows),
+        net_salary=currency(slip.net_salary),
+        status=status,
+        badge_class=badge_class,
     )
+
+    pdf_bytes = WeasyHTML(string=rendered).write_pdf()
+    buffer = BytesIO(pdf_bytes)
+    buffer.seek(0)
+    filename = f"salary_slip_{slip.employee_id}_{slip.period}.pdf"
+    return StreamingResponse(buffer, media_type="application/pdf", headers={"Content-Disposition": f"attachment; filename={filename}"})
+
+
+@app.get("/salary/slip/{employee_id}/html", response_class=HTMLResponse)
+def render_salary_slip_html(employee_id: int, session: Session = Depends(get_session)):
+    """Return an HTML version of the salary slip using an inline Tailwind-inspired stylesheet.
+    The HTML template is in `templates/salary_template.html` and uses simple $-placeholders.
+    This HTML can be rendered to PDF with tools like `wkhtmltopdf` or `weasyprint`.
+    """
+    slips = session.exec(select(SalarySlip).where(SalarySlip.employee_id == employee_id)).all()
+    if not slips:
+        raise HTTPException(status_code=404, detail="Salary slip not found")
+
+    slip = slips[-1]
+
+    template_path = Path(__file__).parent / "templates" / "salary_template.html"
+    if not template_path.exists():
+        raise HTTPException(status_code=500, detail="Template file missing")
+
+    tpl_text = template_path.read_text(encoding="utf-8")
+    t = Template(tpl_text)
+
+    currency = lambda v: f"Rp {v:,.0f}"
+
+    # build rows HTML for components
+    rows = []
+    rows.append(f"<tr><td>Base Salary</td><td class=\"amount\">{currency(slip.base_salary)}</td></tr>")
+    rows.append(f"<tr><td>Allowance</td><td class=\"amount\">{currency(slip.allowance)}</td></tr>")
+    rows.append(f"<tr><td>Overtime Pay</td><td class=\"amount\">{currency(slip.overtime_pay)}</td></tr>")
+    rows.append(f"<tr><td>Bonus</td><td class=\"amount\">{currency(slip.bonus)}</td></tr>")
+    rows.append(f"<tr><td>Tax</td><td class=\"amount\">- {currency(slip.tax_amount)}</td></tr>")
+    rows.append(f"<tr><td>Other Deductions</td><td class=\"amount\">- {currency(slip.deduction)}</td></tr>")
+
+    # determine status
+    status = "Paid" if slip.net_salary >= 0 else "Pending"
+    badge_class = "paid" if status == "Paid" else "pending"
+
+    rendered = t.safe_substitute(
+        company_name="Salary Manager",
+        company_address="Jl. Contoh No.1 · +62 812-3456-7890",
+        period=slip.period,
+        section_title="Salary Details",
+        employee_name=slip.employee_name,
+        position="-",
+        employee_id=slip.employee_id,
+        generated_date=date.today().isoformat(),
+        rows="\n".join(rows),
+        net_salary=currency(slip.net_salary),
+        status=status,
+        badge_class=badge_class,
+    )
+
+    return HTMLResponse(content=rendered)

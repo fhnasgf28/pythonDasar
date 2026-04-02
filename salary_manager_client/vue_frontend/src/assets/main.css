@@ -1,0 +1,10 @@
+@import "tailwindcss";
+
+/* Active state untuk router-link nav */
+.nav-link.router-link-active {
+  background-color: #2563eb;
+  color: #ffffff;
+}
+.nav-link.router-link-active:hover {
+  background-color: #1d4ed8;
+}

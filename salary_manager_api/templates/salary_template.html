@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Payslip</title>
+  <style>
+    /* Tailwind-inspired minimal inline CSS for PDF rendering */
+    :root{
+      --primary:#3B82F6;
+      --muted:#6B7280;
+      --soft:#F3F4F6;
+      --accent:#0F172A;
+      --border:#E5E7EB;
+      --success:#10B981;
+    }
+    html,body{font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; color:var(--accent); margin:0; padding:0;}
+    .container{max-width:800px; margin:28px auto; padding:20px;}
+
+    /* Header */
+    .header{display:flex; align-items:center; justify-content:space-between; gap:12px;}
+    .brand{display:flex; gap:12px; align-items:center}
+    .logo{width:72px; height:72px; display:inline-block}
+    .company{font-weight:700; font-size:16px}
+    .company small{display:block; font-weight:500; color:var(--muted); font-size:11px}
+    .divider{height:1px; background:var(--border); margin:14px 0}
+
+    /* Employee grid */
+    .grid{display:flex; gap:12px; flex-wrap:wrap}
+    .card{flex:1 1 48%; background:#fff; border:1px solid var(--border); padding:12px 14px; border-radius:8px}
+    .label{font-size:10px; color:var(--muted); margin-bottom:6px}
+    .value{font-weight:600; font-size:13px}
+
+    /* Table */
+    table{width:100%; border-collapse:collapse; margin-top:10px}
+    th,td{padding:10px 12px; text-align:left; border-bottom:1px solid var(--soft); font-size:13px}
+    thead th{background:#ffffff; color:var(--muted); font-weight:700; font-size:12px; text-transform:uppercase}
+    tbody tr:nth-child(odd){background:#ffffff}
+    tbody tr:nth-child(even){background: #FBFBFD}
+    .amount{ text-align:right; font-family: monospace }
+
+    .total-row{font-weight:800; background: linear-gradient(90deg, rgba(59,130,246,0.08), rgba(59,130,246,0.02));}
+    .total-row .amount{color:var(--primary)}
+
+    .badge{display:inline-block; padding:6px 8px; border-radius:999px; font-size:11px; font-weight:700}
+    .badge.paid{background: rgba(16,185,129,0.12); color:var(--success); border:1px solid rgba(16,185,129,0.18)}
+    .badge.pending{background: rgba(251,191,36,0.12); color:#F59E0B; border:1px solid rgba(245,158,11,0.12)}
+
+    /* Footer */
+    .footer{display:flex; justify-content:space-between; color:var(--muted); font-size:11px; margin-top:18px; border-top:1px solid var(--border); padding-top:12px}
+
+    /* Page numbering (works in many HTML->PDF tools) */
+    @page { size: A4; margin: 20mm }
+    .pagenum:before { content: counter(page) }
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="brand">
+        <div class="logo">
+          <!-- simple inline svg logo -->
+          <svg width="72" height="72" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="logo">
+            <rect rx="8" width="48" height="48" fill="#3B82F6" />
+            <path d="M14 30 L24 18 L34 30" stroke="#fff" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div>
+          <div class="company">$company_name</div>
+          <small>$company_address</small>
+        </div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-weight:700; font-size:14px">Payslip</div>
+        <div style="color:var(--muted); font-size:12px; margin-top:6px">Period: $period</div>
+        <div style="margin-top:8px"><span class="badge $badge_class">$status</span></div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Employee info -->
+    <div class="grid">
+      <div class="card">
+        <div class="label">Employee Name</div>
+        <div class="value">$employee_name</div>
+      </div>
+      <div class="card">
+        <div class="label">Position</div>
+        <div class="value">$position</div>
+      </div>
+      <div class="card">
+        <div class="label">Employee ID</div>
+        <div class="value">$employee_id</div>
+      </div>
+      <div class="card">
+        <div class="label">Generated</div>
+        <div class="value">$generated_date</div>
+      </div>
+    </div>
+
+    <!-- Salary Detail -->
+    <h3 style="margin-top:18px; margin-bottom:6px; color:var(--primary)">$section_title</h3>
+    <table>
+      <thead>
+        <tr>
+          <th style="width:70%">Description</th>
+          <th style="width:30%; text-align:right">Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        $rows
+        <tr class="total-row">
+          <td style="padding-top:12px">Net Pay</td>
+          <td class="amount" style="padding-top:12px">$net_salary</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="footer">
+      <div>Generated: $generated_date</div>
+      <div>This is a system generated document • Page <span class="pagenum"></span></div>
+    </div>
+  </div>
+</body>
+</html>
