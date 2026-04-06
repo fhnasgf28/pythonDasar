@@ -88,7 +88,8 @@
 
 <script setup>
 import { ref, computed, onMounted } from "vue";
-import { getEmployees, calculateSalary, getSalarySlipPdfUrl } from "../api/salaryApi.js";
+import { fetchEmployees } from "../modules/employee/services/employeeService.js";
+import { postCalculateSalary, getSalarySlipPdfUrl } from "../modules/salary/services/salaryService.js";
 
 const employees = ref([]);
 const loading = ref(false);
@@ -109,9 +110,9 @@ const pdfUrl = computed(() =>
 
 const fmt = (val) => Number(val).toLocaleString("id-ID");
 
-async function fetchEmployees() {
+async function loadEmployees() {
   try {
-    const res = await getEmployees();
+    const res = await fetchEmployees();
     employees.value = res.data;
   } catch {
     error.value = "Gagal memuat daftar karyawan.";
@@ -127,7 +128,7 @@ async function calculate() {
   error.value = "";
   result.value = null;
   try {
-    const res = await calculateSalary(form.value);
+    const res = await postCalculateSalary(form.value);
     result.value = res.data;
   } catch {
     error.value = "Gagal menghitung gaji. Pastikan data valid.";
@@ -136,5 +137,5 @@ async function calculate() {
   }
 }
 
-onMounted(fetchEmployees);
+onMounted(loadEmployees);
 </script>

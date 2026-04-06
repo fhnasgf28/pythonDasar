@@ -1,4 +1,6 @@
-from sqlmodel import Session, SQLModel, create_engine
+from sqlmodel import Session,select, SQLModel, create_engine
+
+from models import SalarySlip
 
 DATABASE_URL = "sqlite:///./salary_manager.db"
 
@@ -11,4 +13,5 @@ def create_db_and_tables() -> None:
 
 def get_session():
     with Session(engine) as session:
+        print(session.exec(select(SalarySlip)).all())
         yield session

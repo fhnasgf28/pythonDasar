@@ -1,5 +1,5 @@
 from sqlmodel import Session,select, SQLModel, create_engine
-from salary_manager_api.models import SalarySlip
+from models import SalarySlip
 
 DATABASE_URL = "sqlite:///./salary_manager.db"
 

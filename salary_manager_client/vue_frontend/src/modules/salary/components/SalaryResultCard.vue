@@ -73,11 +73,12 @@
 <script setup>
 import { fmt } from "../../../shared/utils/format.js";
 
-defineProps({
+const props = defineProps({
   slip: { type: Object, required: true },
 });
-const BACKEND_BASE = "http://127.0.0.1:8000"
-const previewUrl = `${BACKEND_BASE}/salary/slip/${slip.employee_id}/html`
-const downloadUrl = `${BACKEND_BASE}/salary/slip/${slip.employee_id}/pdf`
+const slip = props.slip;
+const BACKEND_BASE = "http://127.0.0.1:8000";
+const previewUrl = `${BACKEND_BASE}/salary/slip/${slip.employee_id}/html`;
+const downloadUrl = `${BACKEND_BASE}/salary/slip/${slip.employee_id}/pdf`;
 </script>
 
