@@ -42,8 +42,17 @@ class PurchaseOrder(models.Model):
     def action_open_business_doc(self):
         self.ensure_one()
         return {
-            'name': _('Business Documents'),
+            'name': _('Business Doc uments'),
             'type': 'ir.actions.act_url',
             'target': 'new',
             'views': [(False, 'form')]
         }
+
+    def print_quotation(self):
+        self.filtered(lambda po: po.state == 'draft').write({'state': "sent"})
+        return self.env.ref('purchase.report_purchase_quotation').report_action(self)
+
+    def button_approve(self, force=False):
+        self = self.filtered(lambda order: order._approval_allowed())
+        self.write({'state': 'purchase', 'date_approve': fields.Datetime.now()})
+        self.filtered(lambda p: p.lock_confirmed_po == 'lock').write({'locked': True})
