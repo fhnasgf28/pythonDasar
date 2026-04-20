@@ -12,4 +12,21 @@ class SaleOrder(models.Model):
         order_ids = order_lines.mapped('order_id').ids
         return [('id', 'in', order_ids)]
 
+    @api.onchange('hm_team_ids')
+    def _onchange_hm_team_ids(self):
+        for record in self:
+            record.main_hm_team_id = self.hm_team_ids[0] if len(self.hm_team_ids.ids) > 0 else False
+
+    def action_create_multiple_recurring_invoices(self):
+        for order in self.env['sale.order'].browse(self._context_get('active_ids', [])):
+            order.action_create_multiple_recurring_invoices()
+
+    @api.depends('recurring_invoice_count')
+    def get_total_recuurring_amount(self):
+        for rec in self:
+            total_amount = 0
+            for line in self.env['account.move'].search([('recurring_sale_order_id', '=', rec.id)]):
+                total_amount += line.amount_total
+            rec.recurring_total = total_amount
+
 
