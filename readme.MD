@@ -1,7 +1,7 @@
 ## Belajar Python Dasar 
 
 - Menjadi Odoo developer
-
+asss
 
 ### Operator Bitwise 
 operasi antara
