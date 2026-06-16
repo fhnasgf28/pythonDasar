@@ -1,0 +1,68 @@
+{
+  "info": {
+    "name": "Salary Manager - Local API",
+    "description": "Postman collection for Salary Manager API (local). Replace {{baseUrl}} if needed.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "version": "1.0.0"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://127.0.0.1:8000",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Create Employee",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Budi\",\n  \"position\": \"Staff\",\n  \"base_salary\": 5000000,\n  \"allowance\": 500000,\n  \"overtime_rate\": 30000,\n  \"tax_percent\": 5\n}"
+        },
+        "url": { "raw": "{{baseUrl}}/employees", "host": ["{{baseUrl}}"], "path": ["employees"] }
+      }
+    },
+    {
+      "name": "Calculate Salary (create slip)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"employee_id\": 1,\n  \"overtime_hours\": 5,\n  \"bonus\": 200000,\n  \"deduction\": 50000,\n  \"period_month\": \"2026-04\"\n}"
+        },
+        "url": { "raw": "{{baseUrl}}/salary/calculate", "host": ["{{baseUrl}}"], "path": ["salary","calculate"] }
+      }
+    },
+    {
+      "name": "List Salary Slips",
+      "request": {
+        "method": "GET",
+        "url": { "raw": "{{baseUrl}}/salary/slips", "host": ["{{baseUrl}}"], "path": ["salary","slips"] }
+      }
+    },
+    {
+      "name": "Preview Payslip (HTML)",
+      "request": {
+        "method": "GET",
+        "url": { "raw": "{{baseUrl}}/salary/slip/:employee_id/html", "host": ["{{baseUrl}}"], "path": ["salary","slip",":employee_id","html"] },
+        "description": "Replace :employee_id with actual employee id (e.g. 1). In Postman use Params or the UI to set the path variable."
+      }
+    },
+    {
+      "name": "Download Payslip (PDF)",
+      "request": {
+        "method": "GET",
+        "url": { "raw": "{{baseUrl}}/salary/slip/:employee_id/pdf", "host": ["{{baseUrl}}"], "path": ["salary","slip",":employee_id","pdf"] },
+        "description": "Replace :employee_id with actual employee id. The response will be a PDF file. Save response to file in Postman."
+      }
+    }
+  ]
+}
