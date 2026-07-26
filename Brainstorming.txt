@@ -1,0 +1,252 @@
+#!/usr/bin/env python3
+"""
+brainstorm_and_push.py
+
+Fitur:
+- Buat brainstorming ide berdasarkan topik (mode 'local' atau 'openai' jika Anda punya OPENAI_API_KEY).
+- Simpan hasil ke file markdown di dalam repo.
+- git add, commit, dan push ke branch yang ditentukan.
+- Bila GITHUB_TOKEN tersedia dan origin remote menggunakan HTTPS, skrip akan membuat remote sementara
+  yang menyisipkan token untuk mendorong perubahan (tidak menyimpan token ke file).
+
+Cara pakai singkat:
+python3 brainstorm_and_push.py --repo-path /path/to/repo --topic "fitur login" --n 8 \
+    --commit-msg "chore: add brainstorming for login feature" --branch feature/ideas
+
+Catatan:
+- Pastikan git ter-install dan folder repo sudah ter-inisialisasi git.
+- Untuk mode 'openai' set OPENAI_API_KEY di environment.
+- Untuk push via token set GITHUB_TOKEN di environment (opsional).
+"""
+
+import argparse
+import os
+import subprocess
+import sys
+import random
+import datetime
+import json
+import tempfile
+from pathlib import Path
+from typing import List
+
+# ---------------------------
+# Brainstorming implementations
+# ---------------------------
+def local_brainstorm(topic: str, n: int) -> List[str]:
+    """Generate n brainstorming ideas locally without external API."""
+    verbs = [
+        "Membuat", "Mendesain", "Mengimplementasikan", "Mengoptimalkan",
+        "Mengintegrasikan", "Menguji", "Memperbaiki", "Menyederhanakan"
+    ]
+    nouns = [
+        "alur pengguna", "fitur notifikasi", "auth flow", "dashboard admin",
+        "integrasi API", "UI responsif", "cache layer", "logging"
+    ]
+    benefits = [
+        "untuk meningkatkan retensi pengguna",
+        "agar lebih mudah digunakan",
+        "dengan fokus performa",
+        "untuk mendukung skala 10k pengguna",
+        "dengan keamanan yang lebih kuat",
+        "untuk mempermudah integrasi pihak ketiga"
+    ]
+    angles = [
+        "MVP cepat", "solusi jangka panjang", "PWA", "microservice", "serverless",
+        "offline-first", "A/B test", "feature-flag"
+    ]
+    ideas = []
+    for i in range(n):
+        v = random.choice(verbs)
+        a = random.choice(nouns)
+        b = random.choice(benefits)
+        c = random.choice(angles)
+        idea = f"{v} {a} {b} (pendekatan: {c}) — rincian: {short_detail(topic, a, c)}"
+        ideas.append(idea)
+    return ideas
+
+def short_detail(topic: str, area: str, approach: str) -> str:
+    return f"implementasikan {topic} di area '{area}' menggunakan pendekatan '{approach}' dengan fokus awal pada prototipe."
+
+def openai_brainstorm(topic: str, n: int, model: str="gpt-3.5-turbo", api_key_env: str="OPENAI_API_KEY") -> List[str]:
+    """
+    Call OpenAI Chat Completions to generate ideas.
+    Requires OPENAI_API_KEY in environment.
+    Falls back with an exception if not available or request fails.
+    """
+    token = os.getenv(api_key_env)
+    if not token:
+        raise RuntimeError("OPENAI_API_KEY tidak ditemukan di environment.")
+    try:
+        import requests
+    except ImportError:
+        raise RuntimeError("requests library diperlukan untuk mode openai. Install dengan: pip install requests")
+
+    url = "https://api.openai.com/v1/chat/completions"
+    headers = {"Authorization": f"Bearer {token}", "Content-Type": "application/json"}
+    prompt = (
+        f"Berikan {n} ide brainstorming singkat (1-2 kalimat tiap ide) untuk topik: '{topic}'. "
+        "Berikan variasi pendekatan teknis dan non-teknis, dan sertakan satu kata kunci untuk tiap ide."
+    )
+    payload = {
+        "model": model,
+        "messages": [{"role": "user", "content": prompt}],
+        "temperature": 0.8,
+        "max_tokens": 800,
+        "n": 1,
+    }
+    resp = requests.post(url, headers=headers, data=json.dumps(payload), timeout=30)
+    if resp.status_code != 200:
+        raise RuntimeError(f"OpenAI API error: {resp.status_code} {resp.text}")
+    data = resp.json()
+    # Ambil text respon
+    try:
+        text = data["choices"][0]["message"]["content"].strip()
+    except Exception as e:
+        raise RuntimeError(f"Gagal parsing respons OpenAI: {e}")
+    # Pisahkan baris yang terlihat seperti daftar
+    lines = [line.strip("- ").strip() for line in text.splitlines() if line.strip()]
+    # Ambil sampai n ide
+    ideas = []
+    for line in lines:
+        if len(ideas) >= n:
+            break
+        if len(line) > 0:
+            ideas.append(line)
+    # If not enough parsed lines, fallback to splitting by double newline or sentences
+    if len(ideas) < n:
+        pieces = [p.strip() for p in text.split("\n\n") if p.strip()]
+        for p in pieces:
+            if len(ideas) >= n:
+                break
+            if p not in ideas:
+                ideas.append(p)
+    return ideas[:n]
+
+# ---------------------------
+# Git helper functions
+# ---------------------------
+def run_git(cmd_args, cwd, capture_output=False, check=True, env=None):
+    full_cmd = ["git"] + cmd_args
+    res = subprocess.run(full_cmd, cwd=cwd, capture_output=capture_output, text=True, check=check, env=env)
+    if capture_output:
+        return res.stdout.strip()
+    return None
+
+def ensure_git_repo(path: Path):
+    if not (path / ".git").exists():
+        raise RuntimeError(f"{path} bukan repositori git (tidak ada folder .git).")
+
+def git_add_commit_push(repo_path: Path, file_path: Path, commit_msg: str, branch: str = None):
+    # Pastikan repo
+    ensure_git_repo(repo_path)
+
+    # Add file
+    run_git(["add", str(file_path)], cwd=str(repo_path))
+    # Commit
+    run_git(["commit", "-m", commit_msg], cwd=str(repo_path))
+
+    # Determine branch
+    if branch:
+        # create branch if not exists locally
+        branches = run_git(["branch", "--list", branch], cwd=str(repo_path), capture_output=True)
+        if not branches:
+            run_git(["checkout", "-b", branch], cwd=str(repo_path))
+        else:
+            run_git(["checkout", branch], cwd=str(repo_path))
+    else:
+        # use current branch
+        branch = run_git(["rev-parse", "--abbrev-ref", "HEAD"], cwd=str(repo_path), capture_output=True)
+
+    # Try a normal push first
+    try:
+        run_git(["push", "origin", branch], cwd=str(repo_path))
+        return
+    except subprocess.CalledProcessError:
+        # If push failed and GITHUB_TOKEN provided, try temporary remote with token
+        token = os.getenv("GITHUB_TOKEN")
+        if not token:
+            raise RuntimeError("Push gagal dan GITHUB_TOKEN tidak tersedia untuk retry. Periksa credential git Anda.")
+        origin_url = run_git(["remote", "get-url", "origin"], cwd=str(repo_path), capture_output=True)
+        if origin_url.startswith("https://"):
+            # create temp remote
+            safe_remote = "temp-origin-for-token"
+            token_url = origin_url.replace("https://", f"https://x-access-token:{token}@")
+            try:
+                # add temporary remote
+                run_git(["remote", "add", safe_remote, token_url], cwd=str(repo_path))
+                run_git(["push", safe_remote, branch], cwd=str(repo_path))
+            finally:
+                # remove temporary remote
+                run_git(["remote", "remove", safe_remote], cwd=str(repo_path))
+        else:
+            raise RuntimeError("Push gagal. Origin remote tidak menggunakan HTTPS sehingga token-embedding tidak tersedia. Periksa konfigurasi git/SSH Anda.")
+
+# ---------------------------
+# File writing
+# ---------------------------
+def write_brainstorm_file(repo_path: Path, topic: str, ideas: List[str]) -> Path:
+    timestamp = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+    filename = f"brainstorm_{timestamp}.md"
+    file_path = repo_path / filename
+    header = f"# Brainstorm: {topic}\n\nGenerated: {datetime.datetime.now().isoformat()}\n\n"
+    with open(file_path, "w", encoding="utf-8") as f:
+        f.write(header)
+        for i, idea in enumerate(ideas, start=1):
+            f.write(f"- {idea}\n")
+    return file_path
+
+# ---------------------------
+# CLI
+# ---------------------------
+def parse_args():
+    p = argparse.ArgumentParser(description="Brainstorm -> save -> git add/commit/push")
+    p.add_argument("--repo-path", "-r", default=".", help="Path ke folder repo git")
+    p.add_argument("--topic", "-t", required=True, help="Topik brainstorming")
+    p.add_argument("--n", "-n", type=int, default=6, help="Jumlah ide yang dihasilkan")
+    p.add_argument("--mode", choices=["local", "openai"], default="local", help="Mode brainstorming")
+    p.add_argument("--commit-msg", "-m", default=None, help="Pesan commit. Default: chore: add brainstorm")
+    p.add_argument("--branch", "-b", default=None, help="Branch target (dibuat jika belum ada)")
+    p.add_argument("--openai-model", default="gpt-3.5-turbo", help="Model OpenAI (jika mode=openai)")
+    return p.parse_args()
+
+def main():
+    args = parse_args()
+    repo_path = Path(args.repo_path).resolve()
+    if not repo_path.exists():
+        print(f"Path {repo_path} tidak ditemukan.", file=sys.stderr)
+        sys.exit(1)
+
+    # Generate ideas
+    print(f"Menghasilkan {args.n} ide untuk topik: {args.topic} (mode={args.mode})...")
+    try:
+        if args.mode == "local":
+            ideas = local_brainstorm(args.topic, args.n)
+        else:
+            ideas = openai_brainstorm(args.topic, args.n, model=args.openai_model)
+    except Exception as e:
+        print(f"Gagal menghasilkan ide: {e}", file=sys.stderr)
+        sys.exit(2)
+
+    # Write to file in repo
+    try:
+        file_path = write_brainstorm_file(repo_path, args.topic, ideas)
+        print(f"Brainstorm disimpan ke: {file_path}")
+    except Exception as e:
+        print(f"Gagal menulis file: {e}", file=sys.stderr)
+        sys.exit(3)
+
+    # Commit message
+    commit_msg = args.commit_msg or f"chore: add brainstorm for '{args.topic}' ({datetime.datetime.now().date()})"
+
+    # Git add/commit/push
+    try:
+        print("Menambahkan, commit, dan push...")
+        git_add_commit_push(repo_path, file_path, commit_msg, branch=args.branch)
+        print("Done: changes pushed.")
+    except Exception as e:
+        print(f"Gagal melakukan git ops: {e}", file=sys.stderr)
+        sys.exit(4)
+
+if __name__ == "__main__":
+    main()
