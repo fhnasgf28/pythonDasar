@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="quotation_template" model="ir.actions.report">
+        <field name="name">Quotation Template</field>
+        <field name="model">sale.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">crm_ktt_leads2.ktt_quotation_template</field>
+        <field name="report_file">crm_ktt_leads2.ktt_quotation_template</field>
+        <field name="print_report_name">'Quotation - %s' % (object.name)</field>
+    </record>
+
+    <template id="external_layout_quotation">
+        <t t-if="not o and doc">
+            <t t-set="o" t-value="doc"/>
+        </t>
+        <t t-if="o and 'company_id' in o">
+            <t t-set="company" t-value="o.company_id"/>
+        </t>
+        <t t-call="crm_ktt_leads2.oredr_header"/>
+        <div class="article o_report_layout_standard" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id">
+            <t t-raw="0"/>
+        </div>
+        <t t-call="crm_ktt_leads2.order_footer"/>
+    </template>
+
+    <template id="oredr_header">
+        <t t-set="company_fields" t-value="o.company_id and o.company_id._fields or {}"/>
+        <t t-set="font_family" t-value="'font_id' in company_fields and o.company_id.font_id and o.company_id.font_id.family or 'Helvetica'"/>
+        <t t-set="font_size" t-value="'font_size' in company_fields and o.company_id.font_size or 10"/>
+        <t t-set="company_partner" t-value="o.company_id.partner_id"/>
+        <div class="header" t-att-style="'font-family:' + font_family + '; font-size:' + str(font_size) + 'px;'">
+            <div style="border-bottom: 1px solid #d4d1d1; padding: 8px 16px;">
+                <table width="100%" style="border-collapse: collapse;">
+                    <tr>
+                        <td style="width: 20%; vertical-align: top; padding-right: 10px;">
+                            <img t-if="o.company_id.logo" t-att-src="'data:image/png;base64,%s' % to_text(o.company_id.logo)" style="max-height: 55px;"/>
+                        </td>
+                        <td style="width: 40%; vertical-align: top; padding-right: 10px;">
+                            <strong>Company Address</strong><br/>
+                            <span t-esc="o.company_id.name"/><br/>
+                            <span t-if="company_partner.street" t-esc="company_partner.street"/><br t-if="company_partner.street"/>
+                            <span t-if="company_partner.street2" t-esc="company_partner.street2"/><br t-if="company_partner.street2"/>
+                            <span t-if="company_partner.city" t-esc="company_partner.city"/>
+                            <span t-if="company_partner.city and company_partner.zip"> </span>
+                            <span t-if="company_partner.zip" t-esc="company_partner.zip"/>
+                            <span t-if="company_partner.country_id">, <span t-esc="company_partner.country_id.name"/></span><br/>
+                            <span t-if="o.company_id.phone">Phone: <span t-esc="o.company_id.phone"/></span><br t-if="o.company_id.phone"/>
+                            <span t-if="o.company_id.email">Email: <span t-esc="o.company_id.email"/></span>
+                        </td>
+                        <td style="width: 40%; vertical-align: top;">
+                            <strong>Customer</strong><br/>
+                            <span t-esc="o.partner_id.name or '-'"/><br/>
+                            <span t-if="o.partner_id.street" t-esc="o.partner_id.street"/><br t-if="o.partner_id.street"/>
+                            <span t-if="o.partner_id.street2" t-esc="o.partner_id.street2"/><br t-if="o.partner_id.street2"/>
+                            <span t-if="o.partner_id.city" t-esc="o.partner_id.city"/>
+                            <span t-if="o.partner_id.city and o.partner_id.zip"> </span>
+                            <span t-if="o.partner_id.zip" t-esc="o.partner_id.zip"/>
+                            <span t-if="o.partner_id.country_id">, <span t-esc="o.partner_id.country_id.name"/></span><br/>
+                            <span t-if="o.partner_id.phone">Phone: <span t-esc="o.partner_id.phone"/></span><br t-if="o.partner_id.phone"/>
+                            <span t-if="o.partner_id.email">Email: <span t-esc="o.partner_id.email"/></span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </template>
+
+    <template id="order_footer">
+        <t t-set="company_fields" t-value="o.company_id and o.company_id._fields or {}"/>
+        <t t-set="font_family" t-value="'font_id' in company_fields and o.company_id.font_id and o.company_id.font_id.family or 'Helvetica'"/>
+        <t t-set="font_size" t-value="'font_size' in company_fields and o.company_id.font_size or 10"/>
+        <t t-set="company_partner" t-value="o.company_id.partner_id"/>
+        <div class="footer" t-att-style="'font-family:' + font_family + '; font-size:' + str(font_size) + 'px;'">
+            <div style="border-top: 1px solid #000; text-align: center; padding-top: 4px;">
+                <span t-esc="o.company_id.name"/>
+                <span t-if="company_partner.street"> | <span t-esc="company_partner.street"/></span>
+                <span t-if="company_partner.city">, <span t-esc="company_partner.city"/></span>
+                <span t-if="o.company_id.phone"> | Phone: <span t-esc="o.company_id.phone"/></span>
+                <span t-if="o.company_id.email"> | Email: <span t-esc="o.company_id.email"/></span>
+                <span t-if="o.company_id.website"> | Web: <span t-esc="o.company_id.website"/></span>
+            </div>
+        </div>
+    </template>
+
+    <template id="report_so_printout">
+        <t t-call="crm_ktt_leads2.external_layout_quotation">
+            <t t-set="o" t-value="o.with_context({'lang': o.partner_id.lang or 'en_US'})"/>
+            <t t-set="company_fields" t-value="o.company_id and o.company_id._fields or {}"/>
+            <t t-set="theme_color" t-value="'theme_color' in company_fields and o.company_id.theme_color or '#2f4f4f'"/>
+            <t t-set="theme_text_color" t-value="'theme_text_color' in company_fields and o.company_id.theme_text_color or '#ffffff'"/>
+            <t t-set="text_color" t-value="'text_color' in company_fields and o.company_id.text_color or '#000000'"/>
+            <t t-set="border_color" t-value="'#cccccc'"/>
+            <t t-set="font_family" t-value="'font_id' in company_fields and o.company_id.font_id and o.company_id.font_id.family or 'Helvetica'"/>
+            <t t-set="font_size" t-value="'font_size' in company_fields and o.company_id.font_size or 10"/>
+
+            <div class="page" t-att-style="'font-family:' + font_family + '; font-size:' + str(font_size) + 'px;'">
+                <div style="padding: 0 16px 16px 16px; background: #fff; line-height: 18px; color: #111;">
+                    <div style="margin-bottom: 16px; overflow: hidden;">
+                        <table style="float: right; border-collapse: collapse; min-width: 360px;" t-attf-style="background-color: #{theme_color}; color: #{theme_text_color};">
+                            <tr>
+                                <td style="padding: 8px 12px; font-weight: bold;">Order Reference</td>
+                                <td style="padding: 8px 12px; text-align: right; font-weight: bold;"><span t-esc="o.name"/></td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px 12px; font-weight: bold;">Customer</td>
+                                <td style="padding: 8px 12px; text-align: right;"><span t-esc="o.partner_id.name or '-'"/></td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px 12px; font-weight: bold;">Invoice Address</td>
+                                <td style="padding: 8px 12px; text-align: right;"><span t-esc="o.partner_invoice_id and o.partner_invoice_id.name or '-'"/></td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px 12px; font-weight: bold;">Delivery Address</td>
+                                <td style="padding: 8px 12px; text-align: right;"><span t-esc="o.partner_shipping_id and o.partner_shipping_id.name or '-'"/></td>
+                            </tr>
+                            <tr t-if="o.payment_term_id">
+                                <td style="padding: 8px 12px; font-weight: bold;">Payment Terms</td>
+                                <td style="padding: 8px 12px; text-align: right;"><span t-esc="o.payment_term_id.name"/></td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px 12px; font-weight: bold;">Order Date</td>
+                                <td style="padding: 8px 12px; text-align: right;"><span t-esc="o.date_order and o.date_order.strftime('%Y-%m-%d %H:%M') or '-'"/></td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px 12px; font-weight: bold;">Salesperson</td>
+                                <td style="padding: 8px 12px; text-align: right;"><span t-esc="o.user_id and o.user_id.name or '-'"/></td>
+                            </tr>
+                            <tr t-if="'remarks_order' in o._fields and o.remarks_order and ('is_hide_remarks_order' not in o._fields or not o.is_hide_remarks_order)">
+                                <td style="padding: 8px 12px; font-weight: bold;">Remarks</td>
+                                <td style="padding: 8px 12px; text-align: right;"><span t-esc="o.remarks_order"/></td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <table class="table table-sm" style="border: 1px solid #ccc; border-collapse: collapse; width: 100%; text-transform: capitalize;" t-attf-style="color: #{text_color};">
+                        <thead>
+                            <tr t-attf-style="background-color: #{theme_color}; color: #{theme_text_color};">
+                                <th style="border: 1px solid #ccc; padding: 6px; text-align: center; width: 5%;">No</th>
+                                <th style="border: 1px solid #ccc; padding: 6px; text-align: center;">Description</th>
+                                <th style="border: 1px solid #ccc; padding: 6px; text-align: center; width: 8%;">Qty</th>
+                                <th style="border: 1px solid #ccc; padding: 6px; text-align: center; width: 10%;">Unit</th>
+                                <th style="border: 1px solid #ccc; padding: 6px; text-align: center; width: 13%;">Unit Price</th>
+                                <th style="border: 1px solid #ccc; padding: 6px; text-align: center; width: 14%;">Taxes</th>
+                                <th style="border: 1px solid #ccc; padding: 6px; text-align: center; width: 10%;">Discount</th>
+                                <th style="border: 1px solid #ccc; padding: 6px; text-align: center; width: 14%;">Subtotal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-set="index_no" t-value="1"/>
+                            <t t-foreach="o.order_line" t-as="line">
+                                <t t-if="('is_down_payment' not in line._fields) or not line.is_down_payment">
+                                    <t t-if="line.display_type == 'line_section'">
+                                        <tr>
+                                            <td colspan="8" style="border: 1px solid #ccc; padding: 6px; font-weight: bold;">
+                                                <span t-field="line.name" t-options="{'widget': 'text'}"/>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                    <t t-elif="line.display_type == 'line_note'">
+                                        <tr>
+                                            <td colspan="8" style="border: 1px solid #ccc; padding: 6px; font-style: italic;">
+                                                <span t-field="line.name" t-options="{'widget': 'text'}"/>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                    <t t-else="">
+                                        <tr>
+                                            <td style="border: 1px solid #ccc; padding: 6px; text-align: center;">
+                                                <span t-esc="'sale_line_sequence' in line._fields and line.sale_line_sequence or index_no"/>
+                                            </td>
+                                            <td style="border: 1px solid #ccc; padding: 6px; text-align: left;">
+                                                <span t-if="line.product_id and line.product_id.default_code">[<span t-esc="line.product_id.default_code"/>] </span>
+                                                <span t-esc="'product_label' in line._fields and line.product_label or line.name"/>
+                                            </td>
+                                            <td style="border: 1px solid #ccc; padding: 6px; text-align: center;"><span t-esc="line.product_uom_qty"/></td>
+                                            <td style="border: 1px solid #ccc; padding: 6px; text-align: center;"><span t-esc="line.product_uom and line.product_uom.name or '-'"/></td>
+                                            <td style="border: 1px solid #ccc; padding: 6px; text-align: right;"><span t-esc="o.currency_id.ktt_format_amount(line.price_unit)"/></td>
+                                            <td style="border: 1px solid #ccc; padding: 6px; text-align: center;"><span t-esc="', '.join(line.tax_id.mapped('name')) or '-'"/></td>
+                                            <td style="border: 1px solid #ccc; padding: 6px; text-align: right;">
+                                                <t t-if="'discount_method' in line._fields and 'discount_amount' in line._fields">
+                                                    <t t-if="line.discount_method == 'fix'"><span t-esc="o.currency_id.ktt_format_amount(line.discount_amount)"/></t>
+                                                    <t t-else=""><span t-esc="line.discount_amount or 0.0"/>%</t>
+                                                </t>
+                                                <t t-elif="'discount' in line._fields and line.discount"><span t-esc="line.discount"/>%</t>
+                                                <t t-else="">-</t>
+                                            </td>
+                                            <td style="border: 1px solid #ccc; padding: 6px; text-align: right;"><span t-esc="o.currency_id.ktt_format_amount(line.price_subtotal)"/></td>
+                                        </tr>
+                                        <t t-set="index_no" t-value="index_no + 1"/>
+                                    </t>
+                                </t>
+                            </t>
+                        </tbody>
+                    </table>
+
+                    <div style="margin-top: 14px; page-break-inside: avoid;">
+                        <div class="row">
+                            <div class="col-6"/>
+                            <div class="col-6">
+                                <table style="width: 100%; border-collapse: collapse; font-weight: bold;">
+                                    <tr>
+                                        <td style="padding: 7px 0;"><b>Untaxed Amount</b></td>
+                                        <td style="padding: 7px 0; text-align: right;"><span t-esc="o.currency_id.ktt_format_amount(o.amount_untaxed)"/></td>
+                                    </tr>
+                                    <tr t-if="'discount_amt' in o._fields">
+                                        <td style="padding: 7px 0;"><b>Discount Amount</b></td>
+                                        <td style="padding: 7px 0; text-align: right;"><span t-esc="o.currency_id.ktt_format_amount(o.discount_amt)"/></td>
+                                    </tr>
+                                    <tr t-if="'discount_method' in o._fields">
+                                        <td style="padding: 7px 0;"><b>Discount Method</b></td>
+                                        <td style="padding: 7px 0; text-align: right;"><span t-esc="dict(o._fields['discount_method'].selection).get(o.discount_method, '-')"/></td>
+                                    </tr>
+                                    <tr t-if="'ppn_pph_overview' in o._fields and o.ppn_pph_overview and 'amount_ppn' in o._fields and 'amount_pph' in o._fields">
+                                        <td style="padding: 7px 0;"><b>PPN</b></td>
+                                        <td style="padding: 7px 0; text-align: right;"><span t-esc="o.currency_id.ktt_format_amount(o.amount_ppn)"/></td>
+                                    </tr>
+                                    <tr t-if="'ppn_pph_overview' in o._fields and o.ppn_pph_overview and 'amount_ppn' in o._fields and 'amount_pph' in o._fields">
+                                        <td style="padding: 7px 0;"><b>PPH</b></td>
+                                        <td style="padding: 7px 0; text-align: right;"><span t-esc="o.currency_id.ktt_format_amount(o.amount_pph)"/></td>
+                                    </tr>
+                                    <tr t-if="'ppn_pph_overview' not in o._fields or not o.ppn_pph_overview">
+                                        <td style="padding: 7px 0;"><b>Taxes</b></td>
+                                        <td style="padding: 7px 0; text-align: right;"><span t-esc="o.currency_id.ktt_format_amount(o.amount_tax)"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 7px 0;"><b>Total</b></td>
+                                        <td style="padding: 7px 0; text-align: right;"><span t-esc="o.currency_id.ktt_format_amount(o.amount_total)"/></td>
+                                    </tr>
+                                    <tr t-if="'down_payment_amount' in o._fields">
+                                        <td style="padding: 7px 0;"><b>Down Payment</b></td>
+                                        <td style="padding: 7px 0; text-align: right;"><span t-esc="o.currency_id.ktt_format_amount(o.down_payment_amount)"/></td>
+                                    </tr>
+                                    <tr t-if="'total_amount_without_dp' in o._fields">
+                                        <td style="padding: 7px 0;"><b>Amount Due</b></td>
+                                        <td style="padding: 7px 0; text-align: right;"><span t-esc="o.currency_id.ktt_format_amount(o.total_amount_without_dp)"/></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="row" t-if="o.note and ('is_print_tnc' not in o._fields or o.is_print_tnc)">
+                            <div class="col-12" style="padding-top: 8px;">
+                                <t t-raw="o.note"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="ktt_quotation_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="crm_ktt_leads2.report_so_printout"/>
+            </t>
+        </t>
+    </template>
+</odoo>

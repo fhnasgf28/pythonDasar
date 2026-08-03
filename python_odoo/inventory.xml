@@ -1,0 +1,107 @@
+<record id="product_template_warranty" model="ir.actions.act_window">
+			<field name="name">Product Template</field>
+			<field name="res_model">product.template</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+				 <p class="oe_view_nocontent_create">
+					Create a new product template.
+				</p>
+				<p>
+					Product templates define the main attributes of a product,
+					including pricing, warranty settings, and accounting information,
+					before any variants are created.
+				</p>
+			</field>
+		</record>
+
+	<!-- ================================================= -->
+    <!-- ROOT MENU                                         -->
+    <!-- ================================================= -->
+    <menuitem name="Product Warranty"
+              id="menu_warranty_main"
+              web_icon="bi_warranty_registration,static/description/icon.png"/>
+
+    <menuitem parent="menu_warranty_main"
+              name="Warranty"
+              id="menu_warranty_sub"
+              sequence="10"/>
+
+    <menuitem parent="menu_warranty_main"
+              name="Warranty Invoices"
+              id="menu_warranty_invoice_main"
+              sequence="20"/>
+
+    <menuitem parent="menu_warranty_main"
+              name="Warranty Products"
+              id="menu_warranty_product_main"
+              sequence="30"/>
+
+    <menuitem parent="menu_warranty_main"
+              name="Configuration"
+              id="menu_warranty_configuration"
+              sequence="50"/>
+
+    <!-- ================================================= -->
+    <!-- WARRANTY MENUS                                    -->
+    <!-- ================================================= -->
+    <menuitem parent="menu_warranty_sub"
+              name="Warranty Registration"
+              action="action_warranty_details"
+              id="menu_warranty_reg"/>
+
+    <menuitem parent="menu_warranty_sub"
+              name="Warranty Expired"
+              action="action_warranty_details_expired"
+              id="menu_warranty_expire"/>
+
+    <menuitem parent="menu_warranty_sub"
+              name="Warranty To Be Renew"
+              action="action_warranty_details_to_be_renew"
+              id="menu_warranty_to_be_renew"/>
+
+    <!-- ================================================= -->
+    <!-- WARRANTY INVOICE                                  -->
+    <!-- ================================================= -->
+    <menuitem parent="menu_warranty_invoice_main"
+              name="Warranty Invoices"
+              id="menu_warranty_invoice_sub"
+              action="action_warranty_invoice_tree1"/>
+
+    <!-- ================================================= -->
+    <!-- CONFIGURATION                                     -->
+    <!-- ================================================= -->
+    <menuitem parent="menu_warranty_configuration"
+              name="Warranty Team"
+              id="menu_warranty_team"
+              action="warranty_team_config_action"/>
+
+    <menuitem parent="menu_warranty_configuration"
+              name="Tags"
+              id="menu_warranty_tag"
+              action="action_warranty_tags"/>
+
+    <menuitem parent="menu_warranty_configuration"
+              name="Settings"
+              id="menu_warranty_settings"
+              action="action_warranty_config"/>
+
+    <!-- ================================================= -->
+    <!-- WARRANTY PRODUCTS -->
+    <!-- ================================================= -->
+
+    <menuitem parent="menu_warranty_product_main"
+              name="Products"
+              id="menu_warranty_product_root"
+              sequence="10"/>
+
+    <menuitem parent="menu_warranty_product_root"
+              name="Products"
+              id="menu_warranty_product"
+              action="product_normal_warranty"
+              sequence="10"/>
+
+    <menuitem parent="menu_warranty_product_root"
+              name="Product Template"
+              id="menu_warranty_product_template"
+              action="product_template_warranty"
+              sequence="20"/>v

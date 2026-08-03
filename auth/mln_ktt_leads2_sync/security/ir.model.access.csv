@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_sale_order_salesperson_user,sale.order.salesperson user,model_sale_order_salesperson,base.group_user,1,1,1,1
+access_account_move_salesperson_user,account.move.salesperson user,model_account_move_salesperson,base.group_user,1,1,1,1
+access_mln_sync_log_system,mln.sync.log system,model_mln_sync_log,base.group_system,1,1,1,1
